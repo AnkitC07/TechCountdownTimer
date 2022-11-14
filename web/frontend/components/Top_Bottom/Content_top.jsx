@@ -62,8 +62,8 @@ function Content() {
   date.setDate(date.getDate() + 1)
   // console.log(date)
 
-  
-  console.log(content.timerType)
+
+  console.log(content.timerType, 'toppppppppppp')
 
   return (
     <>
@@ -308,7 +308,7 @@ function Content() {
                 </div>
               </div>
             </div>
-            
+
             <div className="Polaris-Card__Section">
               <div className="sc-bczRLJ czvMoD">
                 <div className="Polaris-FormLayout">
@@ -371,6 +371,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
+                          checked={true}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -382,7 +383,6 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={true}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
@@ -498,6 +498,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
+                          checked={true}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -509,7 +510,6 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={true}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
@@ -1039,7 +1039,7 @@ function Content() {
                   ) : (
                     ''
                   )}
-                  
+
                 </div>
               </div>
               <div className="Polaris-FormLayout pt-3">

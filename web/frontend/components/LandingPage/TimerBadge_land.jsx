@@ -33,6 +33,8 @@ const TimerBadge_land = ({ design, content }) => {
     borderRadius: `${design.cornerRadus}px`,
     alignItems: 'center',
   }
+  console.log(content.startDate.start, "tset")
+
   return (
     <>
       {content.callToAction == 'Make entire bar clickable' ?
@@ -227,7 +229,7 @@ const TimerBadge_land = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  <TImer design={design} />
+                  <TImer start={content.startDate.start} end={content.endDate.end} design={design} />
                 </div>
                 <div
                   className="timer-label"

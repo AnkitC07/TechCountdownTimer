@@ -32,7 +32,7 @@ export const CartPageProvider = (props) => {
     titleSize: '16',
     titleColor: '#202223',
     timerSize: '16',
-    timerColor: '#202223',
+    timerColor: '#da6060  ',
   })
   const [placement, setPlacement] = useState({
     selectProduct: '',

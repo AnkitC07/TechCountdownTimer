@@ -16,7 +16,7 @@ export const LandingProvider = (props) => {
     hrs: 'Hrs',
     mins: 'Mins',
     secs: 'Secs',
-    timerType: 'Countdown to a date',
+    timerType: 'toDate',
     fixedTime: '120',
     RepeatOn: {
       monday: true,
@@ -36,8 +36,8 @@ export const LandingProvider = (props) => {
       start: new Date(),
       end: new Date(),
     },
-    startHrs: '12',
-    startMnt: '00',
+    startHrs: date.getHours(),
+    startMnt: date.getMinutes(),
     endDate: {
       start: date,
       end: date,

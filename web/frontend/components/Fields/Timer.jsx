@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
+import parser from 'html-react-parser'
 // import { ProductContext } from '../context/ProductContext'
 
 const Timer = (props) => {
@@ -10,13 +11,10 @@ const Timer = (props) => {
     const [minutes, setMinutes] = React.useState(0)
     const [seconds, setSeconds] = React.useState(0)
     const [timerTextVal, timerState] = useState()
-    // const { content } = useContext(
-    //     ProductContext,
-    // )
+
     let defaultStart = props.start
     let start = defaultStart
     let deadline = defaultStart + props.mnt * 60000
-    // useEffect(() => {}, [selectedDates, selectedEndDates])
 
     const getTime = () => {
         const time = deadline - start
@@ -48,31 +46,37 @@ const Timer = (props) => {
         return () => clearInterval(interval)
     }, [start, deadline, timerTextVal])
 
-    function replaceTimer(min, sec) {
+    function replaceTimer(day, hrs, min, sec) {
         let value = props.content.title
-        const time = min + ":" + sec
-        value = <span>{value.replace("{timer}", time)}</span>
+        let time
+        if (days > 0) {
+            time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${day} : ${hrs} : ${min} : ${sec}</span>`
+        }
+        else if (hours > 0) {
+            time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${hrs} : ${min} : ${sec}</span>`
+        } else {
+            time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${min} : ${sec}</span>`
+        }
+        // console.log(time)
+        value = parser(`${value.replace("{timer}", time)}`)
+        // console.log(value)
         return value
     }
-    // console.log("----------------------------------------------")
-    // console.log(minutes < 10 ? '0' + minutes : minutes + ":" + seconds < 10 ? '0' + seconds : seconds)
+
     return (
         <div
             // className="time"
             style={{
-                fontSize: `${props.design.timerSize}px`,
-                color: `${props.design.timerColor}`,
-                fontFeatureSettings: 'tnum',
-                fontVariantNumeric: 'tabular-nums',
-                // fontWeight: 'bold',
+                fontSize: `${props.design.titleSize}px`,
+                color: `${props.design.titleColor}`,
+                lineHeight: '1',
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                whiteSpace: 'break-spaces',
             }}
         >
-            <span>
-                {replaceTimer(minutes < 10 ? '0' + minutes : minutes, seconds < 10 ? '0' + seconds : seconds)}
-            </span>
-            {/* {days < 10 ? '0' + days : days}:{hours < 10 ? '0' + hours : hours}: */}
-            {/* {minutes < 10 ? '0' + minutes : minutes}:
-            {seconds < 10 ? '0' + seconds : seconds} */}
+            {replaceTimer(days < 10 ? '0' + days : days, hours < 10 ? '0' + hours : hours, minutes < 10 ? '0' + minutes : minutes, seconds < 10 ? '0' + seconds : seconds)}
         </div>
     )
 }

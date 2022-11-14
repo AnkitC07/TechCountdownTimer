@@ -64,7 +64,6 @@ const TimerBagde_Top = ({ design, content }) => {
     borderTop: `${design.borderSize}px solid ${design.borderColor}`,
   }
 
-
   return (
     <>
       {content.callToAction == 'Make entire bar clickable' ? (
@@ -133,7 +132,8 @@ const TimerBagde_Top = ({ design, content }) => {
                       letterSpacing: '1px',
                     }}
                   >
-                    <TImer design={design} />
+
+                    <TImer start={content.startDate.start} end={content.endDate.end} design={design} />
                   </div>
                   <div
                     className="timer-label"
@@ -301,7 +301,8 @@ const TimerBagde_Top = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  <TImer design={design} />
+                  <TImer start={content.startDate.start} end={content.endDate.end} design={design} />
+
                 </div>
                 <div
                   className="timer-label"
