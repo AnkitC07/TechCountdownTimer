@@ -1,0 +1,97 @@
+import React, { useState, createContext } from 'react'
+
+export const TopBottomContext = createContext()
+export const TopBottomProvider = (props) => {
+  let date = new Date()
+  date.setDate(date.getDate() + 1)
+
+  const [content, setContent] = useState({
+    timerName: 'Timer name',
+    title: 'Hurry up! Sale ends in: ',
+    subHeading: '',
+    callToAction: 'No call to action',
+    buttonText: 'Shop now!',
+    link: '#',
+    closeIcon: true,
+    days: 'Days',
+    hrs: 'Hrs',
+    mins: 'Mins',
+    secs: 'Secs',
+    timerType: 'Countdown to a date',
+    fixedTime: '120',
+    RepeatOn: {
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
+      saturday: true,
+      sunday: true,
+    },
+    dailyStartHrs: '11',
+    dailyStartMnt: '37',
+    dailyEndHrs: '12',
+    dailyEndMnt: '37',
+    timerStart: 'rightNow',
+    startDate: {
+      start: new Date(),
+      end: new Date(),
+    },
+    startHrs: '12',
+    startMnt: '00',
+    endDate: {
+      start: date,
+      end: date,
+    },
+    endHrs: '00',
+    endMnt: '12',
+    starts: '',
+    ends: '',
+    onceItEnd: 'Unpublish timer',
+  })
+  const [design, setDesign] = useState({
+    positioning: 'Top page',
+    stickyBar: false,
+    template: 'Custom',
+    backtype: 'singleBackground',
+    singleColor: '#FFFFFF',
+    gradAngle: '90',
+    gradClr1: '#DDDDDD',
+    gradClr2: '#FFFFFF',
+    borderSize: '0',
+    borderColor: '#c5c8d1',
+    font: 'Custom',
+    titleSize: '18',
+    titleColor: '#202223',
+    subheadingSize: '14',
+    subheadingColor: '#202223',
+    timerSize: '22',
+    timerColor: '#202223',
+    legendSize: '10',
+    legendColor: '#6d7175',
+    buttonColor: '#202223',
+    buttonFontSize: '14',
+    buttonFontColor: '#FFFFFF',
+    cornerRadus: '4',
+    closeIconColorl: '#6d7175',
+  })
+  const [placement, setPlacement] = useState({
+    selectProduct: '',
+    specProduct: [],
+    specCollection: [],
+  })
+  return (
+    <TopBottomContext.Provider
+      value={{
+        content,
+        setContent,
+        design,
+        setDesign,
+        placement,
+        setPlacement,
+      }}
+    >
+      {props.children}
+    </TopBottomContext.Provider>
+  )
+}
