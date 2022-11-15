@@ -12,12 +12,19 @@ const TImer = (props) => {
   // const { content } = useContext(
   //   ProductContext,
   // )
-  let start = Date.parse(props.start)
-  let deadline = Date.parse(props.end)
+  // const startDate = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.start.toTimeString().substring(0, 8)}`)
+  // const endDate = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.end.toTimeString().substring(0, 8)}`)
+
+  const startDate = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  const endDate = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.endhrs}:${props.endmnt}:00`)
+
+  // console.log("start date: ", `${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  let start = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  let deadline = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.endhrs}:${props.endmnt}:00`)
   // console.log(Date.parse(content.selectedDates.start))
   // useEffect(() => {}, [selectedDates, selectedEndDates])
 
-  console.log(props.start)
+  // console.log(props.start)
   const getTime = () => {
     const time = deadline - start
     if (time <= 0) {

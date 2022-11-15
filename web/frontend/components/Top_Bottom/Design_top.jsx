@@ -285,7 +285,7 @@ function Design_top() {
   return (
     <>
       {/* <Top_BottomPage /> */}
-      <div className="row px-2 py-3 top-change design " id="top-change">
+      <div className="row px-5 py-3 top-change design " id="top-change">
         <div className="col col-md-4">
           <div className="Polaris-Card">
             <div className="Polaris-Card__Section">

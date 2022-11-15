@@ -133,7 +133,7 @@ const TimerBagde_Top = ({ design, content }) => {
                     }}
                   >
 
-                    <TImer start={content.startDate.start} end={content.endDate.end} design={design} />
+                    <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
                   </div>
                   <div
                     className="timer-label"
@@ -301,7 +301,7 @@ const TimerBagde_Top = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  <TImer start={content.startDate.start} end={content.endDate.end} design={design} />
+                  <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
 
                 </div>
                 <div
