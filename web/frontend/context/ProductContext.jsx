@@ -14,7 +14,7 @@ export const ProductProvider = (props) => {
     productHrs: 'Hrs',
     productMin: 'Mins',
     productSec: 'Secs',
-    timerType: 'Countdown to a date',
+    timerType: 'toDate',
     fixedTime: '120',
     RepeatOn: {
       monday: true,
@@ -34,8 +34,8 @@ export const ProductProvider = (props) => {
       start: new Date(),
       end: new Date(),
     },
-    startHrs: '1',
-    startMnt: '0',
+    startHrs: date.getHours(),
+    startMnt: date.getMinutes(),
     selectedEndDates: {
       start: date,
       end: date,

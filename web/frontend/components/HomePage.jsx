@@ -10,6 +10,8 @@ import {
 } from '@shopify/polaris'
 
 import { NavLink } from 'react-router-dom'
+import { CheckBoxRef } from './CheckBoxRef'
+import CheckHead from './layouts/CheckHead'
 
 // import trophyImgUrl from "../assets/home-trophy.png";
 
@@ -22,7 +24,8 @@ export default function Homepage() {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <div className="Polaris-Page-Header Polaris-Page-Header--noBreadcrumbs Polaris-Page-Header--mediumTitle">
+              <CheckHead />
+              <div className="Polaris-Page-Header Polaris-Page-Header--noBreadcrumbs Polaris-Page-Header--mediumTitle Polaris-PageActions" >
                 <div className="Polaris-Page-Header__Row">
                   <div className="Polaris-Page-Header__TitleWrapper">
                     <div>
@@ -103,6 +106,51 @@ export default function Homepage() {
             </div>
           </div>
         </div>
+        <div className="container-fluid ref_app">
+          <div className="row ">
+            <div className="Polaris-Page-Header Polaris-Page-Header--noBreadcrumbs Polaris-Page-Header--mediumTitle">
+              <div className="Polaris-Page-Header__Row">
+                <div className="Polaris-Page-Header__TitleWrapper">
+                  <div>
+                    <div className="Polaris-Header-Title__TitleAndSubtitleWrapper">
+                      <h1 className="Polaris-Header-Title">
+                        Apps you might like
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <CheckBoxRef
+              title="Shop Pre Order Manager "
+              src="Main_revised_PreOrder-Lite-App-ScreenShot.png"
+              description="Get more sales and revenue by taking preorders for coming soon items and items out of stock. Capture purchase intent, get more sales."
+              rating="4.7"
+              btnText="View on Shopify app store"
+              link="https://apps.shopify.com/cancode-preorder"
+            />
+            <CheckBoxRef
+              title="Posh Wrap: Gift Option Manager"
+              src="App_Marketplace_MainBanner_Shopify.jpg"
+              description="Upsell gift options to your customers from product pages and the shopping cart to increase your order value."
+              rating="5.0"
+              btnText="View on Shopify app store"
+              link="https://apps.shopify.com/shop-gift-option"
+            />
+            <CheckBoxRef
+              title="CanCode.io Discount & Bundle"
+              src="App_Marketplace_MainBanner_Shopify.jpg"
+              description="Get more sales by offering customers discounts and bundle deals."
+              rating=""
+              btnText="Coming Soon"
+              style={{ background: "lightgray", pointerEvents: "none" }}
+              link=""
+            />
+          </div>
+        </div>
+
+
       </section>
     </Page>
   )

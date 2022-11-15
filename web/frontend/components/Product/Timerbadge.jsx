@@ -71,7 +71,7 @@ const Timerbadge = ({ design, content }) => {
             // className="time"
             style={{}}
           >
-            <TImer design={design} />
+            <TImer start={content.selectedDates.start} end={content.selectedEndDates.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
           </div>
           <div
             // className="timer-label"

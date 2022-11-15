@@ -9,7 +9,7 @@ const Placement_cart = () => {
 
   return (
     <>
-      <div className="row px-4 py-3">
+      <div className="row px-3 py-3">
         <div className="col col-md-4">
           <div className="Polaris-Card" style={{ maxWidth: '360px' }}>
             {/* <div className="Polaris-Card__Section"></div> */}

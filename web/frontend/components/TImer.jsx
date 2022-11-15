@@ -2,24 +2,31 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
-import { ProductContext } from '../context/ProductContext'
+// import { ProductContext } from '../context/ProductContext'
 
 const TImer = (props) => {
   const [days, setDays] = React.useState(0)
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
   const [seconds, setSeconds] = React.useState(0)
-  const { content } = useContext(
-    ProductContext,
-  )
-  let start = Date.parse(content.selectedDates.start)
-  let deadline = Date.parse(content.selectedEndDates.end)
+  // const { content } = useContext(
+  //   ProductContext,
+  // )
+  // const startDate = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.start.toTimeString().substring(0, 8)}`)
+  // const endDate = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.end.toTimeString().substring(0, 8)}`)
+
+  const startDate = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  const endDate = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.endhrs}:${props.endmnt}:00`)
+
+  // console.log("start date: ", `${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  let start = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.starthrs}:${props.startmnt}:00`)
+  let deadline = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.endhrs}:${props.endmnt}:00`)
   // console.log(Date.parse(content.selectedDates.start))
   // useEffect(() => {}, [selectedDates, selectedEndDates])
 
+  // console.log(props.start)
   const getTime = () => {
     const time = deadline - start
-    console.log(deadline)
     if (time <= 0) {
       setDays(0)
       setHours(0)

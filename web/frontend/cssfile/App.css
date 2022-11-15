@@ -2,35 +2,36 @@
   width: 39%;
   margin-right: 5px;
 }
+
 .row {
   --bs-gutter-x: 0;
 }
+
 .product-page-top {
   height: 80px;
-  background: linear-gradient(
-    rgba(231, 231, 232, 0) 30.63%,
-    rgb(230, 230, 231) 69.79%
-  );
+  background: linear-gradient(rgba(231, 231, 232, 0) 30.63%,
+      rgb(230, 230, 231) 69.79%);
   border-radius: 8px;
   max-width: 420px;
   min-width: 320px;
 }
+
 .product-page-bottom {
   height: 80px;
-  background: linear-gradient(
-    rgba(231, 231, 232, 0) 30.63%,
-    rgb(230, 230, 231) 69.79%
-  );
+  background: linear-gradient(rgba(231, 231, 232, 0) 30.63%,
+      rgb(230, 230, 231) 69.79%);
   border-radius: 8px;
   transform: rotate(180deg);
   max-width: 420px;
   min-width: 320px;
 }
+
 .product-page-wrapper {
   margin-left: 30%;
   position: sticky;
   top: 20px;
 }
+
 .product-page-main {
   margin-top: 20px;
   max-width: 420px;
@@ -46,22 +47,26 @@
   -webkit-box-align: center;
   align-items: center;
 }
+
 .product-heading {
   font-weight: bold;
   font-size: 28px;
   color: rgb(32, 34, 35);
   line-height: 1;
 }
+
 .product-para {
   font-size: 14px;
   color: rgb(32, 34, 35);
   padding-top: 2px;
   line-height: 1.5;
 }
+
 .product-timer {
   line-height: 1;
   text-align: left;
 }
+
 /* .timer-wrapper {
   display: grid;
   grid-template-columns: 1fr 10px 1fr 10px 1fr 10px 1fr;
@@ -76,11 +81,13 @@
   font-variant-numeric: tabular-nums;
   font-weight: bold;
 }
+
 .timer-label {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   place-items: center;
 }
+
 .search_filter .search_box {
   width: 100%;
   padding: 7px;
@@ -88,10 +95,12 @@
   border: 1.5px solid #ddd;
   border-radius: 5px;
 }
+
 .search_filter {
   flex: 1 1 0%;
   position: relative;
 }
+
 .search_icon .Polaris-Icon {
   /* width: fit-content; */
   margin: 0;
@@ -101,15 +110,18 @@
   width: 18px;
   height: 18px;
 }
+
 .products-list-modal {
   display: grid;
   grid-template-columns: 50px 75px 1fr;
   align-items: center;
 }
+
 .checkbox-modal input[type='checkbox'] {
   position: relative;
   cursor: pointer;
 }
+
 .checkbox-modal input[type='checkbox']:before {
   content: '';
   display: block;
@@ -122,6 +134,7 @@
   border-radius: 3px;
   background-color: white;
 }
+
 .checkbox-modal input[type='checkbox']:checked:after {
   content: '';
   display: block;
@@ -136,9 +149,11 @@
   top: 2px;
   left: 6px;
 }
+
 .Polaris-Modal__Body.Polaris-Scrollable.Polaris-Scrollable--vertical {
   position: unset;
 }
+
 .product-count-modal {
   position: absolute;
   bottom: 25px;
@@ -149,12 +164,14 @@
   width: 35px;
   height: 35px;
 }
+
 caption.Polaris-DatePicker__Title {
   position: absolute;
   top: 0;
   left: 32%;
   font-weight: bold;
 }
+
 .wrap_timer {
   position: fixed;
   z-index: 9999;
@@ -163,6 +180,7 @@ caption.Polaris-DatePicker__Title {
   display: flex;
   justify-content: flex-end;
 }
+
 /* .top_product_timer {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -198,9 +216,11 @@ caption.Polaris-DatePicker__Title {
 .top-change {
   flex-direction: column-reverse;
 }
+
 .extra-margin {
   margin-left: 30px;
 }
+
 /* button.icon-button {
   background: none;
   border: none;
@@ -219,21 +239,27 @@ li a.active:after {
   bottom: 0;
   border-radius: 4px 4px 0px 0px;
 }
+
 .countdown li {
   position: relative;
 }
+
 a {
   text-decoration: none;
 }
+
 table.Polaris-DatePicker__Month {
   margin-top: 12px;
 }
+
 div#Polarispopover33 {
   height: 260px;
 }
+
 .design .pxicon {
   position: relative;
 }
+
 .design .px {
   display: block !important;
   z-index: 999;
@@ -242,9 +268,11 @@ div#Polarispopover33 {
   right: 30px;
   top: 7px;
 }
+
 .input-number-box {
   position: relative;
 }
+
 /* Cart Page */
 
 textarea {
@@ -253,6 +281,7 @@ textarea {
   padding-right: var(--p-space-3);
   resize: none;
 }
+
 .cBayMO {
   font-size: 0.875rem;
   font-weight: 400;
@@ -265,6 +294,48 @@ textarea {
   pointer-events: none;
   opacity: 0.4;
 }
+
 .hide-div {
   display: none;
+}
+
+.Polaris-TextContainer.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 205px;
+}
+
+
+@media (max-width: 1150px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 200px;
+  }
+}
+
+@media (max-width: 960px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 223px;
+  }
+}
+
+@media (max-width: 400px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 163px;
+  }
+}
+
+.check_head {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.check_head h1.Polaris-Heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.check_head p {
+  margin: 0 !important;
 }

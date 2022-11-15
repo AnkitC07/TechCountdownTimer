@@ -30,7 +30,8 @@ const TimerBadge_cart = ({ design, content }) => {
         borderRadius: `${design.cornerRadus}px`,
         alignItems: 'center',
     }
-    console.log(new Date())
+    const date = new Date()
+    console.log((date.getHours()))
     return (
         <div
             // className="top_product_timer"

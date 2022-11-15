@@ -334,6 +334,7 @@ const Content_land = () => {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
+                          checked={true}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -345,7 +346,6 @@ const Content_land = () => {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={true}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
@@ -461,6 +461,7 @@ const Content_land = () => {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
+                          checked={true}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -472,7 +473,6 @@ const Content_land = () => {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={true}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
