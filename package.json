@@ -15,7 +15,8 @@
     "@shopify/app": "3.21.0",
     "@shopify/cli": "3.21.0",
     "hex-rgb": "^5.0.0",
-    "html-react-parser": "^3.0.4"
+    "html-react-parser": "^3.0.4",
+    "mongoose": "^6.7.2"
   },
   "author": "tis-34"
 }

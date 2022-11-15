@@ -81,6 +81,7 @@ const CartPage = () => {
                       </div>
                     </div>
                   </div>
+                  <div class="Polaris-Header-Title__SubTitle"><p>Timer ID: Save or Publish to show timer ID</p></div>
                 </div>
                 <div className="Polaris-Page-Header__RightAlign">
                   <div className="Polaris-ActionMenu">

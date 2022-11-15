@@ -2,16 +2,19 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
-// import { ProductContext } from '../context/ProductContext'
+import { ProductContext } from '../context/ProductContext'
 
 const TImer = (props) => {
-  const [days, setDays] = React.useState(0)
-  const [hours, setHours] = React.useState(0)
-  const [minutes, setMinutes] = React.useState(0)
-  const [seconds, setSeconds] = React.useState(0)
-  // const { content } = useContext(
-  //   ProductContext,
-  // )
+  // const [days, setDays] = React.useState(0)
+  // const [hours, setHours] = React.useState(0)
+  // const [minutes, setMinutes] = React.useState(0)
+  // const [seconds, setSeconds] = React.useState(0)
+  const { days, setDays,
+    hours, setHours,
+    minutes, setMinutes,
+    seconds, setSeconds, } = useContext(
+      ProductContext,
+    )
   // const startDate = Date.parse(`${props.start.getMonth() + 1} ${props.start.getDate()}, ${props.start.getFullYear()} ${props.start.toTimeString().substring(0, 8)}`)
   // const endDate = Date.parse(`${props.end.getMonth() + 1} ${props.end.getDate()}, ${props.end.getFullYear()} ${props.end.toTimeString().substring(0, 8)}`)
 

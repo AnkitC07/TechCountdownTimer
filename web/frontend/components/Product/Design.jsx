@@ -252,6 +252,7 @@ function Design() {
     },
   ]
 
+  console.log("Timer Type", content.timerType)
 
   return (
     <>

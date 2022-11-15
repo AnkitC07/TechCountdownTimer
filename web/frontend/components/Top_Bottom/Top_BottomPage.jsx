@@ -78,6 +78,8 @@ const Top_BottomPage = () => {
                       </div>
                     </div>
                   </div>
+                  <div class="Polaris-Header-Title__SubTitle"><p>Timer ID: Save or Publish to show timer ID</p></div>
+
                 </div>
                 <div class="Polaris-Page-Header__RightAlign">
                   <div class="Polaris-ActionMenu">

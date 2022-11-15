@@ -7,6 +7,12 @@ import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
 
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
+import LandingRouter from './routes/LandingRouter.js'
+import ProductRouter from './routes/ProductRouter.js'
+import TopBottomRouter from './routes/TopBottomRouter.js'
+import bodyparser from 'body-parser'
+import './databse/config.js'
+
 import { setupGDPRWebHooks } from "./gdpr.js";
 import productCreator from "./helpers/product-creator.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
@@ -144,6 +150,11 @@ export async function createServer(
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
   app.use(express.json());
+  app.use(bodyparser.json())
+
+  app.use('/submitLanding', LandingRouter)
+  app.use('/submitTopBottom', TopBottomRouter)
+  app.use('/submitProduct', ProductRouter)
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

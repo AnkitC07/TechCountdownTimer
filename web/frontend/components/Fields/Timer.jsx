@@ -3,13 +3,15 @@ import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
 import parser from 'html-react-parser'
-// import { ProductContext } from '../context/ProductContext'
+import { ProductContext } from '../../context/ProductContext'
 
 const Timer = (props) => {
-    const [days, setDays] = React.useState(0)
-    const [hours, setHours] = React.useState(0)
-    const [minutes, setMinutes] = React.useState(0)
-    const [seconds, setSeconds] = React.useState(0)
+    const { days, setDays,
+        hours, setHours,
+        minutes, setMinutes,
+        seconds, setSeconds, } = useContext(
+            ProductContext,
+        )
     const [timerTextVal, timerState] = useState()
 
     let defaultStart = props.start

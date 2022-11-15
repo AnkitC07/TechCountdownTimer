@@ -43,6 +43,14 @@ export default function App() {
                           label: 'Timers',
                           destination: '/',
                         },
+                        {
+                          label: 'Suggestion',
+                          destination: '/',
+                        },
+                        {
+                          label: 'Help',
+                          destination: '/Help',
+                        },
                       ]}
                     />
                     <Routes pages={pages} />
