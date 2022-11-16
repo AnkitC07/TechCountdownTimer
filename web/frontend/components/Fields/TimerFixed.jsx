@@ -6,7 +6,7 @@ const TimerFixed = (props) => {
     const { days, setDays,
         hours, setHours,
         minutes, setMinutes,
-        seconds, setSeconds, } = useContext(
+        seconds, setSeconds, } = useContext (
             ProductContext,
         )
 
