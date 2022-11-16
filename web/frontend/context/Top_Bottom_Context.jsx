@@ -80,6 +80,9 @@ export const TopBottomProvider = (props) => {
     specProduct: [],
     specCollection: [],
   })
+  const [Html, setHtml] = useState({
+    html: '',
+  })
   return (
     <TopBottomContext.Provider
       value={{
@@ -89,6 +92,7 @@ export const TopBottomProvider = (props) => {
         setDesign,
         placement,
         setPlacement,
+        Html, setHtml
       }}
     >
       {props.children}

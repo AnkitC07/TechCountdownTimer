@@ -60,8 +60,9 @@ const Timer = (props) => {
             time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${min} : ${sec}</span>`
         }
         // console.log(time)
+
         value = parser(`${value.replace("{timer}", time)}`)
-        // console.log(value)
+        // console.log("parsing", value)
         return value
     }
 

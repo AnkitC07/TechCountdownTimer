@@ -4,29 +4,20 @@ import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ProductContext } from '../../context/ProductContext'
 import { TimerNav } from '../TimerNav'
+import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
+import { useRef } from 'react'
 
 export const ProductPage = () => {
   const {
-    productTimer,
-    productTitle,
-    productSubheading,
-    productDays,
-    productHrs,
-    productMin,
-    productSec,
-    selectedDates,
-    selectedEndDates,
-    timerType,
-    startHrs,
-    startMnt,
-    endHrs,
-    endMnt,
-    onceItEnd,
     content,
     design,
     placement,
+    Html,
+    ispublished
   } = useContext(ProductContext)
 
+  const fetch = useAuthenticatedFetch()
+  console.log(Html)
   const navdata = [
     {
       title: 'Content',
@@ -42,10 +33,22 @@ export const ProductPage = () => {
     },
   ]
 
+  const getShopName = () => {
+    return window.location.ancestorOrigins[0].replaceAll("https://", "");
+  };
+  console.log(getShopName())
   const handelPublish = async () => {
-    const body = { content: content, design: design, placement: placement }
+    const body = {
+      type: 'ProductPage',
+      content: content,
+      design: design,
+      placement: placement,
+      Html: Html,
+      ispublished: ispublished,
+      store: getShopName()
+    }
     console.log(body)
-    const res = await fetch('/submitProduct', {
+    const res = await fetch('/api/submitProduct', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

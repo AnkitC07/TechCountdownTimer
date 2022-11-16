@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import InputComponent from '../Fields/InputComponent'
 import DateInput from '../Fields/DateInput'
@@ -14,7 +14,14 @@ import { useEffect } from 'react'
 import Timerbadge from './Timerbadge'
 
 function Content() {
-  const { design, content, setContent } = useContext(ProductContext)
+  const { design, content, setContent, Html, setHtml } = useContext(ProductContext)
+
+  const ref = useRef()
+  // console.log(ref.current.innerHTML)
+  setTimeout(() => {
+    setHtml(ref.current.innerHTML)
+
+  }, 100);
 
   // const [showDate, setShowDate] = useState('')
   // useEffect(() => {}, [content])
@@ -32,7 +39,7 @@ function Content() {
       value: 'Do nothing',
     },
   ]
-  console.log("Timer Type", content.timerType)
+  // console.log("Timer Type", content.timerType)
   const CheckDates = () => { }
   return (
     <>
@@ -965,9 +972,11 @@ function Content() {
           </div>
         </div>
 
-        <div className="col col-md-5">
+        <div className="col col-md-5" id='productTimer' ref={ref}>
           <div
+
             // className="product-page-wrapper"
+
             style={{ position: 'sticky', top: '20px' }}
           >
             <Timerbadge design={design} content={content} />

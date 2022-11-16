@@ -19,6 +19,8 @@ import redirectToAuth from "./helpers/redirect-to-auth.js";
 import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import CartRouter from "./routes/CartRouter.js";
+import AllTimer from "./routes/AllTimer.js";
 dotenv.config()
 
 const USE_ONLINE_TOKENS = false;
@@ -154,9 +156,11 @@ export async function createServer(
   app.use(express.json());
   app.use(bodyparser.json())
 
+  app.use('/submitCart', CartRouter)
   app.use('/submitLanding', LandingRouter)
   app.use('/submitTopBottom', TopBottomRouter)
-  app.use('/submitProduct', ProductRouter)
+  app.use('/api', ProductRouter)
+  app.use('/api', AllTimer)
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

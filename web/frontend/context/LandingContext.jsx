@@ -80,7 +80,9 @@ export const LandingProvider = (props) => {
     specProduct: [],
     tags: '',
   })
-
+  const [Html, setHtml] = useState({
+    html: '',
+  })
   return (
     <LandingContext.Provider
       value={{
@@ -90,6 +92,7 @@ export const LandingProvider = (props) => {
         setDesign,
         placement,
         setPlacement,
+        Html, setHtml
       }}
     >
       {props.children}

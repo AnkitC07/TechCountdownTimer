@@ -7,7 +7,10 @@ export const CartPageProvider = (props) => {
   //   setTimeout(() => {
 
   //   }, timeout);
-
+  const [days, setDays] = React.useState(0)
+  const [hours, setHours] = React.useState(0)
+  const [minutes, setMinutes] = React.useState(0)
+  const [seconds, setSeconds] = React.useState(0)
   const [content, setContent] = useState({
     timerName: 'Timer name',
     title: '🔥Hurry up! Your cart will be lost in {timer}',
@@ -37,16 +40,23 @@ export const CartPageProvider = (props) => {
   const [placement, setPlacement] = useState({
     selectProduct: '',
   })
-
+  const [Html, setHtml] = useState({
+    html: '',
+  })
   return (
     <CartPageContext.Provider
       value={{
+        days, setDays,
+        hours, setHours,
+        minutes, setMinutes,
+        seconds, setSeconds,
         content,
         setContent,
         design,
         setDesign,
         placement,
         setPlacement,
+        Html, setHtml
       }}
     >
       {props.children}

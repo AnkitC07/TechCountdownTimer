@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import TimerFixed from '../Fields/TimerFixed'
+import TImerReccuring from '../Fields/TImerReccuring'
 import TImer from '../TImer'
 
 const Timerbadge = ({ design, content }) => {
@@ -79,7 +80,7 @@ const Timerbadge = ({ design, content }) => {
               <TImer start={content.selectedDates.start} end={content.selectedEndDates.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
             }
 
-
+            {/* <TImerReccuring starthrs={content.dailyStartHrs} startmnt={content.dailyStartMnt} endhrs={content.dailyEndHrs} endmnt={content.dailyEndMnt} design={design} /> */}
           </div>
           <div
             // className="timer-label"

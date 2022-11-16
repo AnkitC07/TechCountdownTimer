@@ -394,3 +394,10 @@ div#accordion .card {
   margin-top: 3px;
   margin-right: 6px;
 }
+
+.dwxbiy {
+  display: grid;
+  grid-template-columns: 130px 200px 130px;
+  column-gap: 10px;
+  text-align: right;
+} 

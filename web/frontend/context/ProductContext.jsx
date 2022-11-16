@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, useRef } from 'react'
 
 export const ProductContext = createContext()
 
@@ -9,6 +9,9 @@ export const ProductProvider = (props) => {
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
   const [seconds, setSeconds] = React.useState(0)
+
+
+
   const [content, setContent] = useState({
     productTimer: 'Timer Name',
     productTitle: 'Hurry up!',
@@ -29,7 +32,7 @@ export const ProductProvider = (props) => {
       sunday: true,
     },
     dailyStartHrs: '11',
-    dailyStartMnt: '37',
+    dailyStartMnt: '30',
     dailyEndHrs: '12',
     dailyEndMnt: '37',
     timerStart: 'rightNow',
@@ -82,6 +85,8 @@ export const ProductProvider = (props) => {
     specProduct: [],
     tags: '',
   })
+  const [Html, setHtml] = useState('')
+  const [ispublished, setIspublished] = useState(false)
   return (
     <ProductContext.Provider
       value={{
@@ -95,6 +100,8 @@ export const ProductProvider = (props) => {
         setDesign,
         placement,
         setPlacement,
+        ispublished,
+        Html, setHtml,
       }}
     >
       {props.children}
