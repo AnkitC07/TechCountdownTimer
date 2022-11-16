@@ -32,6 +32,7 @@ function Content() {
       value: 'Do nothing',
     },
   ]
+  console.log("Timer Type", content.timerType)
   const CheckDates = () => { }
   return (
     <>
@@ -179,254 +180,7 @@ function Content() {
               </div>
             </div>
 
-            {/* <div className="Polaris-Card__Section">
-              <div className="sc-bczRLJ czvMoD">
-                <div className="Polaris-FormLayout">
-                  <div>
-                    <div className="Polaris-FormLayout__Item">
-                      <span className="Polaris-TextStyle--variationStrong">
-                        Timer Type
-                      </span>
-                    </div>
-                    <CheckBoxComponent
-                      id="toDate"
-                      name="toDate"
-                      label="Countdown to a date"
-                      checked={true}
-                      decription="Timer that ends at the specific date."
-                      onChange={(e) => {
-                        setContent({
-                          ...content,
-                          timerType: e.target.value,
-                        })
-                      }}
-                    />
-                    <CheckBoxComponent
-                      id="fixed"
-                      name="toDate"
-                      label="Fixed minutes"
-                      onChange={(e) => {
-                        setContent({
-                          ...content,
-                          timerType: e.target.value,
-                        })
-                      }}
-                      decription="Individual fixed minutes countdown for each buyer session."
-                    />
-                    <CheckBoxComponent
-                      id="recurring"
-                      name="toDate"
-                      label="Daily recurring timer"
-                      onChange={(e) => {
-                        setContent({
-                          ...content,
-                          timerType: e.target.value,
-                        })
-                      }}
-                      decription="E.g. every weekday from 9 am to 11 am"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              <div className="sc-bczRLJ czvMoD pt-3">
-                <div className="Polaris-FormLayout">
-                  <div className="Polaris-FormLayout__Item">
-                    <div>
-                      <div className="">
-                        <div className="Polaris-Labelled__LabelWrapper">
-                          <div className="Polaris-Label">
-                            <label
-                              id="startDateLabel"
-                              htmlFor="startDate"
-                              className="Polaris-Label__Text"
-                            >
-                              Start date
-                            </label>
-                          </div>
-                        </div>
-                        <DatePickerExample
-                          state1={content.selectedDates}
-                          onChange={(x) => {
-                            setContent({
-                              ...content,
-                              selectedDates: x,
-                            })
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div role="group" className="Polaris-FormLayout--condensed">
-                    <div className="Polaris-FormLayout__Items">
-                      <div className="Polaris-FormLayout__Item">
-                        <div className="">
-                          <div className="Polaris-Labelled__LabelWrapper">
-                            <div className="Polaris-Label">
-                              <label
-                                id="hoursLabel"
-                                htmlFor="hours"
-                                className="Polaris-Label__Text"
-                              >
-                                Hours
-                              </label>
-                            </div>
-                          </div>
-                          <InputNumber
-                            id="hours"
-                            label="hoursLabel"
-                            defaultValue={content.startHrs}
-                            onChange={(e) => {
-                              setContent({
-                                ...content,
-                                startHrs: e,
-                              })
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="Polaris-FormLayout__Item">
-                        <div className="">
-                          <div className="Polaris-Labelled__LabelWrapper">
-                            <div className="Polaris-Label">
-                              <label
-                                id="minutesLabel"
-                                htmlFor="minutes"
-                                className="Polaris-Label__Text"
-                              >
-                                Minutes
-                              </label>
-                            </div>
-                          </div>
-                          <InputNumber
-                            id="minutes"
-                            label="minutesLabel"
-                            defaultValue={content.startMnt}
-                            onChange={(e) => {
-                              setContent({
-                                ...content,
-                                startMnt: e,
-                              })
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="Polaris-FormLayout__Item">
-                    <div>
-                      <div className="">
-                        <div className="Polaris-Labelled__LabelWrapper">
-                          <div className="Polaris-Label">
-                            <label
-                              id="endDateLabel"
-                              htmlFor="endDate"
-                              className="Polaris-Label__Text"
-                            >
-                              End date
-                            </label>
-                          </div>
-                        </div>
-                        <DatePickerExample
-                          state1={content.selectedEndDates}
-                          onChange={(x) => {
-                            setContent({
-                              ...content,
-                              selectedEndDates: x,
-                            })
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div role="group" className="Polaris-FormLayout--condensed">
-                    <div className="Polaris-FormLayout__Items">
-                      <div className="Polaris-FormLayout__Item">
-                        <div className="">
-                          <div className="Polaris-Labelled__LabelWrapper">
-                            <div className="Polaris-Label">
-                              <label
-                                id="hoursLabel"
-                                htmlFor="hours"
-                                className="Polaris-Label__Text"
-                              >
-                                Hours
-                              </label>
-                            </div>
-                          </div>
-                          <InputNumber
-                            id="hours"
-                            label="hoursLabel"
-                            defaultValue={content.endHrs}
-                            onChange={(e) => {
-                              setContent({
-                                ...content,
-                                endHrs: e,
-                              })
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="Polaris-FormLayout__Item">
-                        <div className="">
-                          <div className="Polaris-Labelled__LabelWrapper">
-                            <div className="Polaris-Label">
-                              <label
-                                id="minutesLabel"
-                                htmlFor="minutes"
-                                className="Polaris-Label__Text"
-                              >
-                                Minutes
-                              </label>
-                            </div>
-                          </div>
-                          <InputNumber
-                            id="minutes"
-                            label="minutesLabel"
-                            defaultValue={content.endMnt}
-                            onChange={(e) => {
-                              setContent({
-                                ...content,
-                                endMnt: e,
-                              })
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="Polaris-FormLayout pt-3">
-                <div className="Polaris-FormLayout__Item">
-                  <div className="">
-                    <div className="Polaris-Labelled__LabelWrapper">
-                      <div className="Polaris-Label">
-                        <label
-                          id="onceItEndsLabel"
-                          htmlFor="onceItEnds"
-                          className="Polaris-Label__Text"
-                        >
-                          Once it ends
-                        </label>
-                      </div>
-                    </div>
-                    <InputSelect
-                      id="onceItEnds"
-                      option={myoption}
-                      value={content.onceItEnd}
-                      placeholder="Unpublish timer"
-                      onChange={(e) =>
-                        setContent({
-                          ...content,
-                          onceItEnd: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </div> */}
             <div className="Polaris-Card__Section">
               <div className="sc-bczRLJ czvMoD">
                 <div className="Polaris-FormLayout">
@@ -440,7 +194,7 @@ function Content() {
                       id="toDate"
                       name="toDate"
                       label="Countdown to a date"
-                      checked={true}
+                      checked={content.timerType == 'toDate' ? true : null}
                       decription="Timer that ends at the specific date."
                       onChange={(e) => {
                         setContent({ ...content, timerType: e.target.value })
@@ -450,6 +204,8 @@ function Content() {
                       id="fixed"
                       name="toDate"
                       label="Fixed minutes"
+                      checked={content.timerType == 'fixed' ? true : null}
+
                       decription="Individual fixed minutes countdown for each buyer session."
                       onChange={(e) => {
                         setContent({ ...content, timerType: e.target.value })
@@ -458,6 +214,7 @@ function Content() {
                     <CheckBoxComponent
                       id="recurring"
                       name="toDate"
+                      checked={content.timerType == 'recurring' ? true : null}
                       label="Daily recurring timer"
                       decription="E.g. every weekday from 9 am to 11 am"
                       onChange={(e) => {
@@ -489,7 +246,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={true}
+                          checked={content.timerStart == 'rightNow' ? true : null}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -501,6 +258,7 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
+                          checked={content.timerStart == 'schedule' ? true : null}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
@@ -616,7 +374,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={true}
+                          checked={content.timerStart == 'rightNow' ? true : null}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -628,6 +386,7 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
+                          checked={content.timerStart == 'schedule' ? true : null}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({

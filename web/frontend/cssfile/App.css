@@ -339,3 +339,58 @@ textarea {
 .check_head p {
   margin: 0 !important;
 }
+
+section.footer_section {
+  margin-bottom: 40px;
+  display: block;
+  width: 100%;
+  float: left;
+}
+
+.footer_div.flex.text-center.justify-evenly.p-16 {
+  margin-bottom: 35px;
+}
+
+.faq-wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+
+div#accordion .card-header {
+  background: none;
+  padding-left: 0;
+  border-bottom: 1px solid #00a8ff5c;
+}
+
+div#accordion .card {
+  border: none;
+  background: none;
+}
+
+.faq-wrap a {
+  display: inline-flex;
+}
+
+.custom_footer_contact {
+  display: flex;
+  align-items: center;
+}
+
+.iconlookup {
+  display: inline-block;
+}
+
+.help_section h2.text-center {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.Polaris-FooterHelp__Content {
+  display: inline-flex;
+  padding: 2rem 2rem 2rem 1.6rem;
+}
+
+.contactIconCss {
+  margin-top: 3px;
+  margin-right: 6px;
+}

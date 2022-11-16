@@ -18,6 +18,7 @@ import CartPage from './components/CartPage/CartPage'
 import Content_cart from './components/CartPage/Content_cart'
 import Design_cart from './components/CartPage/Design_cart'
 import Placement_cart from './components/CartPage/Placement_cart'
+import Help from './components/layouts/Help'
 /**
  * File-based routing.
  * @desc File-based routing that uses React Router under the hood.
@@ -46,6 +47,7 @@ export default function Routes({ pages }) {
       <Route path="*" element={<NotFound />} />
 
       <Route path="/" element={<Homepage />} />
+      <Route path="/Help" element={<Help />} />
       <Route path="/TimerType" element={<TimerType />} />
       <Route path="/ProductPage" element={<ProductPage />}>
         <Route index element={<Content />} />

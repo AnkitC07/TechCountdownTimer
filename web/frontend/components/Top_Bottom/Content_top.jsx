@@ -322,7 +322,7 @@ function Content() {
                       id="toDate"
                       name="toDate"
                       label="Countdown to a date"
-                      checked={true}
+                      checked={content.timerType == 'toDate' ? true : null}
                       decription="Timer that ends at the specific date."
                       onChange={(e) => {
                         setContent({ ...content, timerType: e.target.value })
@@ -332,6 +332,8 @@ function Content() {
                       id="fixed"
                       name="toDate"
                       label="Fixed minutes"
+                      checked={content.timerType == 'fixed' ? true : null}
+
                       decription="Individual fixed minutes countdown for each buyer session."
                       onChange={(e) => {
                         setContent({ ...content, timerType: e.target.value })
@@ -340,6 +342,7 @@ function Content() {
                     <CheckBoxComponent
                       id="recurring"
                       name="toDate"
+                      checked={content.timerType == 'recurring' ? true : null}
                       label="Daily recurring timer"
                       decription="E.g. every weekday from 9 am to 11 am"
                       onChange={(e) => {
@@ -371,7 +374,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={true}
+                          checked={content.timerStart == 'rightNow' ? true : null}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -383,6 +386,7 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
+                          checked={content.timerStart == 'schedule' ? true : null}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({
@@ -498,7 +502,7 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={true}
+                          checked={content.timerStart == 'rightNow' ? true : null}
                           label="Right now"
                           onChange={(e) => {
                             setContent({
@@ -510,6 +514,7 @@ function Content() {
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
+                          checked={content.timerStart == 'schedule' ? true : null}
                           label="Schedule to start later"
                           onChange={(e) => {
                             setContent({

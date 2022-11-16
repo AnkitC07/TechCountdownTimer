@@ -5,7 +5,10 @@ export const ProductContext = createContext()
 export const ProductProvider = (props) => {
   let date = new Date()
   date.setDate(date.getDate() + 1)
-
+  const [days, setDays] = React.useState(0)
+  const [hours, setHours] = React.useState(0)
+  const [minutes, setMinutes] = React.useState(0)
+  const [seconds, setSeconds] = React.useState(0)
   const [content, setContent] = useState({
     productTimer: 'Timer Name',
     productTitle: 'Hurry up!',
@@ -47,33 +50,7 @@ export const ProductProvider = (props) => {
     onceItEnd: 'Unpublish timer',
   })
 
-  const [productTimer, setProductTimer] = useState('Timer Name')
-  const [productTitle, setProductTitle] = useState('Hurry up!')
-  const [productSubheading, setproductSubheading] = useState('Sale ends in: ')
-  //   const [productTimerLabel, setProductTimerLabel] = useState({
-  //     Days: 'Days',
-  //     Hrs: 'Hrs',
-  //     Mins: 'Mins',
-  //     Secs: 'Secs',
-  //   })
-  const [productDays, setProductDays] = useState('Days')
-  const [productHrs, setProductHrs] = useState('Hrs')
-  const [productMin, setProductMin] = useState('Mins')
-  const [productSec, setProductSec] = useState('Secs')
-  const [selectedDates, setSelectedDates] = useState({
-    start: new Date(),
-    end: new Date(),
-  })
-  const [selectedEndDates, setSelectedEndDates] = useState({
-    start: date,
-    end: date,
-  })
-  const [timerType, setTimerType] = useState('')
-  const [startHrs, setStartHrs] = useState(1)
-  const [startMnt, setStartMnt] = useState(0)
-  const [endHrs, setEndHrs] = useState('12')
-  const [endMnt, setEndMnt] = useState('00')
-  const [onceItEnd, setOnceItEnd] = useState('')
+
 
   const [design, setDesign] = useState({
     template: 'Custom',
@@ -108,36 +85,10 @@ export const ProductProvider = (props) => {
   return (
     <ProductContext.Provider
       value={{
-        productTimer,
-        setProductTimer,
-        productTitle,
-        setProductTitle,
-        productSubheading,
-        setproductSubheading,
-        productDays,
-        setProductDays,
-        productHrs,
-        setProductHrs,
-        productMin,
-        setProductMin,
-        productSec,
-        setProductSec,
-        selectedDates,
-        setSelectedDates,
-        selectedEndDates,
-        setSelectedEndDates,
-        timerType,
-        setTimerType,
-        startHrs,
-        setStartHrs,
-        startMnt,
-        setStartMnt,
-        endHrs,
-        setEndHrs,
-        endMnt,
-        setEndMnt,
-        onceItEnd,
-        setOnceItEnd,
+        days, setDays,
+        hours, setHours,
+        minutes, setMinutes,
+        seconds, setSeconds,
         content,
         setContent,
         design,

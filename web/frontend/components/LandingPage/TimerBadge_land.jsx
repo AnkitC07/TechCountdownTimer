@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import TimerFixed from '../Fields/TimerFixed'
 import TImer from '../TImer'
 
 const TimerBadge_land = ({ design, content }) => {
@@ -91,7 +92,12 @@ const TimerBadge_land = ({ design, content }) => {
                       letterSpacing: '1px',
                     }}
                   >
-                    <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                    {content.timerType == 'fixed'
+                      ?
+                      <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
+                      :
+                      <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                    }
                   </div>
                   <div
                     className="timer-label"
@@ -229,7 +235,12 @@ const TimerBadge_land = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                  {content.timerType == 'fixed'
+                    ?
+                    <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
+                    :
+                    <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                  }
                 </div>
                 <div
                   className="timer-label"

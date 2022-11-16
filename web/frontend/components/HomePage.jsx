@@ -10,7 +10,8 @@ import {
 } from '@shopify/polaris'
 
 import { NavLink } from 'react-router-dom'
-import { CheckBoxRef } from './CheckBoxRef'
+import { AppFooter } from './layouts/AppFooter'
+import { CheckBoxRef } from './layouts/CheckBoxRef'
 import CheckHead from './layouts/CheckHead'
 
 // import trophyImgUrl from "../assets/home-trophy.png";
@@ -152,6 +153,7 @@ export default function Homepage() {
 
 
       </section>
+      <AppFooter />
     </Page>
   )
 }
