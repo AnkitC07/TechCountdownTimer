@@ -888,6 +888,33 @@ function Content() {
                           setContent({ ...content, starts: e.target.value })
                         }}
                       />
+                      {content.starts == "startSpcf" ?
+                        <div className="Polaris-FormLayout__Item">
+                          <div>
+                            <div className="">
+                              <div className="Polaris-Labelled__LabelWrapper">
+                                <div className="Polaris-Label">
+                                  <label
+                                    id="startDateLabel"
+                                    htmlFor="startDate"
+                                    className="Polaris-Label__Text"
+                                  >
+                                    Start date
+                                  </label>
+                                </div>
+                              </div>
+                              <DatePickerExample
+                                state1={content.selectedDates}
+                                onChange={(e) => {
+                                  setContent({
+                                    ...content,
+                                    selectedDates: e,
+                                  })
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div> : ""}
                       <div className="Polaris-FormLayout__Item">
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -919,6 +946,33 @@ function Content() {
                           // console.log(content.timerStart)
                         }}
                       />
+                      {content.ends == "endSpcf" ?
+                        <div className="Polaris-FormLayout__Item">
+                          <div>
+                            <div className="">
+                              <div className="Polaris-Labelled__LabelWrapper">
+                                <div className="Polaris-Label">
+                                  <label
+                                    id="endDateLabel"
+                                    htmlFor="endDate"
+                                    className="Polaris-Label__Text"
+                                  >
+                                    End date
+                                  </label>
+                                </div>
+                              </div>
+                              <DatePickerExample
+                                state1={content.selectedEndDates}
+                                onChange={(e) => {
+                                  setContent({
+                                    ...content,
+                                    selectedEndDates: e,
+                                  })
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div> : ""}
                     </>
                   ) : (
                     ''

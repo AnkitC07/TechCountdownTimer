@@ -3,12 +3,11 @@ import React, { useContext } from 'react'
 import { ProductContext } from '../../context/ProductContext'
 
 const TimerFixed = (props) => {
-    const { days, setDays,
-        hours, setHours,
-        minutes, setMinutes,
-        seconds, setSeconds, } = useContext (
-            ProductContext,
-        )
+    const [days, setDays] = React.useState(0)
+    const [hours, setHours] = React.useState(0)
+    const [minutes, setMinutes] = React.useState(0)
+    const [seconds, setSeconds] = React.useState(0)
+
 
 
     let start = Date.parse(props.start)

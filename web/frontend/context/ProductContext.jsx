@@ -100,7 +100,7 @@ export const ProductProvider = (props) => {
         setDesign,
         placement,
         setPlacement,
-        ispublished,
+        ispublished, setIspublished,
         Html, setHtml,
       }}
     >

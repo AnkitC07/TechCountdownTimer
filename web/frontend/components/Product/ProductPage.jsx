@@ -39,7 +39,7 @@ export const ProductPage = () => {
   console.log(getShopName())
   const handelPublish = async () => {
     const body = {
-      type: 'ProductPage',
+      type: 'Product Page',
       content: content,
       design: design,
       placement: placement,

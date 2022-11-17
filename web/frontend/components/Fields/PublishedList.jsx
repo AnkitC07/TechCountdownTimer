@@ -4,6 +4,21 @@ import BadgeCustom from './BadgeCustom';
 
 function PublishedList({ item }) {
     console.log(item[0].Type, "checking")
+    const switchFn = (item) => {
+
+        switch (item) {
+            case 'Product Page':
+                return '/ProductPage'
+            case 'Top/Bottom Page':
+                return '/Top_BottomPage'
+            case 'Landing Page':
+                return '/LandingPage'
+            // case 'Product Page':
+            //     return '/ProductPage'
+            // default:
+            //     break;
+        }
+    }
     return (
 
         <Card>
@@ -13,16 +28,18 @@ function PublishedList({ item }) {
                 renderItem={(item) => {
                     // const { id, url, name, location } = item;
                     // const media = <Avatar customer size="medium" name={name} />;
-
+                    const page = switchFn(item.Type)
+                    console.log(page, "page")
                     return (
                         <ResourceItem
                             id={item._id}
-                        // url={url}
+                            url={`${page}?id=${item._id}`}
                         // accessibilityLabel={`View details for ${name}`}
                         >
                             <Stack distribution="fillEvenly">
-                                <h1>
+                                <h1 style={{ fontWeight: 'bold' }}>
                                     {item.Content.productTimer}
+                                    {item.Content.timerName}
                                 </h1>
                                 <div className=" dwxbiy">
                                     <div>
@@ -32,7 +49,7 @@ function PublishedList({ item }) {
                                         2 min
                                     </div>
                                     <div>
-                                        
+
                                         {item.IsPublished ?
                                             <BadgeCustom status={'success'} text={'Published'} />
                                             :
@@ -46,7 +63,7 @@ function PublishedList({ item }) {
                     );
                 }}
             />
-        </Card>
+        </Card >
     );
 }
 export default PublishedList

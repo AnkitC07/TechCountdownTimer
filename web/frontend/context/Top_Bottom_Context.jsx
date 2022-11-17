@@ -1,9 +1,11 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 
 export const TopBottomContext = createContext()
 export const TopBottomProvider = (props) => {
+
   let date = new Date()
   date.setDate(date.getDate() + 1)
+
 
   const [content, setContent] = useState({
     timerName: 'Timer name',
@@ -80,9 +82,9 @@ export const TopBottomProvider = (props) => {
     specProduct: [],
     specCollection: [],
   })
-  const [Html, setHtml] = useState({
-    html: '',
-  })
+  const [Html, setHtml] = useState('')
+  const [ispublished, setIspublished] = useState(false)
+
   return (
     <TopBottomContext.Provider
       value={{
@@ -92,6 +94,7 @@ export const TopBottomProvider = (props) => {
         setDesign,
         placement,
         setPlacement,
+        ispublished, setIspublished,
         Html, setHtml
       }}
     >

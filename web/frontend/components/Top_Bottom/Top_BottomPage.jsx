@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { TopBottomContext } from '../../context/Top_Bottom_Context'
+import { useAuthenticatedFetch } from '../../hooks'
 import { TimerNav } from '../TimerNav'
 
 const Top_BottomPage = () => {
-  const { content, design, placement } = useContext(TopBottomContext)
+  const {
+    content,
+    setContent,
+    design,
+    setDesign,
+    placement,
+    setPlacement,
+    ispublished, setIspublished,
+    Html, setHtml
+  } = useContext(TopBottomContext)
+  const fetch = useAuthenticatedFetch()
   const navData_top = [
     {
       title: 'Content',
@@ -21,10 +32,98 @@ const Top_BottomPage = () => {
       path: 'Placement_top',
     },
   ]
+  // const [ID, setID] = useState('')
+  console.log('original Content', typeof content.startDate.start)
+  // setID((state) =>
+  //   id == null ? state : id
+  // )
+  // const id = window.location.href.split('id=')[1]
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const id = urlParams.get("id");
+
+
+  const update = () => {
+
+
+  }
+
+  useEffect(() => {
+
+    const getDataById = async () => {
+      const res = await fetch('/api/getDataById', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+      })
+      const data = await res.json()
+      console.log('response', data.data.Content)
+      console.log('updated Content', new Date(data.data.Content.startDate.start).getMonth())
+      setContent(data.data.Content)
+
+
+      setContent(() => {
+        return {
+          ...data.data.Content,
+          startDate: {
+            ...content.startDate,
+            start: new Date(data.data.Content.startDate.start),
+          },
+        }
+      })
+      setContent(() => {
+        return {
+          ...data.data.Content,
+          startDate: {
+            ...content.startDate,
+            end: new Date(data.data.Content.startDate.end),
+          },
+        }
+      })
+      setContent(() => {
+        return {
+          ...data.data.Content,
+          endDate: {
+            ...content.endDate,
+            start: new Date(data.data.Content.endDate.start),
+          },
+        }
+      })
+      setContent(() => {
+        return {
+          ...data.data.Content,
+          endDate: {
+            ...content.endDate,
+            end: new Date(data.data.Content.endDate.end),
+          },
+        }
+      })
+      setDesign(data.data.Design)
+      setPlacement(data.data.Placement)
+      setHtml(data.data.Html)
+      setIspublished(data.data.IsPublished)
+
+    }
+    getDataById()
+  }, [])
+
   const handelPublish = async () => {
-    const body = { content: content, design: design, placement: placement }
-    console.log(body)
-    const res = await fetch('/submitTopBottom', {
+    const getShopName = () => {
+      return window.location.ancestorOrigins[0].replaceAll("https://", "");
+    };
+    const body = {
+      type: 'Top/Bottom Page',
+      content: content,
+      design: design,
+      placement: placement,
+      Html: Html,
+      ispublished: ispublished,
+      store: getShopName()
+    }
+    const res = await fetch('/api/submitTopBottom', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -34,6 +133,9 @@ const Top_BottomPage = () => {
     const data = await res.json()
     console.log('response', data)
   }
+
+
+
   return (
     <section className="product_main_page">
       <div className="container-fluid">
@@ -78,7 +180,11 @@ const Top_BottomPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="Polaris-Header-Title__SubTitle"><p>Timer ID: Save or Publish to show timer ID</p></div>
+                  <div class="Polaris-Header-Title__SubTitle">
+                    <p>
+                      Timer ID: <span>  {id ? `${id}` : 'Save or Publish to show timer ID'}</span>
+                    </p>
+                  </div>
 
                 </div>
                 <div class="Polaris-Page-Header__RightAlign">

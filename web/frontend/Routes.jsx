@@ -55,7 +55,7 @@ export default function Routes({ pages }) {
         <Route path="Placement" element={<Placement />} />
       </Route>
       <Route path="/Top_BottomPage" element={<Top_BottomPage />}>
-        <Route path="" element={<Content_top />} />
+        <Route index element={<Content_top />} />
         <Route path="Design_top" element={<Design_top />} />
         <Route path="Placement_top" element={<Placement_top />} />
       </Route>

@@ -19,7 +19,7 @@ function Placement() {
   let height;
   document.addEventListener('scroll', () => {
     height = window.scrollY
-    console.log(height)
+    // console.log(height)
     //   if (height >= '30') {
     //     document.getElementById('top-change').classList.remove('top-change')
     //     document.getElementById('preview').classList.add('extra-margin')
