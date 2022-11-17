@@ -62,45 +62,45 @@ const Top_BottomPage = () => {
       const data = await res.json()
       console.log('response', data.data.Content)
       console.log('updated Content', new Date(data.data.Content.startDate.start).getMonth())
-      setContent(data.data.Content)
+      // setContent(data.data.Content)
 
 
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          startDate: {
-            ...content.startDate,
-            start: new Date(data.data.Content.startDate.start),
-          },
-        }
-      })
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          startDate: {
-            ...content.startDate,
-            end: new Date(data.data.Content.startDate.end),
-          },
-        }
-      })
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          endDate: {
-            ...content.endDate,
-            start: new Date(data.data.Content.endDate.start),
-          },
-        }
-      })
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          endDate: {
-            ...content.endDate,
-            end: new Date(data.data.Content.endDate.end),
-          },
-        }
-      })
+      // setContent(() => {
+      //   return {
+      //     ...data.data.Content,
+      //     startDate: {
+      //       ...content.startDate,
+      //       start: new Date(data.data.Content.startDate.start),
+      //     },
+      //   }
+      // })
+      // setContent(() => {
+      //   return {
+      //     ...data.data.Content,
+      //     startDate: {
+      //       ...content.startDate,
+      //       end: new Date(data.data.Content.startDate.end),
+      //     },
+      //   }
+      // })
+      // setContent(() => {
+      //   return {
+      //     ...data.data.Content,
+      //     endDate: {
+      //       ...content.endDate,
+      //       start: new Date(data.data.Content.endDate.start),
+      //     },
+      //   }
+      // })
+      // setContent(() => {
+      //   return {
+      //     ...data.data.Content,
+      //     endDate: {
+      //       ...content.endDate,
+      //       end: new Date(data.data.Content.endDate.end),
+      //     },
+      //   }
+      // })
       setDesign(data.data.Design)
       setPlacement(data.data.Placement)
       setHtml(data.data.Html)
