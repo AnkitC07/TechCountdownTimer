@@ -16,9 +16,7 @@ const ProductPagSchema = new mongoose.Schema({
    Html: {
       type: String,
    },
-   IsPublished:{
-    type:Boolean
-   },
+   IsPublished:String,
   Store:{
     type:String
   }

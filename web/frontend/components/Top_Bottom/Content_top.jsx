@@ -18,7 +18,7 @@ function Content() {
 
 
   // const [height, setHeight] = useState()
-  console.log(content, 'content')
+  // console.log(content, 'content')
 
 
 

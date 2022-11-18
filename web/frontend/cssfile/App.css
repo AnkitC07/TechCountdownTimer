@@ -400,4 +400,8 @@ div#accordion .card {
   grid-template-columns: 130px 200px 130px;
   column-gap: 10px;
   text-align: right;
-} 
+}
+
+.Polaris-Frame {
+  min-height: 0px !important;
+}

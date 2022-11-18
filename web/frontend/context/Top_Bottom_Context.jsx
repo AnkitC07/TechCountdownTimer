@@ -6,7 +6,7 @@ export const TopBottomProvider = (props) => {
   let date = new Date()
   date.setDate(date.getDate() + 1)
 
-
+  const [ID, setID] = useState('')
   const [content, setContent] = useState({
     timerName: 'Timer name',
     title: 'Hurry up! Sale ends in: ',
@@ -88,6 +88,7 @@ export const TopBottomProvider = (props) => {
   return (
     <TopBottomContext.Provider
       value={{
+        ID, setID,
         content,
         setContent,
         design,

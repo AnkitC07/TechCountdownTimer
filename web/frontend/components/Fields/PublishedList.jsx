@@ -50,7 +50,7 @@ function PublishedList({ item }) {
                                     </div>
                                     <div>
 
-                                        {item.IsPublished ?
+                                        {item.IsPublished == 'published' ?
                                             <BadgeCustom status={'success'} text={'Published'} />
                                             :
                                             <BadgeCustom status={''} text={'Not Published'} />
