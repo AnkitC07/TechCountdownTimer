@@ -4,7 +4,7 @@ import Routes from './Routes'
 
 import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
 import { ProductProvider } from './context/ProductContext'
-import { TopBottomProvider } from './context/Top_Bottom_Context'
+import { TopBottomContext, TopBottomProvider } from './context/Top_Bottom_Context'
 import { LandingProvider } from './context/LandingContext'
 import { CartPageProvider } from './context/CartPageContext'
 // import Homepage from './components/HomePage'
@@ -28,11 +28,15 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)')
 
+  const { current: myContext } = React.useRef({
+    ...TopBottomContext,
+  });
+
   return (
     <PolarisProvider>
       <BrowserRouter>
         <ProductProvider>
-          <TopBottomProvider>
+          <TopBottomProvider value={myContext} >
             <LandingProvider>
               <CartPageProvider>
                 <AppBridgeProvider>

@@ -61,6 +61,7 @@ const Top_BottomPage = () => {
 	// Updating states by Id
 	useEffect(() => {
 
+		// setContent();	
 
 		const getDataById = async () => {
 			const res = await fetch('/api/getDataById', {
