@@ -1,14 +1,15 @@
 import { Button } from '@shopify/polaris'
 import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
-import { TopBottomContext } from '../../context/Top_Bottom_Context'
+import { NavLink, useParams, useNavigate } from 'react-router-dom'
+import { TopBottomContext, contentCheck, designCheck, placementCheck } from '../../context/Top_Bottom_Context'
 import { useAuthenticatedFetch } from '../../hooks'
 import ToastComp from '../layouts/ToastComp'
 import { TimerNav } from '../TimerNav'
 
 const Top_BottomPage = () => {
 	const fetch = useAuthenticatedFetch()
+	const navigate = useNavigate();
 	const {
 		ID, setID,
 		content,
@@ -23,7 +24,7 @@ const Top_BottomPage = () => {
 	const navData_top = [
 		{
 			title: 'Content',
-			path: 'Content_Top',
+			path: 'Content_top',
 			class: 'active',
 		},
 		{
@@ -48,21 +49,13 @@ const Top_BottomPage = () => {
 	const [status, setStatus] = useState('')
 	const [btnMain, setBtnMain] = useState(id == null ? true : false)
 
-
-
-
-
-	console.log('original Content', typeof content.startDate.start)
-	// const id = window.location.href.split('id=')[1]
-
-
-
-
 	// Updating states by Id
 	useEffect(() => {
-
-		// setContent();	
-
+		if (id == null) {
+			setDesign(designCheck)
+			setPlacement(placementCheck)
+			setContent(contentCheck)
+		}
 		const getDataById = async () => {
 			const res = await fetch('/api/getDataById', {
 				method: 'post',
@@ -72,11 +65,7 @@ const Top_BottomPage = () => {
 				body: JSON.stringify({ id: id }),
 			})
 			const data = await res.json()
-
-			// console.log('response', data.data.Content)
 			console.log('updated Content', new Date(data.data.Content.startDate.start).getMonth())
-
-
 			setContent(() => {
 				return {
 					...data.data.Content,
@@ -90,28 +79,42 @@ const Top_BottomPage = () => {
 					},
 				}
 			})
-
-
 			setDesign(data.data.Design)
 			setPlacement(data.data.Placement)
 			setHtml(data.data.Html)
 			setIspublished(data.data.IsPublished)
-
 		}
 		if (id !== null)
 			getDataById()
 
 		return () => {
-			console.log("distroy")
+
 			setID(null)
 		}
 	}, [])
 
 
 	// Publish/UnPlublish Button
+	const deleteBtn = async (idrec) => {
+
+
+		const deletebyid = await fetch(`/api/deleterecord?id=${idrec}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		const getResult = await deletebyid.json()
+		if (getResult.code == 200) {
+			setActive(true)
+			setMsg("Deleted")
+			setTimeout(() => {
+				navigate("/")
+			}, 1500)
+		}
+	}
 
 	const handelPublish = async (statusUpdate) => {
-
 		setBtnLoading(true)
 		const getShopName = () => {
 			return window.location.ancestorOrigins[0].replaceAll("https://", "");
@@ -277,7 +280,11 @@ const Top_BottomPage = () => {
 												{id != null ? <>
 													<div class="Polaris-ButtonGroup__Item">
 														<span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button">
+															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+																onClick={() => {
+																	deleteBtn(id)
+																}}
+															>
 																<span class="Polaris-Button__Content">
 																	<span class="Polaris-Button__Text">Delete</span>
 																</span>

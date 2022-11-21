@@ -16,7 +16,7 @@ import PublishedList from './Fields/PublishedList'
 import { AppFooter } from './layouts/AppFooter'
 import { CheckBoxRef } from './layouts/CheckBoxRef'
 import CheckHead from './layouts/CheckHead'
-
+import {getShopName} from '../components/common_functions/functions.js'
 // import trophyImgUrl from "../assets/home-trophy.png";
 
 // import { ProductsCard } from "./ProductsCard";
@@ -30,11 +30,11 @@ export default function Homepage() {
     const handelPublish = async () => {
 
       const res = await fetch('/api/getAllTimer', {
-        method: 'post',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: JSON.stringify(body),
+        body: JSON.stringify({shop:getShopName()}),
       })
       const data = await res.json()
       console.log('response', data)

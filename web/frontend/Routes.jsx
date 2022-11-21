@@ -1,4 +1,4 @@
-import { Routes as ReactRouterRoutes, Route } from 'react-router-dom'
+import { Routes as ReactRouterRoutes, Route, Navigate } from 'react-router-dom'
 import Homepage from './components/HomePage'
 
 import { TimerType } from './components/TimerType/TimerType'
@@ -54,9 +54,10 @@ export default function Routes({ pages }) {
         <Route path="Design" element={<Design />} />
         <Route path="Placement" element={<Placement />} />
       </Route>
-      <Route path="/Top_BottomPage" element={<Top_BottomPage />}>
+      <Route path="/Top_BottomPage/*" element={<Top_BottomPage />}>
         <Route index element={<Content_top />} />
-        <Route path='Content_Top' element={<Content_top />} />
+        {/* <Route index element={<Navigate to="Content_top" replace />} /> */}
+        <Route path="Content_top" element={<Content_top />} />
         <Route path="Design_top" element={<Design_top />} />
         <Route path="Placement_top" element={<Placement_top />} />
       </Route>

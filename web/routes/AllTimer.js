@@ -1,18 +1,18 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import Product from '../model/Product.js'
+
 const AllTimer = express.Router()
 
 AllTimer.post('/getAllTimer', async (req, res) => {
 
-
  let data;
 
-  await Product.find({})
+  await Product.find({Store:req.body.shop})
     .then((item) => {
       // res.send('Name saved to database')
-      console.log('get')
-      console.log(item, 'item')
+      // console.log('get')
+      // console.log(item, 'item')
       data=item
     })
     .catch((err) => {
