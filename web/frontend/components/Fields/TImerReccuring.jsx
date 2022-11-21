@@ -2,16 +2,15 @@ import React, { useContext } from 'react'
 
 import { ProductContext } from '../../context/ProductContext'
 
-const TimerFixed = (props) => {
+const TImerReccuring = (props) => {
     const [days, setDays] = React.useState(0)
     const [hours, setHours] = React.useState(0)
     const [minutes, setMinutes] = React.useState(0)
     const [seconds, setSeconds] = React.useState(0)
 
 
-
-    let start = Date.parse(props.start)
-    let deadline = start + props.mnt * 60000
+    let start = props.starthrs * 60 * 60000 + props.startmnt * 60000
+    let deadline = props.endhrs * 60 * 60000 + props.endmnt * 60000
 
     // console.log(props.start)
     const getTime = () => {
@@ -56,4 +55,4 @@ const TimerFixed = (props) => {
     )
 }
 
-export default TimerFixed
+export default TImerReccuring

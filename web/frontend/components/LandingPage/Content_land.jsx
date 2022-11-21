@@ -10,8 +10,19 @@ import { LandingContext } from '../../context/LandingContext'
 import TImer from '../TImer'
 import CheckboxExample from '../Fields/CheckBoxSqaure'
 import TimerBadge_land from './TimerBadge_land'
+import { useRef } from 'react'
 const Content_land = () => {
-  const { design, content, setContent } = useContext(LandingContext)
+  const { design, content, setContent, setHtml } = useContext(LandingContext)
+
+  const ref = useRef()
+  // console.log(ref.current.innerHTML)
+  setTimeout(() => {
+    setHtml(ref.current.innerHTML)
+
+  }, 100);
+
+
+
 
   const myoption = [
     {
@@ -359,7 +370,7 @@ const Content_land = () => {
                             // console.log(content.timerStart)
                           }}
                         />
-                       
+
                         <div className="Polaris-FormLayout__Item">
                           <div>
                             <div className="">
@@ -1113,7 +1124,7 @@ const Content_land = () => {
             </div>
           </div>
         </div>
-        <div className="col col-md-8" id="preview">
+        <div className="col col-md-8" id="preview" ref={ref}>
 
           <TimerBadge_land design={design} content={content} />
         </div>

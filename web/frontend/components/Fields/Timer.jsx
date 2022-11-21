@@ -6,12 +6,11 @@ import parser from 'html-react-parser'
 import { ProductContext } from '../../context/ProductContext'
 
 const Timer = (props) => {
-    const { days, setDays,
-        hours, setHours,
-        minutes, setMinutes,
-        seconds, setSeconds, } = useContext(
-            ProductContext,
-        )
+    const [days, setDays] = React.useState(0)
+    const [hours, setHours] = React.useState(0)
+    const [minutes, setMinutes] = React.useState(0)
+    const [seconds, setSeconds] = React.useState(0)
+
     const [timerTextVal, timerState] = useState()
 
     let defaultStart = props.start
@@ -60,8 +59,9 @@ const Timer = (props) => {
             time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${min} : ${sec}</span>`
         }
         // console.log(time)
+
         value = parser(`${value.replace("{timer}", time)}`)
-        // console.log(value)
+        // console.log("parsing", value)
         return value
     }
 

@@ -32,7 +32,7 @@ export default function DatePickerExample(props) {
     return (
       <div onClick={togglePopover}>
         <InputComponent
-          onChange={null}
+          onChange={() => { }}
           default={String(props.state1.end).substring(4, 15)}
         />
       </div>

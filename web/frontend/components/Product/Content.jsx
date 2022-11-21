@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import InputComponent from '../Fields/InputComponent'
 import DateInput from '../Fields/DateInput'
@@ -14,7 +14,14 @@ import { useEffect } from 'react'
 import Timerbadge from './Timerbadge'
 
 function Content() {
-  const { design, content, setContent } = useContext(ProductContext)
+  const { design, content, setContent, Html, setHtml } = useContext(ProductContext)
+
+  const ref = useRef()
+  // console.log(ref.current.innerHTML)
+  setTimeout(() => {
+    setHtml(ref.current.innerHTML)
+
+  }, 100);
 
   // const [showDate, setShowDate] = useState('')
   // useEffect(() => {}, [content])
@@ -32,7 +39,7 @@ function Content() {
       value: 'Do nothing',
     },
   ]
-  console.log("Timer Type", content.timerType)
+  // console.log("Timer Type", content.timerType)
   const CheckDates = () => { }
   return (
     <>
@@ -881,6 +888,33 @@ function Content() {
                           setContent({ ...content, starts: e.target.value })
                         }}
                       />
+                      {content.starts == "startSpcf" ?
+                        <div className="Polaris-FormLayout__Item">
+                          <div>
+                            <div className="">
+                              <div className="Polaris-Labelled__LabelWrapper">
+                                <div className="Polaris-Label">
+                                  <label
+                                    id="startDateLabel"
+                                    htmlFor="startDate"
+                                    className="Polaris-Label__Text"
+                                  >
+                                    Start date
+                                  </label>
+                                </div>
+                              </div>
+                              <DatePickerExample
+                                state1={content.selectedDates}
+                                onChange={(e) => {
+                                  setContent({
+                                    ...content,
+                                    selectedDates: e,
+                                  })
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div> : ""}
                       <div className="Polaris-FormLayout__Item">
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -912,6 +946,33 @@ function Content() {
                           // console.log(content.timerStart)
                         }}
                       />
+                      {content.ends == "endSpcf" ?
+                        <div className="Polaris-FormLayout__Item">
+                          <div>
+                            <div className="">
+                              <div className="Polaris-Labelled__LabelWrapper">
+                                <div className="Polaris-Label">
+                                  <label
+                                    id="endDateLabel"
+                                    htmlFor="endDate"
+                                    className="Polaris-Label__Text"
+                                  >
+                                    End date
+                                  </label>
+                                </div>
+                              </div>
+                              <DatePickerExample
+                                state1={content.selectedEndDates}
+                                onChange={(e) => {
+                                  setContent({
+                                    ...content,
+                                    selectedEndDates: e,
+                                  })
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div> : ""}
                     </>
                   ) : (
                     ''
@@ -965,9 +1026,11 @@ function Content() {
           </div>
         </div>
 
-        <div className="col col-md-5">
+        <div className="col col-md-5" id='productTimer' ref={ref}>
           <div
+
             // className="product-page-wrapper"
+
             style={{ position: 'sticky', top: '20px' }}
           >
             <Timerbadge design={design} content={content} />

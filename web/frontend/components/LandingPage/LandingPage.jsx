@@ -1,10 +1,19 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { LandingContext } from '../../context/LandingContext'
+import { useAuthenticatedFetch } from '../../hooks'
 import { TimerNav } from '../TimerNav'
 
 const LandingPage = () => {
-  const { content, design, placement } = useContext(LandingContext)
+  const { content,
+    setContent,
+    design,
+    setDesign,
+    placement,
+    setPlacement,
+    ispublished, setIspublished,
+    Html, setHtml
+  } = useContext(LandingContext)
 
   const navData_land = [
     {
@@ -21,13 +30,47 @@ const LandingPage = () => {
       path: 'Placement_land',
     },
   ]
+  const fetch = useAuthenticatedFetch()
+
+
+  // const id = window.location.href.split('id=')[1]
+  // useEffect(() => {
+
+  //     const getDataById = async () => {
+  //       const res = await fetch('/api/getDataById', {
+  //         method: 'post',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ id: id }),
+  //       })
+  //       const data = await res.json()
+  //       console.log('response', data.data.Content)
+  //       // setContent(data.data.Content)
+  //       setDesign(data.data.Design)
+  //       setPlacement(data.data.Placement)
+  //       setHtml(data.data.Html)
+  //       setIspublished(data.data.IsPublished)
+
+  //     }
+  //     getDataById()
+  //   }, [])
+
   const handelPublish = async () => {
-    // console.log('Content-', content)
-    // console.log('Design-', design)
-    // console.log('Placement-', placement)
-    const body = { content: content, design: design, placement: placement }
-    console.log(body)
-    const res = await fetch('/submitLanding', {
+    setIspublished(true)
+    const getShopName = () => {
+      return window.location.ancestorOrigins[0].replaceAll("https://", "");
+    };
+    const body = {
+      type: 'Landing Page',
+      content: content,
+      design: design,
+      placement: placement,
+      Html: Html,
+      ispublished: ispublished,
+      store: getShopName()
+    }
+    const res = await fetch('/api/submitLanding', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

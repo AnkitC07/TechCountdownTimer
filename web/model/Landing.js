@@ -21,9 +21,6 @@ const LandingPagSchema = new mongoose.Schema({
     link: {
       type: String,
     },
-    closeIcon: {
-      type: Boolean,
-    },
     days: {
       type: String,
     },
@@ -39,6 +36,21 @@ const LandingPagSchema = new mongoose.Schema({
     timerType: {
       type: String,
     },
+    fixedTime: String,
+     RepeatOn: {
+      monday: Boolean,
+      tuesday: Boolean,
+      wednesday: Boolean,
+      thursday: Boolean,
+      friday: Boolean,
+      saturday: Boolean,
+      sunday: Boolean,
+    },
+    dailyStartHrs: String,
+    dailyStartMnt: String,
+    dailyEndHrs: String,
+    dailyEndMnt: String,
+    timerStart: String,
     startDate: {
       start: {
         type: String,
@@ -67,6 +79,8 @@ const LandingPagSchema = new mongoose.Schema({
     endMnt: {
       type: String,
     },
+    starts: String,
+    ends: String,
     onceItEnd: {
       type: String,
     },
@@ -160,6 +174,11 @@ const LandingPagSchema = new mongoose.Schema({
       type: String,
     },
   },
+  Html: {
+    html: {
+      type: String,
+    },
+   }
 })
 
 export default mongoose.model('Landing', LandingPagSchema)

@@ -39,6 +39,21 @@ const TopBottomPagSchema = new mongoose.Schema({
     timerType: {
       type: String,
     },
+    fixedTime: String,
+     RepeatOn: {
+      monday: Boolean,
+      tuesday: Boolean,
+      wednesday: Boolean,
+      thursday: Boolean,
+      friday: Boolean,
+      saturday: Boolean,
+      sunday: Boolean,
+    },
+    dailyStartHrs: String,
+    dailyStartMnt: String,
+    dailyEndHrs: String,
+    dailyEndMnt: String,
+    timerStart: String,
     startDate: {
       start: {
         type: String,
@@ -67,6 +82,8 @@ const TopBottomPagSchema = new mongoose.Schema({
     endMnt: {
       type: String,
     },
+    starts: String,
+    ends: String,
     onceItEnd: {
       type: String,
     },
@@ -159,6 +176,11 @@ const TopBottomPagSchema = new mongoose.Schema({
       type: [String],
     },
   },
+  Html: {
+    html: {
+      type: String,
+    },
+   }
 })
 
 export default mongoose.model('TopBottom', TopBottomPagSchema)

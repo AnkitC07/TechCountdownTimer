@@ -1,5 +1,6 @@
 import React from 'react'
 import TimerFixed from '../Fields/TimerFixed'
+import TImerReccuring from '../Fields/TImerReccuring'
 import TImer from '../TImer'
 
 const TimerBagde_Top = ({ design, content }) => {
@@ -310,8 +311,15 @@ const TimerBagde_Top = ({ design, content }) => {
                   {content.timerType == 'fixed'
                     ?
                     <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
-                    :
-                    <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                    : content.timerType == 'toDate'
+                      ?
+                      <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
+                      :
+                      content.timerType == 'recurring'
+                        ?
+                        <TImerReccuring starthrs={content.dailyStartHrs} startmnt={content.dailyStartMnt} endhrs={content.dailyEndHrs} endmnt={content.dailyEndMnt} design={design} />
+                        :
+                        ''
                   }
 
                 </div>

@@ -4,7 +4,7 @@ main().catch((err) => console.log(err))
 
 async function main() {
   const db = await mongoose
-    .connect('mongodb://localhost:27017/CountDownTimer')
+    .connect('mongodb://cancodeCountdownTimer:db_CountdownTimer_@3.136.75.195:27017/countdowntimer')
     .then(() => {
       console.log('MongoDB Connected...')
     })

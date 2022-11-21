@@ -4,7 +4,7 @@ import { CartPageContext } from '../../context/CartPageContext'
 import { TimerNav } from '../TimerNav'
 
 const CartPage = () => {
-  const { content, design, placement } = useContext(CartPageContext)
+  const { content, design, placement, Html } = useContext(CartPageContext)
 
   const navData_land = [
     {
@@ -25,9 +25,9 @@ const CartPage = () => {
     // console.log('Content-', content)
     // console.log('Design-', design)
     // console.log('Placement-', placement)
-    const body = { content: content, design: design, placement: placement }
+    const body = { content: content, design: design, placement: placement, Html:Html }
     console.log(body)
-    const res = await fetch('/submitLanding', {
+    const res = await fetch('/submitCart', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

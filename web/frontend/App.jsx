@@ -4,7 +4,7 @@ import Routes from './Routes'
 
 import { AppBridgeProvider, QueryProvider, PolarisProvider } from './components'
 import { ProductProvider } from './context/ProductContext'
-import { TopBottomProvider } from './context/Top_Bottom_Context'
+import { TopBottomContext, TopBottomProvider } from './context/Top_Bottom_Context'
 import { LandingProvider } from './context/LandingContext'
 import { CartPageProvider } from './context/CartPageContext'
 // import Homepage from './components/HomePage'
@@ -23,6 +23,7 @@ import { CartPageProvider } from './context/CartPageContext'
 // import Design_land from './components/LandingPage/Design_land'
 // import Placement_land from './components/LandingPage/Placement_land'
 
+
 export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
@@ -32,7 +33,7 @@ export default function App() {
     <PolarisProvider>
       <BrowserRouter>
         <ProductProvider>
-          <TopBottomProvider>
+          <TopBottomProvider >
             <LandingProvider>
               <CartPageProvider>
                 <AppBridgeProvider>

@@ -1,52 +1,77 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import Product from '../model/Product.js'
 mongoose.Promise = global.Promise
 import TopBottom from '../model/TopBotom.js'
 
 const TopBottomRouter = express.Router()
 
-TopBottomRouter.post('/', async (req, res) => {
-  // console.log('body', req.body)
+TopBottomRouter.post('/submitTopBottom', async (req, res) => {
+  const status = req.query.status
+  const id = req.query.id
   const body = req.body
-  console.log('Body:', body)
-
-  // await Landing.create({ name: 'Axl Rose' })
-  // body.content.save()
-
-  // await TopBottom.create({
-  //   Content: body.content,
-  //   Design: body.design,
-  //   Placement: body.Placement,
-  // })
-  //   .then((item) => {
-  //     // res.send('Name saved to database')
-  //     console.log('saved')
-  //     console.log(item, 'item')
-  //   })
-  //   .catch((err) => {
-  //     // res.status(400).send('Unable to save to database')
-  //     console.log(err)
-  //   })
-
-  // * Create new Collection & Document if not present and update the document too. * //
-
-  var query = { Content: Object, Design: Object, Placement: Object },
-    update = {
+  let tempData;
+  console.log(req.query)
+  console.log(id)
+  const sendStatus = req.query.status == "save" || req.query.status == "Duplicate"?req.query.status:body.ispublished
+console.log()
+ if(id == 'null' ||  id == "" || req.query.status == "Duplicate"){
+  console.log("create")
+    await Product.create({
+      Type:body.type,
       Content: body.content,
       Design: body.design,
       Placement: body.placement,
-    },
-    options = { upsert: true, new: true, setDefaultsOnInsert: true }
+      Html: body.Html,
+      IsPublished: body.ispublished,
+      Store: body.store
+    })
+      .then((item) => {
+			tempData = item
+      })
+      .catch((err) => {
+		// console.log(err)
+	    res.status(400).send('Unable to save to database')
+    
+      })
+      res.status(200).json({ status: sendStatus, id:tempData._id }) 
+return
+   }
+   else {
+    console.log("update")
+    console.log(sendStatus)
+       Product.findByIdAndUpdate({_id:id},
+			{
+				Type:body.type,
+				Content: body.content,
+				Design: body.design,
+				Placement: body.placement,
+				Html: body.Html,
+				IsPublished: body.ispublished,
+				Store: body.store
+				},
+			{new: true}, function(err, result){
+      if (err) return          
+      		res.status(200).json({ status: sendStatus, id:result._id }) 
+        })
+return
+   }
+  res.status(200).json({ status: 'Not-ok' })
+})
 
-  // Find the document
-  TopBottom.findOneAndUpdate(query, update, options, function (error, result) {
-    if (error) return
-    console.log('Result: ', result)
-    // do something with the document
-  })
 
-  // console.log(response)
-  res.status(200).json({ status: 'ok' })
+TopBottomRouter.delete("/deleterecord", async (req,res)=>{
+  const id = req.query.id
+  console.log("delete id",id)
+  Product.findByIdAndDelete({_id:id},function(err, obj) {
+    if (err){
+      console.log(err)
+      res.status(200).json({code:400,error:err})  
+    }
+    console.log(obj,"deleted")
+    res.status(200).json({code:200,messgae:"deleted"})
+  }) 
 })
 
 export default TopBottomRouter
+
