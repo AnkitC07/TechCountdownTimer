@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import InputComponent from '../Fields/InputComponent'
 import DateInput from '../Fields/DateInput'
@@ -43,6 +43,10 @@ function Content() {
 
   }, 100);
 
+  useEffect(()=>{
+    console.log("checking")
+    document.querySelector("#Content a").click()
+  },[])
 
   const myoption = [
     {
