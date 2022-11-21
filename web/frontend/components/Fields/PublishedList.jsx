@@ -10,7 +10,7 @@ function PublishedList({ item }) {
             case 'Product Page':
                 return '/ProductPage'
             case 'Top/Bottom Page':
-                return '/Top_BottomPage'
+                return '/Top_BottomPage/Content_top'
             case 'Landing Page':
                 return '/LandingPage'
             // case 'Product Page':

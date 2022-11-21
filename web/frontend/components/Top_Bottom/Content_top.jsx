@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import InputComponent from '../Fields/InputComponent'
 import DateInput from '../Fields/DateInput'
@@ -42,6 +42,11 @@ function Content() {
     setHtml(ref.current.innerHTML)
 
   }, 100);
+
+  // useEffect(() => {
+  //   document.getElementById("#Content").click()
+
+  // }, [])
 
 
   const myoption = [
