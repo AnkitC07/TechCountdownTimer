@@ -43,10 +43,11 @@ function Content() {
 
   }, 100);
 
-  useEffect(()=>{
-    console.log("checking")
+  useEffect(() => {
     document.querySelector("#Content a").click()
-  },[])
+
+  }, [])
+
 
   const myoption = [
     {
