@@ -96,9 +96,11 @@ export const ProductPage = () => {
       type:statusUpdate,
       status:true
     })
+
 		const getShopName = () => {
 			return window.location.ancestorOrigins[0].replaceAll("https://", "");
 		};
+
 		const body = {
 			type: 'Product Page',
 			content: content,
@@ -108,8 +110,6 @@ export const ProductPage = () => {
 			ispublished: statusUpdate == "save"?ispublished:statusUpdate,
 			store: getShopName()
 		}
-
-    console.log(body.content.productTimer,"Title")
 
 		if(statusUpdate == "Duplicate"){
 			body.content.productTimer = `${content.productTimer} Duplicate`
@@ -123,11 +123,7 @@ export const ProductPage = () => {
 			body: JSON.stringify(body),
 		})
 		const data = await res.json()
-    console.log("--------------------------")
-		console.log(data.status)
-    console.log("--------------------------")
 		if (data) {
-      
 			setBtnLoading({
         type:statusUpdate,
         status:false
@@ -148,7 +144,7 @@ export const ProductPage = () => {
 			}
 			setActive(true);
 		}
-		setStatus(data.status)
+		// setStatus(data.status)
 	}
 
 
