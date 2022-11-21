@@ -28,15 +28,12 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)')
 
-  const { current: myContext } = React.useRef({
-    ...TopBottomContext,
-  });
 
   return (
     <PolarisProvider>
       <BrowserRouter>
         <ProductProvider>
-          <TopBottomProvider value={myContext} >
+          <TopBottomProvider >
             <LandingProvider>
               <CartPageProvider>
                 <AppBridgeProvider>

@@ -12,7 +12,7 @@ export const TimerNav = ({ nav }) => {
       <ul className="countdown" id="navBar">
         {nav.map((x) => {
           // console.log(nav)
-          let idtype = id == null ? x.path : `${x.path}`
+          let idtype = id == null ? x.path : `${x.path}?${id}`
           // console.log(idtype)
           return (
             <li key={x.path} id={x.title} className="countdown_tab">

@@ -23,7 +23,7 @@ const Top_BottomPage = () => {
 	const navData_top = [
 		{
 			title: 'Content',
-			path: '',
+			path: 'Content_Top',
 			class: 'active',
 		},
 		{
