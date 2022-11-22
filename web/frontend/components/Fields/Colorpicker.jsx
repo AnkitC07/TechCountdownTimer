@@ -8,7 +8,7 @@ import {
 } from '@shopify/polaris'
 import { useState } from 'react'
 // import { hexToRgb } from '@shopify/polaris/build/ts/latest/src/utilities/color-transformers'
-import hexRgb from 'hex-rgb'
+// import hexRgb from 'hex-rgb'
 
 const Colorpicker = (props) => {
   const [color, setColor] = useState({
@@ -55,13 +55,14 @@ const Colorpicker = (props) => {
         <Popover.Section>
           <ColorPicker
             onChange={props.onChange}
-            color={rgbToHsb(
-              hexRgb(
-                props.state1.length <= 6 || props.state1.length > 7
-                  ? '#000000'
-                  : props.state1,
-              ),
-            )}
+            color={props.state1}
+            // color={rgbToHsb(
+            //   hexRgb(
+            //     props.state1.length <= 6 || props.state1.length > 7
+            //       ? '#000000'
+            //       : props.state1,
+            //   ),
+            // )}
           />
         </Popover.Section>
       </Popover>

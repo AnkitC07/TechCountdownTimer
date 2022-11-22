@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
-import parser from 'html-react-parser'
+// import parser from 'html-react-parser'
 import { ProductContext } from '../../context/ProductContext'
 
 const Timer = (props) => {
@@ -60,7 +60,7 @@ const Timer = (props) => {
         }
         // console.log(time)
 
-        value = parser(`${value.replace("{timer}", time)}`)
+        value = value.replace("{timer}", time)
         // console.log("parsing", value)
         return value
     }
