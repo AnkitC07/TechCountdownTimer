@@ -5,7 +5,7 @@ export const TimerNav = ({ nav }) => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get("id");
-  console.log(id, "nav links ")
+  // console.log(id, "nav links ")
 
   return (
     <div className={`countdown_box ${Pagecss.box}`}>

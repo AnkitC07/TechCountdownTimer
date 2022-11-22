@@ -1,9 +1,10 @@
 import { Button } from '@shopify/polaris'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useCallback } from 'react'
 import { useContext } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import { TopBottomContext, contentCheck, designCheck, placementCheck } from '../../context/Top_Bottom_Context'
 import { useAuthenticatedFetch } from '../../hooks'
+import CustomModal from '../layouts/Modal'
 import ToastComp from '../layouts/ToastComp'
 import { TimerNav } from '../TimerNav'
 
@@ -42,17 +43,25 @@ const Top_BottomPage = () => {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const id = urlParams.get("id");
-	console.log('ID', ID)
+	
+	const [modal,modalState] = useState({
+		status:false,
+		title:"",
+		content:"",
+		primary:[]
+	})
+
 	const [active, setActive] = useState(false);
 	const [msg, setMsg] = useState('');
 	const [btnLoading, setBtnLoading] = useState({
 		type:"",
 		status:false
 	  })
+
+	const [modalbtnloading,loadingModalbtn] = useState(false)
 	const [status, setStatus] = useState('')
 	const [btnMain, setBtnMain] = useState(id == null ? true : false)
 
-	// Updating states by Id
 	useEffect(() => {
 		if (id == null) {
 			setDesign(designCheck)
@@ -99,8 +108,43 @@ const Top_BottomPage = () => {
 	}, [])
 
 
+	const modalActivator = async (type) => {
+		if(type == "Delete"){
+			modalState({
+				state:true,
+				title:"Delete timer",
+				content:`Are you sure you want to delete this timer?`,
+				primary:[{
+					content:"Delete",
+					onAction: ()=>{
+						loadingModalbtn(true)
+						deleteBtn(id)
+					},
+					destructive:true,
+					loading:modalbtnloading
+				}]
+			})
+			return false
+		}else if(type == "Duplicate"){
+			modalState({
+				state:true,
+				title:"Duplicate timer",
+				content:`Are you sure you want to duplicate ${content.timerName}?`,
+				primary:[{
+					content:"Duplicate",
+					onAction: ()=>{
+						loadingModalbtn(true)
+						handelPublish("Duplicate")
+					},
+				}]
+			})
+			return false
+		}
+		console.log(modal)
+	}
 
 	const deleteBtn = async (idrec) => {
+		loadingModalbtn(true)
 		const deletebyid = await fetch(`/api/deleterecord?id=${idrec}`, {
 			method: 'DELETE',
 			headers: {
@@ -111,6 +155,7 @@ const Top_BottomPage = () => {
 		if (getResult.code == 200) {
 			setActive(true)
 			setMsg("Deleted")
+			loadingModalbtn(false)
 			setTimeout(() => {
 				navigate("/")
 			}, 1500)
@@ -147,8 +192,8 @@ const Top_BottomPage = () => {
 			body: JSON.stringify(body),
 		})
 		const data = await res.json()
-		console.log(data)
 		if (data) {
+			// console.log(data.id)
 			setBtnLoading({
 				type:statusUpdate,
 				status:false
@@ -160,6 +205,7 @@ const Top_BottomPage = () => {
 				setMsg('Save')
 			}else if(data.status == "Duplicate"){
 				setMsg("Duplicate")
+				loadingModalbtn(false)
 				setTimeout(() => {
 					navigate("/")
 				}, 1500)
@@ -232,9 +278,7 @@ const Top_BottomPage = () => {
 													<div class="Polaris-ButtonGroup__Item">
 														<span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
 															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-																onClick={() => {
-																	deleteBtn(id)
-																}}
+																onClick={()=>modalActivator("Delete")}
 															>
 																<span class="Polaris-Button__Content">
 																	<span class="Polaris-Button__Text">Delete</span>
@@ -245,7 +289,7 @@ const Top_BottomPage = () => {
 													<div class="Polaris-ButtonGroup__Item">
 														<span class="Polaris-ActionMenu-SecondaryAction">
 															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button" 
-															onClick={()=>handelPublish("Duplicate")}
+															onClick={()=>modalActivator("Duplicate")}
 															>
 																<span class="Polaris-Button__Content">
 																	<span class="Polaris-Button__Text">Duplicate</span>
@@ -285,6 +329,27 @@ const Top_BottomPage = () => {
 				</div>
 			</div>
 			<ToastComp active={active} setActive={setActive} msg={msg} />
+			{modal.state== true?<CustomModal 
+				state={true}
+				primaryAction={[
+					{
+						content:modal.primary[0].content,
+						onAction: modal.primary[0].onAction,
+						loading:modalbtnloading,
+						destructive:modal.primary[0].destructive,
+					}
+				]}
+				secondaryActions={
+					[{
+						content: 'Cancel',
+						onAction: async ()=>{
+							modalState({...modal,state:false})
+						},
+					  }]
+				  }
+				  title={modal.title}
+				  content={modal.content}
+				/>:''}
 		</section>
 	)
 }

@@ -10,7 +10,7 @@ function CheckBoxComponent(props) {
               <span className="Polaris-RadioButton">
                 <input
                   id={props.id}
-                  value={props.id}
+                  value={props.value}
                   name={props.name}
                   type="radio"
                   onChange={props.onChange}

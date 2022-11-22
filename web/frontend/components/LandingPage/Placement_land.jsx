@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { LandingContext } from '../../context/LandingContext'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import DateInput from '../Fields/DateInput'
@@ -11,6 +11,30 @@ import TimerBadge_land from './TimerBadge_land'
 const Placement_land = () => {
   const { content, design, placement, setPlacement } = useContext(LandingContext)
   const [open, setOpen] = useState(false)
+  const [selectedPro,setProducts] = useState(placement.selected !== undefined?placement.selected:{
+    allCollection:true,
+    specificCollection:false,
+    passowrdPage:false,
+    customPosition:false
+  })
+
+  useEffect(()=>{
+    // if(placement.selected !== undefined){
+    //   console.log("inside the uffE")
+    //   setProducts(placement.selected)
+    // }
+  },[])
+
+  console.log(placement.selected)
+  console.log(selectedPro)
+  const updateState = async (keyData) =>{
+    Object.keys(selectedPro).forEach(key => {
+      selectedPro[key] = false;
+    });
+    selectedPro[keyData] = true
+    setProducts(selectedPro)
+    setPlacement({selected:selectedPro})
+  }
 
   return (
     <>
@@ -32,13 +56,10 @@ const Placement_land = () => {
                       id="allcollection"
                       name="products"
                       label="All collection pages"
-                      checked={true}
+                      checked={selectedPro.allCollection}
+                      value="All collection"
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-
+                        updateState('allCollection')
                         document
                           .getElementById('spcProductbtnLand')
                           .classList.add('disable-div')
@@ -52,11 +73,10 @@ const Placement_land = () => {
                       id="spccollection"
                       name="products"
                       label="Specific collection pages"
+                      checked={selectedPro.specificCollection}
+                      value={"Specific collection"}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
+                        updateState('specificCollection')
                         document
                           .getElementById('spcProductbtnLand')
                           .classList.remove('disable-div')
@@ -85,12 +105,11 @@ const Placement_land = () => {
                   <CheckBoxComponent
                     id="pswrd"
                     name="products"
+                    value="password"
                     label="Password page"
+                    checked={selectedPro.passowrdPage}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
+                      updateState('passowrdPage')
                       document
                         .getElementById('spcProductbtnLand')
                         .classList.add('disable-div')
@@ -105,11 +124,10 @@ const Placement_land = () => {
                     id="cstmPosition"
                     name="products"
                     label="Custom position"
+                    checked={selectedPro.customPosition}
+                    value="custom position"
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
+                      updateState('customPosition')
                       document
                         .getElementById('spcProductbtnLand')
                         .classList.add('disable-div')

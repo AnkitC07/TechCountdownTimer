@@ -28,13 +28,15 @@ console.log()
     })
       .then((item) => {
 			tempData = item
+      console.log(item)
+      res.status(200).json({ status: sendStatus, id:item._id }) 
       })
       .catch((err) => {
-		// console.log(err)
+		console.log(err)
 	    res.status(400).send('Unable to save to database')
     
       })
-      res.status(200).json({ status: sendStatus, id:tempData._id }) 
+
 return
    }
    else {

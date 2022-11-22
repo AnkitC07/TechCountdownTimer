@@ -83,7 +83,7 @@ export const ProductProvider = (props) => {
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
   const [seconds, setSeconds] = React.useState(0)
-
+  const [dataId,setId] = useState(null)
 
 
   const [content, setContent] = useState(productContent)
@@ -111,6 +111,8 @@ export const ProductProvider = (props) => {
         setPlacement,
         ispublished, setIspublished,
         Html, setHtml,
+        setId,dataId
+        
       }}
     >
       {props.children}

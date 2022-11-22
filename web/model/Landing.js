@@ -165,7 +165,7 @@ const LandingPagSchema = new mongoose.Schema({
   },
   Placement: {
     selectProduct: {
-      type: String,
+      type: Object,
     },
     specProduct: {
       type: [String],
