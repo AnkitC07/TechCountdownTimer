@@ -368,6 +368,8 @@ function Design() {
                                       ...design,
                                       singleColor: hsbToHex(e),
                                     })
+                                    console.log(e)
+                                    console.log(design.singleColor)
                                   }}
                                 />
                                 <InputComponent

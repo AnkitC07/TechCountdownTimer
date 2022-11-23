@@ -80,7 +80,7 @@ const CartpageSchema = new mongoose.Schema({
   },
   Html: {
     html: {
-      type: String,
+      type: Object,
     },
    }
 })

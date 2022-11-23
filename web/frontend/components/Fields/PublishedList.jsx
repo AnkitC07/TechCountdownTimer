@@ -13,8 +13,8 @@ function PublishedList({ item }) {
                 return '/Top_BottomPage/Content_top'
             case 'Landing Page':
                 return '/LandingPage'
-            // case 'Product Page':
-            //     return '/ProductPage'
+            case 'Cart Page':
+                return '/CartPage'
             // default:
             //     break;
         }

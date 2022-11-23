@@ -1,71 +1,127 @@
-import React, { useContext } from 'react'
-import { useState } from 'react'
-import { Button } from '@shopify/polaris'
-import { useEffect } from 'react'
-import { NavLink,useNavigate} from 'react-router-dom'
-import { ProductContext,productDesign,productPlacement,productContent } from '../../context/ProductContext'
-import { TimerNav } from '../TimerNav'
-import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
-import ToastComp from '../layouts/ToastComp'
-import { useRef } from 'react'
+import React, { useContext } from "react";
+import { useState } from "react";
+import { Button ,Badge} from "@shopify/polaris";
+import { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  ProductContext,
+  productDesign,
+  productPlacement,
+  productContent,
+} from "../../context/ProductContext";
+import { TimerNav } from "../TimerNav";
+import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
+import ToastComp from "../layouts/ToastComp";
+import { useRef } from "react";
+import CustomModal from "../layouts/Modal";
 
 export const ProductPage = () => {
   const {
-		content,
-		setContent,
-		design,
-		setDesign,
-		placement,
-		setPlacement,
-		ispublished, setIspublished,
-		Html, setHtml
-  } = useContext(ProductContext)
+    content,
+    setContent,
+    design,
+    setDesign,
+    placement,
+    setPlacement,
+    ispublished,
+    setIspublished,
+    Html,
+    setHtml,
+    setId,
+    dataId,
+  } = useContext(ProductContext);
 
-  const navigate = useNavigate()
-  const fetch = useAuthenticatedFetch()
+  const navigate = useNavigate();
+  const fetch = useAuthenticatedFetch();
   const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-	const id = urlParams.get("id");
+  const urlParams = new URLSearchParams(queryString);
+  let id = urlParams.get("id");
   const [active, setActive] = useState(false);
-	const [msg, setMsg] = useState('');
-	const [btnLoading, setBtnLoading] = useState({
-    type:"",
-    status:false
-  })
-	// const [status, setStatus] = useState('')
-	const [btnMain, setBtnMain] = useState(id == null ? true : false)
+  const [msg, setMsg] = useState("");
+  const [btnLoading, setBtnLoading] = useState({
+    type: "",
+    status: false,
+  });
+  const [modalbtnloading, loadingModalbtn] = useState(false);
+  const [modal, modalState] = useState({
+    status: false,
+    title: "",
+    content: "",
+    primary: [],
+  });
+  // const [status, setStatus] = useState('')
+  const [btnMain, setBtnMain] = useState(id == null ? true : false);
 
   const navdata = [
     {
-      title: 'Content',
-      path: '',
+      title: "Content",
+      path: "",
     },
     {
-      title: 'Design',
-      path: 'Design',
+      title: "Design",
+      path: "Design",
     },
     {
-      title: 'Placement',
-      path: 'Placement',
+      title: "Placement",
+      path: "Placement",
     },
-  ]
+  ];
+
+  const modalActivator = async (type) => {
+    if (type == "Delete") {
+      modalState({
+        state: true,
+        title: "Delete timer",
+        content: `Are you sure you want to delete this timer?`,
+        primary: [
+          {
+            content: "Delete",
+            onAction: () => {
+              loadingModalbtn(true);
+              deleteBtn(id);
+            },
+            destructive: true,
+            loading: modalbtnloading,
+          },
+        ],
+      });
+      return false;
+    } else if (type == "Duplicate") {
+      modalState({
+        state: true,
+        title: "Duplicate timer",
+        content: `Are you sure you want to duplicate ${content.productTimer}?`,
+        primary: [
+          {
+            content: "Duplicate",
+            onAction: () => {
+              loadingModalbtn(true);
+              handelPublish("Duplicate");
+            },
+          },
+        ],
+      });
+      return false;
+    }
+    console.log(modal);
+  };
 
   useEffect(() => {
-    if (id == null ) {
-      setDesign(productDesign)
-      setPlacement(productPlacement)
-      setContent(productContent)
+    if (id == null) {
+      setDesign(productDesign);
+      setPlacement(productPlacement);
+      setContent(productContent);
     }
 
     const getDataById = async () => {
-      const res = await fetch('/api/getDataById', {
-        method: 'post',
+      const res = await fetch("/api/getDataById", {
+        method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ id: id }),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
       setContent(() => {
         return {
           ...data.data.Content,
@@ -77,97 +133,111 @@ export const ProductPage = () => {
             start: new Date(data.data.Content.selectedEndDates.start),
             end: new Date(data.data.Content.selectedEndDates.end),
           },
-        }
-      })
-      console.log(data.data.Content)
-      setDesign(data.data.Design)
-      setPlacement(data.data.Placement)
-      setHtml(data.data.Html)
-      setIspublished(data.data.IsPublished)
-      setBtnMain(data.data.IsPublished == "published"?false:true)
-    }
-    if (id !== null)
-      getDataById()
-  }, [])
+        };
+      });
+      console.log(data.data.Content);
+      setDesign(data.data.Design);
+      setPlacement(data.data.Placement);
+      setHtml(data.data.Html);
+      setIspublished(data.data.IsPublished);
+
+      setBtnMain(data.data.IsPublished == "published" ? false : true);
+    };
+    console.log("checking data id ", dataId);
+
+    if (id !== null) getDataById();
+    return () => {
+      setId(null);
+    };
+  }, []);
+
+  console.log("checking data id", dataId);
+  if (dataId !== null) {
+    id = dataId;
+  }
 
   const handelPublish = async (statusUpdate) => {
+    setBtnLoading({
+      type: statusUpdate,
+      status: true,
+    });
 
-		setBtnLoading({
-      type:statusUpdate,
-      status:true
-    })
-		const getShopName = () => {
-			return window.location.ancestorOrigins[0].replaceAll("https://", "");
-		};
-		const body = {
-			type: 'Product Page',
-			content: content,
-			design: design,
-			placement: placement,
-			Html: Html,
-			ispublished: statusUpdate == "save"?ispublished:statusUpdate,
-			store: getShopName()
-		}
+    const getShopName = () => {
+      return window.location.ancestorOrigins[0].replaceAll("https://", "");
+    };
 
-    console.log(body.content.productTimer,"Title")
+    const body = {
+      type: "Product Page",
+      content: content,
+      design: design,
+      placement: placement,
+      Html: Html,
+      ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
+      store: getShopName(),
+    };
 
-		if(statusUpdate == "Duplicate"){
-			body.content.productTimer = `${content.productTimer} Duplicate`
-		}
+	console.log(body)
 
-		const res = await fetch(`/api/submitTopBottom?status=${statusUpdate}&id=${id}`, {
-			method: 'post',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(body),
-		})
-		const data = await res.json()
-    console.log("--------------------------")
-		console.log(data.status)
-    console.log("--------------------------")
-		if (data) {
-      
-			setBtnLoading({
-        type:statusUpdate,
-        status:false
-      })
-			if (data.status == 'published') {
-				setMsg('Published')
-				setBtnMain(false)
-			} else if(data.status == "save"){
-				setMsg('Save')
-			}else if(data.status == "Duplicate"){
-				setMsg("Duplicate")
+    if (statusUpdate == "Duplicate") {
+      body.content.productTimer = `${content.productTimer} Duplicate`;
+    }
+
+    const res = await fetch(
+      `/api/submitTopBottom?status=${statusUpdate}&id=${id}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const data = await res.json();
+    if (data) {
+      setBtnLoading({
+        type: statusUpdate,
+        status: false,
+      });
+      if (data.status == "published") {
+        setMsg("Published");
+        setBtnMain(false);
+		setIspublished("published")
+      } else if (data.status == "save") {
+        setMsg("Save");
+      } else if (data.status == "Duplicate") {
+        setMsg("Duplicate");
+        loadingModalbtn(false);
         setTimeout(() => {
-          navigate("/")
-        }, 1500)
-			}else{
-				setMsg('Unpublished')
-				setBtnMain(true)
-			}
-			setActive(true);
-		}
-		setStatus(data.status)
-	}
-
+          navigate("/");
+        }, 1500);
+      } else {
+        setMsg("Unpublished");
+        setBtnMain(true);
+		setIspublished("Unpublished")
+      }
+      setActive(true);
+    }
+    setId(data.id);
+  };
 
   const deleteBtn = async (idrec) => {
-		const deletebyid = await fetch(`/api/deleterecord?id=${idrec}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		const getResult = await deletebyid.json()
-		if (getResult.code == 200) {
-			setActive(true)
-			setMsg("Deleted")
-			setTimeout(() => {
-				navigate("/")
-			}, 1500)
-		}
-	}
+    loadingModalbtn(true);
+    const deletebyid = await fetch(`/api/deleterecord?id=${idrec}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const getResult = await deletebyid.json();
+    if (getResult.code == 200) {
+      setActive(true);
+      setMsg("Deleted");
+      loadingModalbtn(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    }
+  };
 
   return (
     <section className="product_main_page">
@@ -208,66 +278,109 @@ export const ProductPage = () => {
                           {content.productTimer}
                         </h1>
                         <div className="Polaris-Header-Title__TitleMetadata">
-                          <span className="Polaris-Badge">Not published</span>
+							{ispublished == "published"?<Badge status='success'>Published</Badge>:<Badge >Not published</Badge>}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="Polaris-Header-Title__SubTitle"><p>Timer ID: Save or Publish to show timer ID</p></div>
+                  <div class="Polaris-Header-Title__SubTitle">
+                    <p>Timer ID : {id !== null?id:"Save or Publish to show timer ID"}</p>
+                  </div>
                 </div>
                 <div class="Polaris-Page-Header__RightAlign">
-									<div class="Polaris-ActionMenu">
-										<div class="Polaris-ActionMenu-Actions__ActionsLayout">
-											<div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-												{id != null ? <>
-													<div class="Polaris-ButtonGroup__Item">
-														<span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-																onClick={() => {
-																	deleteBtn(id)
-																}}
-															>
-																<span class="Polaris-Button__Content">
-																	<span class="Polaris-Button__Text">Delete</span>
-																</span>
-															</button>
-														</span>
-													</div>
-													<div class="Polaris-ButtonGroup__Item">
-														<span class="Polaris-ActionMenu-SecondaryAction">
-															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button" 
-															onClick={()=>handelPublish("Duplicate")}
-															>
-																<span class="Polaris-Button__Content">
-																	<span class="Polaris-Button__Text">Duplicate</span>
-																</span>
-															</button>
-														</span>
-													</div>
-												</> : ''}
+                  <div class="Polaris-ActionMenu">
+                    <div class="Polaris-ActionMenu-Actions__ActionsLayout">
+                      <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
+                        {id != null ? (
+                          <>
+                            <div class="Polaris-ButtonGroup__Item">
+                              <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+                                <button
+                                  class="Polaris-Button Polaris-Button--outline"
+                                  aria-disabled="false"
+                                  type="button"
+                                  onClick={() => {
+                                    modalActivator("Delete");
+                                  }}
+                                >
+                                  <span class="Polaris-Button__Content">
+                                    <span class="Polaris-Button__Text">
+                                      Delete
+                                    </span>
+                                  </span>
+                                </button>
+                              </span>
+                            </div>
+                            <div class="Polaris-ButtonGroup__Item">
+                              <span class="Polaris-ActionMenu-SecondaryAction">
+                                <button
+                                  class="Polaris-Button Polaris-Button--outline"
+                                  aria-disabled="false"
+                                  type="button"
+                                  onClick={() => modalActivator("Duplicate")}
+                                >
+                                  <span class="Polaris-Button__Content">
+                                    <span class="Polaris-Button__Text">
+                                      Duplicate
+                                    </span>
+                                  </span>
+                                </button>
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          ""
+                        )}
 
-												<div class="Polaris-ButtonGroup__Item">
-													<span class="Polaris-ActionMenu-SecondaryAction">
+                        <div class="Polaris-ButtonGroup__Item">
+                          <span class="Polaris-ActionMenu-SecondaryAction">
                             <Button
-                            onClick={()=>handelPublish("save")}
-                            loading={btnLoading.type== "save"?btnLoading.status:false}
-                            >Save</Button>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="Polaris-Page-Header__PrimaryActionWrapper">
-										{btnMain ? <Button primary onClick={() => {
-											handelPublish("published")
-										}} loading={btnLoading.type== "published"?btnLoading.status:false}>Publish</Button> : <Button destructive onClick={() => {
-											handelPublish("unPublished")
-										}} loading={btnLoading.type== "unPublished"?btnLoading.status:false}>Unpublish</Button>}
-
-									</div>
-								</div>
-
-
+                              onClick={() => handelPublish("save")}
+                              loading={
+                                btnLoading.type == "save"
+                                  ? btnLoading.status
+                                  : false
+                              }
+                            >
+                              Save
+                            </Button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="Polaris-Page-Header__PrimaryActionWrapper">
+                    {btnMain ? (
+                      <Button
+                        primary
+                        onClick={() => {
+                          handelPublish("published");
+                        }}
+                        loading={
+                          btnLoading.type == "published"
+                            ? btnLoading.status
+                            : false
+                        }
+                      >
+                        Publish
+                      </Button>
+                    ) : (
+                      <Button
+                        destructive
+                        onClick={() => {
+                          handelPublish("unPublished");
+                        }}
+                        loading={
+                          btnLoading.type == "unPublished"
+                            ? btnLoading.status
+                            : false
+                        }
+                      >
+                        Unpublish
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -278,6 +391,32 @@ export const ProductPage = () => {
         </div>
       </div>
       <ToastComp active={active} setActive={setActive} msg={msg} />
+      {modal.state == true ? (
+        <CustomModal
+          state={true}
+          primaryAction={[
+            {
+              content: modal.primary[0].content,
+              onAction: modal.primary[0].onAction,
+              loading: modalbtnloading,
+              destructive: modal.primary[0].destructive,
+            },
+          ]}
+          secondaryActions={[
+            {
+              content: "Cancel",
+              onAction: async () => {
+                modalState({ ...modal, state: false });
+              },
+            },
+          ]}
+          title={modal.title}
+          content={modal.content}
+		  onClose={()=> modalState({ ...modal, state: false })}
+        />
+      ) : (
+        ""
+      )}
     </section>
-  )
-}
+  );
+};
