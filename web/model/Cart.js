@@ -74,9 +74,7 @@ const CartpageSchema = new mongoose.Schema({
    
   },
   Placement: {
-    selectProduct: {
-      type: String,
-    },
+    type:Object
   },
   Html: {
     html: {

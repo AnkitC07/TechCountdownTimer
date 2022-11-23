@@ -20,7 +20,6 @@ function Content() {
   // console.log(ref.current.innerHTML)
   setTimeout(() => {
     setHtml(ref.current.innerHTML)
-
   }, 100);
 
   // const [showDate, setShowDate] = useState('')

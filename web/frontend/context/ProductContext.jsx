@@ -71,9 +71,14 @@ export const productDesign = {
 }
 
 export const productPlacement = {
-  selectProduct: '',
-  specProduct: [],
-  tags: '',
+  selectProduct: {
+      allProducts:true,
+      specificProducts:false,
+      allProductsWithTags:false,
+      customPosition:false
+  },
+  specificProducts: [],
+  tags: [],
 }
 
 export const ProductProvider = (props) => {

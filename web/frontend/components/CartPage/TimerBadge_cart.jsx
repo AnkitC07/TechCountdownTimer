@@ -34,7 +34,7 @@ const TimerBadge_cart = ({ design, content }) => {
     // console.log((date.getHours()))
     return (
         <div
-            // className="top_product_timer"
+            id="cart_top_product_timer"
             style={design.backtype === 'singleBackground' ? single : multiple}
         >
             <h2

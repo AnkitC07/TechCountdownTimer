@@ -1,33 +1,37 @@
 import React, { useCallback, useContext, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
-import DateInput from '../Fields/DateInput'
-import InputComponent from '../Fields/InputComponent'
-import Modalcomp from '../Modalcomp'
-// import InputNumber from './Fields/InputNumber'
-// import InputSelect from './Fields/InputSelect'
-import { ProductPage } from '../Product/ProductPage'
-import Top_BottomPage from './Top_BottomPage'
-import { MobileCancelMajor } from '@shopify/polaris-icons'
 import { TopBottomContext } from '../../context/Top_Bottom_Context'
 import ResourcePickerComp from '../Fields/ResourcePickerComp'
 import TimerBagde_Top from './TimerBagde_Top'
+import { useEffect } from 'react'
 function Placement() {
   const { content, design, placement, setPlacement } = useContext(TopBottomContext)
   const [open, setOpen] = useState(false)
   const [openCol, setOpenCol] = useState(false)
+  const [options,setOptions] = useState(placement.selectOptions)
 
   let height;
   document.addEventListener('scroll', () => {
     height = window.scrollY
-    // console.log(height)
-    //   if (height >= '30') {
-    //     document.getElementById('top-change').classList.remove('top-change')
-    //     document.getElementById('preview').classList.add('extra-margin')
-    //   } else {
-    //     document.getElementById('top-change').classList.add('top-change')
-    //     document.getElementById('preview').classList.remove('extra-margin')
-    //   }
+      if (height >= '30') {
+        document.getElementById('top-change').classList.remove('top-change')
+        document.getElementById('preview').classList.add('extra-margin')
+      } else {
+        document.getElementById('top-change').classList.add('top-change')
+        document.getElementById('preview').classList.remove('extra-margin')
+      }
   })
+
+  const updateState = async (keyData) =>{
+    Object.keys(options).forEach(key => {
+      options[key] = false;
+    });
+    options[keyData] = true
+    console.log(options)
+    setOptions(options)
+    setPlacement({...placement,selectOptions:options})
+  }
+
   return (
     <>
       {/* <Top_BottomPage /> */}
@@ -35,81 +39,49 @@ function Placement() {
         <div className="col col-md-4">
           <div className="Polaris-Card">
             {/* <div className="Polaris-Card__Section"></div> */}
-            <div className="Polaris-Card__Section">
+            <div className="Polaris-Card__Section" style={{marginBottom:"100px"}}>
               <div className="sc-bczRLJ czvMoD">
                 <div className="Polaris-FormLayout">
                   <div>
                     <div className="Polaris-FormLayout__Item">
                       <span className="Polaris-TextStyle--variationStrong">
-                        Select Products
+                      Select pages to display the bar
                       </span>
                     </div>
                     <CheckBoxComponent
                       id="everyPage"
                       name="products"
                       label="Show on every page"
+                      checked={options.every}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('every')
                       }}
                     />
                     <CheckBoxComponent
                       id="homePage"
                       name="products"
                       label="Show on home page only"
+                      checked={options.home}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('home')
                       }}
                     />
                     <CheckBoxComponent
                       id="allproducts"
                       name="products"
                       label="Show on all product pages"
+                      checked={options.allProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('allProducts')
                       }}
                     />
                     <CheckBoxComponent
                       id="spcProduct"
                       name="products"
                       label="Show on specific product pages"
+                      checked={options.specificProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.remove('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('specificProducts')
                       }}
                     />
                   </div>
@@ -130,37 +102,21 @@ function Placement() {
                     id="allCollection"
                     name="products"
                     label="Show on all collection pages"
+                    checked={options.allCollections}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('products_top')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('collection_top')
-                        .classList.add('disable-div')
+                      updateState('allCollections')
                     }}
                   />
                   <CheckBoxComponent
                     id="spcCollection"
                     name="products"
+                    checked={options.specificCollections}
                     label="Show on specific collection pages"
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('products_top')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('collection_top')
-                        .classList.remove('disable-div')
+                      updateState('specificCollections')
                     }}
                   />
-                  <div id='collection_top' className="Polaris-FormLayout__Item disable-div">
+                  <div id='collection_top' className={`Polaris-FormLayout__Item disable-div ${options.specificCollections?"":"disable-div"}`}>
                     <button
                       className="Polaris-Button Polaris-Button--fullWidth"
                       type="button"
@@ -187,85 +143,53 @@ function Placement() {
         <div className="col col-md-4">
           <div className="Polaris-Card">
             {/* <div className="Polaris-Card__Section"></div> */}
-            <div className="Polaris-Card__Section">
+            <div className="Polaris-Card__Section" style={{marginBottom:"100px"}}>
               <div className="sc-bczRLJ czvMoD">
                 <div className="Polaris-FormLayout">
                   <div>
                     <div className="Polaris-FormLayout__Item">
                       <span className="Polaris-TextStyle--variationStrong">
-                        Select Products
+                      Select pages to display the bar
                       </span>
                     </div>
                     <CheckBoxComponent
                       id="everyPage"
                       name="products"
                       label="Show on every page"
+                      checked={options.every}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('every')
                       }}
                     />
                     <CheckBoxComponent
                       id="homePage"
                       name="products"
                       label="Show on home page only"
+                      checked={options.home}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('home')
                       }}
                     />
                     <CheckBoxComponent
                       id="allproducts"
                       name="products"
                       label="Show on all product pages"
+                      checked={options.allProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('allProducts')
                       }}
                     />
                     <CheckBoxComponent
                       id="spcProduct"
                       name="products"
                       label="Show on specific product pages"
+                      checked={options.specificProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('products_top')
-                          .classList.remove('disable-div')
-                        document
-                          .getElementById('collection_top')
-                          .classList.add('disable-div')
+                        updateState('specificProducts')
                       }}
                     />
                   </div>
-                  <div id='products_top' className="Polaris-FormLayout__Item disable-div">
+                  <div id='products_top' className={`Polaris-FormLayout__Item ${options.specificProducts?'':"disable-div"}`}>
                     <button
                       className="Polaris-Button Polaris-Button--fullWidth"
                       type="button"
@@ -282,37 +206,21 @@ function Placement() {
                     id="allCollection"
                     name="products"
                     label="Show on all collection pages"
+                    checked={options.allcollections}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('products_top')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('collection_top')
-                        .classList.add('disable-div')
+                      updateState('allCollection')
                     }}
                   />
                   <CheckBoxComponent
                     id="spcCollection"
                     name="products"
                     label="Show on specific collection pages"
+                    checked={options.specificcollections}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('products_top')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('collection_top')
-                        .classList.remove('disable-div')
+                      updateState('specificcollections')
                     }}
                   />
-                  <div id='collection_top' className="Polaris-FormLayout__Item disable-div">
+                  <div id='collection_top' className={`Polaris-FormLayout__Item ${options.specificcollections?'':"disable-div"}`}>
                     <button
                       className="Polaris-Button Polaris-Button--fullWidth"
                       type="button"
@@ -339,11 +247,33 @@ function Placement() {
 
 
       <div>
-        <ResourcePickerComp type="Product" state1={open} state2={setOpen} />
+        <ResourcePickerComp 
+        type="Product"
+        state1={open}
+        state2={setOpen}
+        onSelection={(e) => {
+          setOpen(false)
+          setPlacement({...placement,
+            specificProducts:e.selection.map(x=>{
+              return {id:x.id}
+            })
+          }) 
+        }}
+        initialSelectionIds={placement.specificProducts}
+        />
         <ResourcePickerComp
           type="Collection"
           state1={openCol}
           state2={setOpenCol}
+          onSelection={(e) => {
+            setOpenCol(false)
+            setPlacement({...placement,
+              specificCollection:e.selection.map(x=>{
+                return {id:x.id}
+              })
+            }) 
+          }}
+          initialSelectionIds={placement.specificCollection}
         />
       </div>
     </>

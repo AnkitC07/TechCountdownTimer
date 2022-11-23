@@ -55,7 +55,7 @@ const Colorpicker = (props) => {
         <Popover.Section>
           <ColorPicker
             onChange={props.onChange}
-            // color={props.state1}
+            color={props.state1}
             // color={rgbToHsb(
             //   hexRgb(
             //     props.state1.length <= 6 || props.state1.length > 7
