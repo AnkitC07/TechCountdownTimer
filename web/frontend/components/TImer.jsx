@@ -54,6 +54,7 @@ const TImer = (props) => {
 
     return () => clearInterval(interval)
   }, [start, deadline])
+  // console.log(days)
   return (
     <div
       // className="time"

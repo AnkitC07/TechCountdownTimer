@@ -12,25 +12,69 @@ export const productContent = {
   productHrs: 'Hrs',
   productMin: 'Mins',
   productSec: 'Secs',
-  timerType: 'toDate',
-  fixedTime: '120',
-  RepeatOn: {
-    monday: true,
-    tuesday: true,
-    wednesday: true,
-    thursday: true,
-    friday: true,
-    saturday: true,
-    sunday: true,
-  },
-  dailyStartHrs: '11',
-  dailyStartMnt: '30',
-  dailyEndHrs: '12',
-  dailyEndMnt: '37',
-  timerStart: 'rightNow',
-  selectedDates: {
-    start: new Date(),
-    end: new Date(),
+  // timerType: 'toDate',
+  timerType:{
+    countdownDate:{
+      status:true,
+      rightNow:true,
+      schedule:false,
+      startDate:{
+        date:{
+          start:new Date(),
+          end:new Date()
+        },
+        hr:date.getHours(),
+        min:date.getMinutes()
+      },
+      endDate:{
+        date:{
+          start:date,
+          end:date
+        },
+        hr:date.getHours(),
+        min:date.getMinutes()
+      }
+    },
+    fixedTime:{
+      status:false,
+      time:'120'
+    },
+    recurring:{
+      status:false,
+      repeatOn: {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
+      },
+      dailyStart:{
+        hr:'11',
+        min:'30'
+      },
+      dailyEnd:{
+        hr:'11',
+        min:'30'
+      },
+      start:{
+        today:false,
+        speceficDate:true,
+        date:{
+          start:new Date(),
+          end:new Date()
+        }
+      },
+      end:{
+        never:false,
+        speceficDate:true,
+        date:{
+          start:date,
+          end:date
+        }
+      }
+    },
   },
   startHrs: date.getHours(),
   startMnt: date.getMinutes(),
@@ -71,14 +115,9 @@ export const productDesign = {
 }
 
 export const productPlacement = {
-  selectProduct: {
-      allProducts:true,
-      specificProducts:false,
-      allProductsWithTags:false,
-      customPosition:false
-  },
-  specificProducts: [],
-  tags: [],
+  selectProduct: '',
+  specProduct: [],
+  tags: '',
 }
 
 export const ProductProvider = (props) => {

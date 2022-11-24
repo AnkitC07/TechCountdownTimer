@@ -122,20 +122,44 @@ export const ProductPage = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          selectedDates: {
-            start: new Date(data.data.Content.selectedDates.start),
-            end: new Date(data.data.Content.selectedDates.end),
+
+      let  contentData = {...data.data.Content.timerType,
+        countdownDate:{
+          ...data.data.Content.timerType.countdownDate,
+          startDate:{
+            ...data.data.Content.timerType.countdownDate.startDate,
+            date:{
+              start:new Date(data.data.Content.timerType.countdownDate.startDate.date.start),
+              end:new Date(data.data.Content.timerType.countdownDate.startDate.date.end)
+            }
           },
-          selectedEndDates: {
-            start: new Date(data.data.Content.selectedEndDates.start),
-            end: new Date(data.data.Content.selectedEndDates.end),
+          endDate:{
+            ...data.data.Content.timerType.countdownDate.endDate,
+            date:{
+              start:new Date(data.data.Content.timerType.countdownDate.endDate.date.start),
+              end:new Date(data.data.Content.timerType.countdownDate.endDate.date.end)
+            }
+          }
+        },
+        recurring:{
+          ...data.data.Content.timerType.recurring,
+          start:{
+            ...data.data.Content.timerType.recurring.start,
+            date:{
+              start:new Date(data.data.Content.timerType.recurring.start.date.start),
+              end:new Date(data.data.Content.timerType.recurring.start.date.end)
+            }
           },
-        };
-      });
-      console.log(data.data.Content);
+          end:{
+            ...data.data.Content.timerType.recurring.end,
+            date:{
+              start:new Date(data.data.Content.timerType.recurring.end.date.start),
+              end:new Date(data.data.Content.timerType.recurring.end.date.end)
+            }
+          }
+        }
+      }
+      setContent({...data.data.Content,timerType:contentData})
       setDesign(data.data.Design);
       setPlacement(data.data.Placement);
       setHtml(data.data.Html);

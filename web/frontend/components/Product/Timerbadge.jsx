@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
-import TimerFixed from '../Fields/TimerFixed'
-import TImerReccuring from '../Fields/TImerReccuring'
-import TImer from '../TImer'
+import React, { useEffect } from "react";
+import TimerFixed, { RecurringTimer } from "../Fields/TimerFixed";
+import TImerReccuring from "../Fields/TImerReccuring";
+import TImer from "../TImer";
 
 const Timerbadge = ({ design, content }) => {
-
-  useEffect(() => { console.log("timer run checking") }, [design])
+  useEffect(() => {
+    console.log("timer run checking");
+  }, [design]);
 
   const multiple = {
     fontFamily: `${design.font}`,
@@ -13,42 +14,121 @@ const Timerbadge = ({ design, content }) => {
     marginBottom: `${design.spaceOutbottom}px`,
     paddingTop: `${design.spaceIntop}px`,
     paddingBottom: `${design.spaceInbottom}px`,
-    maxWidth: '420px',
-    minWidth: '320px',
-    display: 'flex',
-    flexFlow: 'column',
+    maxWidth: "420px",
+    minWidth: "320px",
+    display: "flex",
+    flexFlow: "column",
     background: `linear-gradient(${design.gradAngle}deg,${design.gradClr1},${design.gradClr2})`,
     border: `${design.borderSize}px solid ${design.borderColor}`,
     borderRadius: `${design.cornerRadus}px`,
-    alignItems: 'center',
-  }
+    alignItems: "center",
+  };
   const single = {
     fontFamily: `${design.font}`,
     marginTop: `${design.spaceOuttop}px`,
     marginBottom: `${design.spaceOutbottom}px`,
     paddingTop: `${design.spaceIntop}px`,
     paddingBottom: `${design.spaceInbottom}px`,
-    maxWidth: '420px',
-    minWidth: '320px',
-    display: 'flex',
-    flexFlow: 'column',
+    maxWidth: "420px",
+    minWidth: "320px",
+    display: "flex",
+    flexFlow: "column",
     background: `${design.singleColor}`,
     border: `${design.borderSize}px solid ${design.borderColor}`,
     borderRadius: `${design.cornerRadus}px`,
-    alignItems: 'center',
+    alignItems: "center",
+  };
+
+  let key, startdate, enddate;
+  if (content.timerType.countdownDate.status == true) {
+    key = "countdownDate";
+    (startdate = "startDate"), (enddate = "endDate");
+  } else if (content.timerType.recurring.status == true) {
   }
+
+  const TimerSubComponent = () => {
+    if (content.timerType.fixedTime.status == true) {
+      return (
+        <>
+          <TimerFixed
+            start={new Date()}
+            mnt={content.timerType.fixedTime.time}
+            design={design}
+          />
+        </>
+      );
+    } else if (content.timerType.countdownDate.status == true) {
+      return (
+        <>
+          <TImer
+            start={content.timerType.countdownDate.startDate.date.start}
+            end={content.timerType.countdownDate.endDate.date.end}
+            starthrs={content.timerType.countdownDate.startDate.hr}
+            endhrs={content.timerType.countdownDate.endDate.hr}
+            startmnt={content.timerType.countdownDate.startDate.min}
+            endmnt={content.timerType.countdownDate.endDate.min}
+            design={design}
+          />
+        </>
+      );
+    } else if (content.timerType.recurring.status == true) {
+      return (
+        <>
+          {/* <RecurringTimer 
+        startDate={content.timerType.recurring.start.date.start}
+        endDate={content.timerType.recurring.end.date.end}
+        starthr={content.timerType.recurring.dailyStart.hr}
+        endhr={content.timerType.recurring.dailyEnd.hr}
+        startmin={content.timerType.recurring.dailyStart.min}
+        endmin={content.timerType.recurring.dailyEnd.min}
+        /> */}
+          <TImerReccuring
+            starthrs={content.timerType.recurring.dailyStart.hr}
+            startmnt={content.timerType.recurring.dailyStart.min}
+            endhrs={content.timerType.recurring.dailyEnd.hr}
+            endmnt={content.timerType.recurring.dailyEnd.min}
+            design={design}
+          />
+        </>
+      );
+    } else {
+      return <>Timer</>;
+    }
+
+    // return(
+    //   <>
+    //   {content.timerType.fixedTime.status == true
+    //           ?
+    //           <TimerFixed
+    //             start={content.timerType.recurring.start.date}
+    //             mnt={content.timerType.fixedTime.time}
+    //             design={design}
+    //             />
+    //           :
+    //           <TImer
+    //            start={content.timerType.countdownDate.startDate.date}
+    //            end={content.timerType.countdownDate.endDate.date}
+    //            starthrs={content.timerType.countdownDate.startDate.hr}
+    //            endhrs={content.timerType.countdownDate.endDate.hr}
+    //            startmnt={content.timerType.countdownDate.startDate.min}
+    //            endmnt={content.timerType.countdownDate.endDate.min}
+    //            design={design} />
+    //         }
+    //   </>
+    // )
+  };
   return (
     <div
       // className="product-page-main"
-      style={design.backtype === 'singleBackground' ? single : multiple}
+      style={design.backtype === "singleBackground" ? single : multiple}
     >
       <h2
         // className="product-heading"
         style={{
           fontSize: `${design.titleSize}px`,
           color: `${design.titleColor}`,
-          fontWeight: 'bold',
-          lineHeight: '1',
+          fontWeight: "bold",
+          lineHeight: "1",
         }}
       >
         {content.productTitle}
@@ -58,46 +138,41 @@ const Timerbadge = ({ design, content }) => {
         style={{
           fontSize: `${design.subheadingSize}px`,
           color: `${design.subheadingColor}`,
-          paddingTop: '2px',
-          lineHeight: '1.5',
+          paddingTop: "2px",
+          lineHeight: "1.5",
         }}
       >
         {content.productSubheading}
       </p>
       <span
         // className="product-timer"
-        style={{ lineHeight: '1', textAlign: 'left' }}
+        style={{ lineHeight: "1", textAlign: "left" }}
       >
         <div className="timer-wrapper">
           <div
             // className="time"
             style={{}}
           >
-            {content.timerType == 'fixed'
-              ?
-              <TimerFixed start={content.selectedDates.start} mnt={content.fixedTime} design={design} />
-              :
-              <TImer start={content.selectedDates.start} end={content.selectedEndDates.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
-            }
+            <TimerSubComponent />
 
             {/* <TImerReccuring starthrs={content.dailyStartHrs} startmnt={content.dailyStartMnt} endhrs={content.dailyEndHrs} endmnt={content.dailyEndMnt} design={design} /> */}
           </div>
           <div
             // className="timer-label"
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr 1fr',
-              placeItems: 'center',
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              placeItems: "center",
             }}
           >
             <div
               id="insideTopSpacingHelpText"
               style={{
-                lineHeight: '2',
+                lineHeight: "2",
                 fontSize: `${design.legendSize}px`,
                 color: `${design.legendColor}`,
-                wordBreak: 'break-word',
-                marginTop: '3px',
+                wordBreak: "break-word",
+                marginTop: "3px",
               }}
             >
               {content.productDays}
@@ -105,11 +180,11 @@ const Timerbadge = ({ design, content }) => {
             <div
               id="insideTopSpacingHelpText"
               style={{
-                lineHeight: '2',
+                lineHeight: "2",
                 fontSize: `${design.legendSize}px`,
                 color: `${design.legendColor}`,
-                wordBreak: 'break-word',
-                marginTop: '3px',
+                wordBreak: "break-word",
+                marginTop: "3px",
               }}
             >
               {content.productHrs}
@@ -117,11 +192,11 @@ const Timerbadge = ({ design, content }) => {
             <div
               id="insideTopSpacingHelpText"
               style={{
-                lineHeight: '2',
+                lineHeight: "2",
                 fontSize: `${design.legendSize}px`,
                 color: `${design.legendColor}`,
-                wordBreak: 'break-word',
-                marginTop: '3px',
+                wordBreak: "break-word",
+                marginTop: "3px",
               }}
             >
               {content.productMin}
@@ -129,11 +204,11 @@ const Timerbadge = ({ design, content }) => {
             <div
               id="insideTopSpacingHelpText"
               style={{
-                lineHeight: '2',
+                lineHeight: "2",
                 fontSize: `${design.legendSize}px`,
                 color: `${design.legendColor}`,
-                wordBreak: 'break-word',
-                marginTop: '3px',
+                wordBreak: "break-word",
+                marginTop: "3px",
               }}
             >
               {content.productSec}
@@ -142,7 +217,7 @@ const Timerbadge = ({ design, content }) => {
         </div>
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default Timerbadge
+export default Timerbadge;

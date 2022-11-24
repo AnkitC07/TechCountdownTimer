@@ -23,6 +23,8 @@ function Design() {
   let singelFalg = false
   let gradFlag = true
 
+  console.log(design,"checking design")
+
   const myoption = [
     {
       value: 'Custom',
@@ -281,47 +283,53 @@ function Design() {
                       placeholder="Custom"
                       value={design.template}
                       onChange={(e) => {
-                        let temp = {}
-                        {
-                          myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].tag == true
-                            ? (temp = {
-                              singleColor: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background,
-                            })
-                            : (temp = {
-                              gradClr1: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background1,
-                              gradClr2: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background2,
-                              gradAngle: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].deg,
-                            })
+                        const seletced_data = myoption.find(x=>x.value == e.target.value)
+                        if(seletced_data.tag == true){ // single 
+                          setDesign({...design,backtype:"singleBackground",template:e.target.value})
+                        }else{
+                          setDesign({...design,backtype:"gradientBackground",template:e.target.value})
                         }
-                        const data = {
-                          ...design,
-                          template: e.target.value,
-                          borderSize: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].borderSize,
-                          borderColor: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].borderColor,
-                          ...temp,
-                        }
+                        console.log(seletced_data.tag == true,design,e.target.value)
+                        // let temp = {}
+                        // {
+                        //   myoption.filter(
+                        //     (item) => item.value === e.target.value,
+                        //   )[0].tag == true
+                        //     ? (temp = {
+                        //       singleColor: myoption.filter(
+                        //         (item) => item.value === e.target.value,
+                        //       )[0].background,
+                        //     })
+                        //     : (temp = {
+                        //       gradClr1: myoption.filter(
+                        //         (item) => item.value === e.target.value,
+                        //       )[0].background1,
+                        //       gradClr2: myoption.filter(
+                        //         (item) => item.value === e.target.value,
+                        //       )[0].background2,
+                        //       gradAngle: myoption.filter(
+                        //         (item) => item.value === e.target.value,
+                        //       )[0].deg,
+                        //     })
+                        // }
+                        // const data = {
+                        //   ...design,
+                        //   template: e.target.value,
+                        //   borderSize: myoption.filter(
+                        //     (item) => item.value === e.target.value,
+                        //   )[0].borderSize,
+                        //   borderColor: myoption.filter(
+                        //     (item) => item.value === e.target.value,
+                        //   )[0].borderColor,
+                        //   ...temp,
+                        // }
 
-                        setDesign((state) => {
-                          return {
-                            ...state,
-                            ...data,
-
-                          }
-                        })
+                        // setDesign((state) => {
+                        //   return {
+                        //     ...state,
+                        //     ...data,
+                        //   }
+                        // })
                       }}
                     />
                   </div>
@@ -341,16 +349,16 @@ function Design() {
                         name="color"
                         label="Single color background"
                         decription=""
-                        checked={true}
+                        checked={design.backtype == "singleBackground"?true:false}
                         onChange={(e) => {
-                          setDesign({ ...design, backtype: e.target.value })
-                          document
-                            .getElementById('SingleColor-Product')
-                            .classList.remove('disable-div')
+                          setDesign({ ...design, backtype: "singleBackground" })
+                          // document
+                          //   .getElementById('SingleColor-Product')
+                          //   .classList.remove('disable-div')
 
-                          document
-                            .getElementById('GradColor-Product')
-                            .classList.add('disable-div')
+                          // document
+                          //   .getElementById('GradColor-Product')
+                          //   .classList.add('disable-div')
                         }}
                       />
                       <div className="Polaris-FormLayout__Item">
@@ -358,7 +366,7 @@ function Design() {
                           <div className="Polaris-Stack__Item">
                             <div className="">
                               <div
-                                className="Polaris-Connected"
+                                className={`${design.backtype == "gradientBackground"?"disable-div":''} Polaris-Connected`}
                                 id="SingleColor-Product"
                               >
                                 <Colorpicker
@@ -391,8 +399,9 @@ function Design() {
                         name="color"
                         label="Gradient background"
                         decription=""
+                        checked={design.backtype == "gradientBackground"?true:false}
                         onChange={(e) => {
-                          setDesign({ ...design, backtype: e.target.value })
+                          setDesign({ ...design, backtype: "gradientBackground" })
                           document
                             .getElementById('GradColor-Product')
                             .classList.remove('disable-div')
@@ -401,7 +410,7 @@ function Design() {
                             .classList.add('disable-div')
                         }}
                       />
-                      <div id="GradColor-Product" className='disable-div'>
+                      <div id="GradColor-Product" className={`${design.backtype == "gradientBackground"?'':"disable-div"}`}>
                         <div className="Polaris-FormLayout__Item">
                           <Rangeslider
                             state1={design.gradAngle}
