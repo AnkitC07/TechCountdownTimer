@@ -91,7 +91,10 @@ export const productContent = {
 
 export const productDesign = {
   template: 'Custom',
-  backtype: 'singleBackground',
+  backtype:{
+    single:true,
+    gradient:false
+  },
   singleColor: '#FFFFFF',
   gradAngle: '90',
   gradClr1: '#DDDDDD',
@@ -115,7 +118,12 @@ export const productDesign = {
 }
 
 export const productPlacement = {
-  selectProduct: '',
+  selectProduct: {
+    allProducts:true,
+    specificProducts:false,
+    allProductsWithTags:false,
+    customPosition:false
+  },
   specProduct: [],
   tags: '',
 }

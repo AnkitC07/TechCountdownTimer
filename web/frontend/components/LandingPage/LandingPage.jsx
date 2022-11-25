@@ -7,6 +7,7 @@ import {getShopName} from '../common_functions/functions.js'
 import { Button ,Badge} from "@shopify/polaris";
 import CustomModal from '../layouts/Modal'
 import ToastComp from '../layouts/ToastComp'
+import {UpdateTimerType} from "../common_functions/functions"
 
 const LandingPage = () => {
   const { content,
@@ -23,7 +24,7 @@ const LandingPage = () => {
   const navData_land = [
     {
       title: 'Content',
-      path: '',
+      path: 'Content_land',
       class: 'active',
     },
     {
@@ -73,20 +74,7 @@ const LandingPage = () => {
       const data = await res.json()
       console.log("Landing page",data)
       if(data.data !== null){
-        setContent(() => {
-          return {
-            ...data.data.Content,
-            startDate: {
-              start: new Date(data.data.Content.startDate.start),
-              end: new Date(data.data.Content.startDate.end),
-            },
-            endDate: {
-              start: new Date(data.data.Content.endDate.start),
-              end: new Date(data.data.Content.endDate.end),
-            },
-          }
-        })
-        console.log(data.data.Content)
+        setContent({...data.data.Content,timerType:UpdateTimerType(data,'Content')})
         setDesign(data.data.Design)
         setPlacement(data.data.Placement)
         setHtml(data.data.Html)

@@ -26,6 +26,9 @@ function Placement() {
     id = dataId
   }
 
+  console.log(id,"checking placement data")
+
+  
   const updateState = async (keyData) =>{
     Object.keys(selectedPro).forEach(key => {
       selectedPro[key] = false;

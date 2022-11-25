@@ -35,7 +35,7 @@ const TimerBadge_cart = ({ design, content }) => {
     return (
         <div
             id="cart_top_product_timer"
-            style={design.backtype === 'singleBackground' ? single : multiple}
+            style={design.backtype.single == true ? single : multiple}
         >
             <h2
                 // className="product-heading"

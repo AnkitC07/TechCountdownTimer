@@ -7,6 +7,7 @@ import { useAuthenticatedFetch } from '../../hooks'
 import CustomModal from '../layouts/Modal'
 import ToastComp from '../layouts/ToastComp'
 import { TimerNav } from '../TimerNav'
+import {UpdateTimerType} from "../common_functions/functions"
 
 const Top_BottomPage = () => {
 	const fetch = useAuthenticatedFetch()
@@ -77,21 +78,8 @@ const Top_BottomPage = () => {
 				body: JSON.stringify({ id: id }),
 			})
 			const data = await res.json()
-			console.log(data)
-			console.log('updated Content', new Date(data.data.Content.startDate.start).getMonth())
-			setContent(() => {
-				return {
-					...data.data.Content,
-					startDate: {
-						start: new Date(data.data.Content.startDate.start),
-						end: new Date(data.data.Content.startDate.end),
-					},
-					endDate: {
-						start: new Date(data.data.Content.endDate.start),
-						end: new Date(data.data.Content.endDate.end),
-					},
-				}
-			})
+			
+			setContent({...data.data.content,timerType:UpdateTimerType(data,'content')})
 			setDesign(data.data.Design)
 			setPlacement(data.data.Placement)
 			setHtml(data.data.Html)

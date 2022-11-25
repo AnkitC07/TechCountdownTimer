@@ -1,12 +1,54 @@
 import React, { useEffect } from "react";
-import TimerFixed, { RecurringTimer } from "../Fields/TimerFixed";
+import TimerFixed from "../Fields/TimerFixed";
 import TImerReccuring from "../Fields/TImerReccuring";
 import TImer from "../TImer";
+import TimerSubComponent from "../layouts/SwitchTimers";
+// const TimerSubComponent = ({content,design}) => {
+//   if (content.timerType.fixedTime.status == true) {
+//     return (
+//       <>
+//         <TimerFixed
+//           start={new Date()}
+//           mnt={content.timerType.fixedTime.time}
+//           design={design}
+//         />
+//       </>
+//     );
+//   } else if (content.timerType.countdownDate.status == true) {
+//     return (
+//       <>
+//         <TImer
+//           start={content.timerType.countdownDate.startDate.date.start}
+//           end={content.timerType.countdownDate.endDate.date.end}
+//           starthrs={content.timerType.countdownDate.startDate.hr}
+//           endhrs={content.timerType.countdownDate.endDate.hr}
+//           startmnt={content.timerType.countdownDate.startDate.min}
+//           endmnt={content.timerType.countdownDate.endDate.min}
+//           design={design}
+//         />
+//       </>
+//     );
+//   } else if (content.timerType.recurring.status == true) {
+//     return (
+//       <>
+//         <TImerReccuring
+//           starthrs={content.timerType.recurring.dailyStart.hr}
+//           startmnt={content.timerType.recurring.dailyStart.min}
+//           endhrs={content.timerType.recurring.dailyEnd.hr}
+//           endmnt={content.timerType.recurring.dailyEnd.min}
+//           design={design}
+//         />
+//       </>
+//     );
+//   } else {
+//     return <>Timer</>;
+//   }
+// };
 
 const Timerbadge = ({ design, content }) => {
   useEffect(() => {
     console.log("timer run checking");
-  }, [design]);
+  }, []);
 
   const multiple = {
     fontFamily: `${design.font}`,
@@ -46,81 +88,10 @@ const Timerbadge = ({ design, content }) => {
   } else if (content.timerType.recurring.status == true) {
   }
 
-  const TimerSubComponent = () => {
-    if (content.timerType.fixedTime.status == true) {
-      return (
-        <>
-          <TimerFixed
-            start={new Date()}
-            mnt={content.timerType.fixedTime.time}
-            design={design}
-          />
-        </>
-      );
-    } else if (content.timerType.countdownDate.status == true) {
-      return (
-        <>
-          <TImer
-            start={content.timerType.countdownDate.startDate.date.start}
-            end={content.timerType.countdownDate.endDate.date.end}
-            starthrs={content.timerType.countdownDate.startDate.hr}
-            endhrs={content.timerType.countdownDate.endDate.hr}
-            startmnt={content.timerType.countdownDate.startDate.min}
-            endmnt={content.timerType.countdownDate.endDate.min}
-            design={design}
-          />
-        </>
-      );
-    } else if (content.timerType.recurring.status == true) {
-      return (
-        <>
-          {/* <RecurringTimer 
-        startDate={content.timerType.recurring.start.date.start}
-        endDate={content.timerType.recurring.end.date.end}
-        starthr={content.timerType.recurring.dailyStart.hr}
-        endhr={content.timerType.recurring.dailyEnd.hr}
-        startmin={content.timerType.recurring.dailyStart.min}
-        endmin={content.timerType.recurring.dailyEnd.min}
-        /> */}
-          <TImerReccuring
-            starthrs={content.timerType.recurring.dailyStart.hr}
-            startmnt={content.timerType.recurring.dailyStart.min}
-            endhrs={content.timerType.recurring.dailyEnd.hr}
-            endmnt={content.timerType.recurring.dailyEnd.min}
-            design={design}
-          />
-        </>
-      );
-    } else {
-      return <>Timer</>;
-    }
-
-    // return(
-    //   <>
-    //   {content.timerType.fixedTime.status == true
-    //           ?
-    //           <TimerFixed
-    //             start={content.timerType.recurring.start.date}
-    //             mnt={content.timerType.fixedTime.time}
-    //             design={design}
-    //             />
-    //           :
-    //           <TImer
-    //            start={content.timerType.countdownDate.startDate.date}
-    //            end={content.timerType.countdownDate.endDate.date}
-    //            starthrs={content.timerType.countdownDate.startDate.hr}
-    //            endhrs={content.timerType.countdownDate.endDate.hr}
-    //            startmnt={content.timerType.countdownDate.startDate.min}
-    //            endmnt={content.timerType.countdownDate.endDate.min}
-    //            design={design} />
-    //         }
-    //   </>
-    // )
-  };
   return (
     <div
       // className="product-page-main"
-      style={design.backtype === "singleBackground" ? single : multiple}
+      style={design.backtype.single === true ? single : multiple}
     >
       <h2
         // className="product-heading"
@@ -153,7 +124,10 @@ const Timerbadge = ({ design, content }) => {
             // className="time"
             style={{}}
           >
-            <TimerSubComponent />
+            <TimerSubComponent 
+            design={design}
+            content={content}
+            />
 
             {/* <TImerReccuring starthrs={content.dailyStartHrs} startmnt={content.dailyStartMnt} endhrs={content.dailyEndHrs} endmnt={content.dailyEndMnt} design={design} /> */}
           </div>

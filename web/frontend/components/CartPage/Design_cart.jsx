@@ -9,6 +9,7 @@ import InputNumber from '../Fields/InputNumber'
 import InputSelect from '../Fields/InputSelect'
 import Rangeslider from '../Fields/Rangeslider'
 import TimerBadge_cart from './TimerBadge_cart'
+import {updateOptionData} from '../common_functions/functions'
 
 const Design_cart = () => {
   const { content, design, setDesign } = useContext(CartPageContext)
@@ -265,49 +266,7 @@ const Design_cart = () => {
                   option={myoption}
                   placeholder="Custom"
                   value={design.template}
-                  onChange={(e) => {
-                    let temp = {}
-                    {
-                      myoption.filter(
-                        (item) => item.value === e.target.value,
-                      )[0].tag == true
-                        ? (temp = {
-                          singleColor: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].background,
-                        })
-                        : (temp = {
-                          gradClr1: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].background1,
-                          gradClr2: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].background2,
-                          gradAngle: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].deg,
-                        })
-                    }
-                    const data = {
-                      ...design,
-                      template: e.target.value,
-                      borderSize: myoption.filter(
-                        (item) => item.value === e.target.value,
-                      )[0].borderSize,
-                      borderColor: myoption.filter(
-                        (item) => item.value === e.target.value,
-                      )[0].borderColor,
-                      ...temp,
-                    }
-
-                    setDesign((state) => {
-                      return {
-                        ...state,
-                        ...data,
-
-                      }
-                    })
-                  }}
+                  onChange={(e)=>updateOptionData(e,design,setDesign,myoption)}
                 />
               </div>
             </div>
@@ -326,34 +285,33 @@ const Design_cart = () => {
                     name="color"
                     label="Single color background"
                     decription=""
-                    checked={true}
+                    checked={design.backtype.single}
                     onChange={(e) => {
-                      setDesign({ ...design, backtype: e.target.value })
-                      document
-                        .getElementById('SingleColor-Product')
-                        .classList.remove('disable-div')
-
-                      document
-                        .getElementById('GradColor-Product')
-                        .classList.add('disable-div')
+                      setDesign({
+                        ...design,
+                        backtype: {
+                          single: true,
+                          gradient: false,
+                        },
+                      });
                     }}
                   />
                   <div className="Polaris-FormLayout__Item">
                     <div className="Polaris-Stack">
                       <div className="Polaris-Stack__Item">
                         <div className="">
-                          <div
-                            className="Polaris-Connected"
-                            id="SingleColor-Product"
-                          >
+                        <div
+                                className={`${
+                                  design.backtype.single == true
+                                    ? ""
+                                    : "disable-div"
+                                } Polaris-Connected`}
+                                id="SingleColor-Product"
+                              >
                             <Colorpicker
-                              state1={design.singleColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  singleColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.singleColor}
+                              state={{setDesign,design}}
+                              value={'singleColor'}
                             />
                             <InputComponent
                               default={design.singleColor}
@@ -374,17 +332,23 @@ const Design_cart = () => {
                     name="color"
                     label="Gradient background"
                     decription=""
+                    checked={design.backtype.gradient}
                     onChange={(e) => {
-                      setDesign({ ...design, backtype: e.target.value })
-                      document
-                        .getElementById('GradColor-Product')
-                        .classList.remove('disable-div')
-                      document
-                        .getElementById('SingleColor-Product')
-                        .classList.add('disable-div')
+                      setDesign({
+                        ...design,
+                        backtype: {
+                          single: false,
+                          gradient: true,
+                        },
+                      });
                     }}
                   />
-                  <div id="GradColor-Product" className='disable-div'>
+                  <div
+                        id="GradColor-Product"
+                        className={`${
+                          design.backtype.gradient == true ? "" : "disable-div"
+                        }`}
+                      >
                     <div className="Polaris-FormLayout__Item">
                       <Rangeslider
                         state1={design.gradAngle}
@@ -401,13 +365,9 @@ const Design_cart = () => {
                               className="Polaris-Connected"
                             >
                               <Colorpicker
-                                state1={design.gradClr1}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    gradClr1: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.gradClr1}
+                                state={{setDesign,design}}
+                                value={'gradClr1'}
                               />
                               <InputComponent
                                 default={design.gradClr1}
@@ -429,13 +389,9 @@ const Design_cart = () => {
                           <div className="">
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.gradClr2}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    gradClr2: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.gradClr2}
+                                state={{setDesign,design}}
+                                value={'gradClr2'}
                               />
                               <InputComponent
                                 default={design.gradClr2}
@@ -533,13 +489,10 @@ const Design_cart = () => {
                         </div>
                         <div className="Polaris-Connected">
                           <Colorpicker
-                            state1={design.borderColor}
-                            onChange={(e) => {
-                              setDesign({
-                                ...design,
-                                borderColor: hsbToHex(e),
-                              })
-                            }}
+                            colors={design.borderColor}
+                     
+                                state={{setDesign,design}}
+                                value={'borderColor'}
                           />
                           <InputComponent
                             default={design.borderColor}
@@ -740,13 +693,9 @@ const Design_cart = () => {
                       <div className="" style={{ width: '58%' }}>
                         <div className="Polaris-Connected">
                           <Colorpicker
-                            state1={design.titleColor}
-                            onChange={(e) => {
-                              setDesign({
-                                ...design,
-                                titleColor: hsbToHex(e),
-                              })
-                            }}
+                            colors={design.titleColor}
+                            state={{setDesign,design}}
+                            value={'titleColor'}
                           />
                           <InputComponent
                             default={design.titleColor}
@@ -801,13 +750,9 @@ const Design_cart = () => {
                       <div className="" style={{ width: '58%' }}>
                         <div className="Polaris-Connected">
                           <Colorpicker
-                            state1={design.timerColor}
-                            onChange={(e) => {
-                              setDesign({
-                                ...design,
-                                timerColor: hsbToHex(e),
-                              })
-                            }}
+                            colors={design.timerColor}
+                            state={{setDesign,design}}
+                            value={'timerColor'}
                           />
                           <InputComponent
                             default={design.timerColor}

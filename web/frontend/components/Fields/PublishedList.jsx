@@ -8,13 +8,13 @@ function PublishedList({ item }) {
 
         switch (item) {
             case 'Product Page':
-                return '/ProductPage'
+                return '/ProductPage/Content'
             case 'Top/Bottom Page':
                 return '/Top_BottomPage/Content_top'
             case 'Landing Page':
-                return '/LandingPage'
+                return '/LandingPage/Content_land'
             case 'Cart Page':
-                return '/CartPage'
+                return '/CartPage/Content_cart'
             // default:
             //     break;
         }

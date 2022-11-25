@@ -13,7 +13,10 @@ export const Cartcontent = {
 
 export const cartdesign = {
   template: 'Custom',
-  backtype: 'singleBackground',
+  backtype: {
+    single:true,
+    gradient:false
+  },
   singleColor: '#FFFFFF',
   gradAngle: '90',
   gradClr1: '#DDDDDD',

@@ -12,6 +12,7 @@ import { NavLink } from 'react-router-dom'
 import { LandingContext } from '../../context/LandingContext'
 import { hsbToHex } from '@shopify/polaris'
 import TimerBadge_land from './TimerBadge_land'
+import {updateOptionData} from '../common_functions/functions';
 
 const Design_land = () => {
   const { content, design, setDesign } = useContext(LandingContext)
@@ -270,47 +271,7 @@ const Design_land = () => {
                     value={design.template}
 
                     onChange={(e) => {
-                      let temp = {}
-                      {
-                        myoption.filter(
-                          (item) => item.value === e.target.value,
-                        )[0].tag == true
-                          ? (temp = {
-                            singleColor: myoption.filter(
-                              (item) => item.value === e.target.value,
-                            )[0].background,
-                          })
-                          : (temp = {
-                            gradClr1: myoption.filter(
-                              (item) => item.value === e.target.value,
-                            )[0].background1,
-                            gradClr2: myoption.filter(
-                              (item) => item.value === e.target.value,
-                            )[0].background2,
-                            gradAngle: myoption.filter(
-                              (item) => item.value === e.target.value,
-                            )[0].deg,
-                          })
-                      }
-                      const data = {
-                        ...design,
-                        template: e.target.value,
-                        borderSize: myoption.filter(
-                          (item) => item.value === e.target.value,
-                        )[0].borderSize,
-                        borderColor: myoption.filter(
-                          (item) => item.value === e.target.value,
-                        )[0].borderColor,
-                        ...temp,
-                      }
-
-                      setDesign((state) => {
-                        return {
-                          ...state,
-                          ...data,
-
-                        }
-                      })
+                      updateOptionData(e,design,setDesign,myoption)
                     }}
                   />
                 </div>
@@ -332,29 +293,31 @@ const Design_land = () => {
                       checked={true}
                       decription=""
                       onChange={(e) => {
-                        setDesign({ ...design, backtype: e.target.value })
-                        document
-                          .getElementById('SingleColor-land')
-                          .classList.remove('disable-div')
-
-                        document
-                          .getElementById('GradColor-land')
-                          .classList.add('disable-div')
+                        setDesign({
+                          ...design,
+                          backtype: {
+                            single: true,
+                            gradient: false,
+                          },
+                        });
                       }}
                     />
                     <div className="Polaris-FormLayout__Item">
                       <div className="Polaris-Stack">
                         <div className="Polaris-Stack__Item">
                           <div className="" style={{ marginRight: '10px' }}>
-                            <div className="Polaris-Connected" id="SingleColor-land">
+                          <div
+                                className={`${
+                                  design.backtype.single == true
+                                    ? ""
+                                    : "disable-div"
+                                } Polaris-Connected`}
+                                id="SingleColor-Product"
+                              >
                               <Colorpicker
-                                state1={design.singleColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    singleColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.singleColor}
+                                state={{setDesign,design}}
+                              value={'singleColor'}
                               />
                               <InputComponent
                                 default={design.singleColor}
@@ -376,16 +339,21 @@ const Design_land = () => {
                       label="Gradient background"
                       decription=""
                       onChange={(e) => {
-                        setDesign({ ...design, backtype: e.target.value })
-                        document
-                          .getElementById('GradColor-land')
-                          .classList.remove('disable-div')
-                        document
-                          .getElementById('SingleColor-land')
-                          .classList.add('disable-div')
+                        setDesign({
+                          ...design,
+                          backtype: {
+                            single: true,
+                            gradient: false,
+                          },
+                        });
                       }}
                     />
-                    <div id="GradColor-land" className='disable-div'>
+                    <div
+                        id="GradColor-Product"
+                        className={`${
+                          design.backtype.gradient == true ? "" : "disable-div"
+                        }`}
+                      >
                       <div class="Polaris-FormLayout__Item">
                         <Rangeslider
                           state1={design.gradAngle}
@@ -400,13 +368,9 @@ const Design_land = () => {
                             <div class="" style={{ marginRight: '10px' }}>
                               <div className="Polaris-Connected">
                                 <Colorpicker
-                                  state1={design.gradClr1}
-                                  onChange={(e) => {
-                                    setDesign({
-                                      ...design,
-                                      gradClr1: hsbToHex(e),
-                                    })
-                                  }}
+                                  colors={design.gradClr1}
+                                  state={{setDesign,design}}
+                              value={'gradClr1'}
                                 />
                                 <InputComponent
                                   default={design.gradClr1}
@@ -429,13 +393,9 @@ const Design_land = () => {
                             <div class="" style={{ marginRight: '10px' }}>
                               <div className="Polaris-Connected">
                                 <Colorpicker
-                                  state1={design.gradClr2}
-                                  onChange={(e) => {
-                                    setDesign({
-                                      ...design,
-                                      gradClr2: hsbToHex(e),
-                                    })
-                                  }}
+                                  colors={design.gradClr2}
+                                  state={{setDesign,design}}
+                                  value={'gradClr2'}
                                 />
                                 <InputComponent
                                   default={design.gradClr2}
@@ -533,13 +493,9 @@ const Design_land = () => {
                           </div>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.borderColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  borderColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.borderColor}
+                              state={{setDesign,design}}
+                                  value={'borderColor'}
                             />
                             <InputComponent
                               default={design.borderColor}
@@ -740,13 +696,9 @@ const Design_land = () => {
                         <div className="" style={{ width: '58%' }}>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.titleColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  titleColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.titleColor}
+                              state={{setDesign,design}}
+                              value={'titleColor'}
                             />
                             <InputComponent
                               default={design.titleColor}
@@ -800,13 +752,9 @@ const Design_land = () => {
                         <div className="" style={{ width: '58%' }}>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.subheadingColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  subheadingColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.subheadingColor}
+                              state={{setDesign,design}}
+                              value={'subheadingColor'}
                             />
                             <InputComponent
                               default={design.subheadingColor}
@@ -860,13 +808,9 @@ const Design_land = () => {
                         <div className="" style={{ width: '58%' }}>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.timerColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  timerColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.timerColor}
+                              state={{setDesign,design}}
+                              value={'timerColor'}
                             />
                             <InputComponent
                               default={design.timerColor}
@@ -920,13 +864,9 @@ const Design_land = () => {
                         <div className="" style={{ width: '58%' }}>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.legendColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  legendColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.legendColor}
+                              state={{setDesign,design}}
+                              value={'legendColor'}
                             />
                             <InputComponent
                               default={design.legendColor}
@@ -969,13 +909,9 @@ const Design_land = () => {
                       <div class="" style={{ marginRight: '10px' }}>
                         <div className="Polaris-Connected">
                           <Colorpicker
-                            state1={design.buttonColor}
-                            onChange={(e) => {
-                              setDesign({
-                                ...design,
-                                buttonColor: hsbToHex(e),
-                              })
-                            }}
+                            colors={design.buttonColor}
+                            state={{setDesign,design}}
+                            value={'buttonColor'}
                           />
                           <InputComponent
                             default={design.buttonColor}
@@ -1029,13 +965,9 @@ const Design_land = () => {
                         <div className="" style={{ width: '58%' }}>
                           <div className="Polaris-Connected">
                             <Colorpicker
-                              state1={design.buttonFontColor}
-                              onChange={(e) => {
-                                setDesign({
-                                  ...design,
-                                  buttonFontColor: hsbToHex(e),
-                                })
-                              }}
+                              colors={design.buttonFontColor}
+                              state={{setDesign,design}}
+                              value={'buttonFontColor'}
                             />
                             <InputComponent
                               default={design.buttonFontColor}

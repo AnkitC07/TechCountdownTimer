@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import TimerFixed from '../Fields/TimerFixed'
+import TimerSubComponent from '../layouts/SwitchTimers'
 import TImer from '../TImer'
+
 
 const TimerBadge_land = ({ design, content }) => {
   useEffect(() => { }, [design])
@@ -34,7 +36,7 @@ const TimerBadge_land = ({ design, content }) => {
     borderRadius: `${design.cornerRadus}px`,
     alignItems: 'center',
   }
-  console.log(content.startDate.start, "tset")
+  
 
   return (
     <>
@@ -49,7 +51,7 @@ const TimerBadge_land = ({ design, content }) => {
             }}
           >
             <div
-              style={design.backtype === 'singleBackground' ? single : multiple}
+              style={design.backtype.single == true ? single : multiple}
             >
 
               <h2
@@ -92,12 +94,16 @@ const TimerBadge_land = ({ design, content }) => {
                       letterSpacing: '1px',
                     }}
                   >
-                    {content.timerType == 'fixed'
+                    <TimerSubComponent 
+                    content={content}
+                    design={design}
+                    />
+                    {/* {content.timerType == 'fixed'
                       ?
                       <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
                       :
                       <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
-                    }
+                    } */}
                   </div>
                   <div
                     className="timer-label"
@@ -193,7 +199,7 @@ const TimerBadge_land = ({ design, content }) => {
         >
           <div
 
-            style={design.backtype === 'singleBackground' ? single : multiple}
+            style={design.backtype.single == true ? single : multiple}
 
           >
             <h2
@@ -235,12 +241,16 @@ const TimerBadge_land = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  {content.timerType == 'fixed'
+                  <TimerSubComponent 
+                    content={content}
+                    design={design}
+                    />
+                  {/* {content.timerType == 'fixed'
                     ?
                     <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
                     :
                     <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
-                  }
+                  } */}
                 </div>
                 <div
                   className="timer-label"

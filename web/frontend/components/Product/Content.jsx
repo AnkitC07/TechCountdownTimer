@@ -13,6 +13,7 @@ import { ProductContext } from '../../context/ProductContext'
 import { useEffect } from 'react'
 import Timerbadge from './Timerbadge'
 import { connect } from 'mongoose'
+import {updateState,updateCountDownTimer,updateCountDownTimerDates,repeatOn,updateRecurringTimer,updateRecurringTimerRadio} from '../common_functions/functions'
 
 function Content() {
   const { design, content, setContent, Html, setHtml } = useContext(ProductContext)
@@ -39,92 +40,6 @@ function Content() {
     },
   ]
 
-  const updateState = async (keyData) =>{
-    Object.keys(timerType).forEach(key => {
-      timerType[key] = {
-        ...timerType[key],
-        status:false
-      };
-    });
-    timerType[keyData] = {
-      ...timerType[keyData],
-      status:true
-    }
-    setContent({...content,timerType:timerType})
-  }
-
-  const updateCountDownTimer = async (trueKey,falseKey) =>{
-    console.log(content)
-    const data = {...content,timerType:{...content.timerType,countdownDate:{
-      ...content.timerType.countdownDate,[trueKey]:true,[falseKey]:false
-    }}}
-    
-    setContent(data)
-  } 
-
-  const updateCountDownTimerDates = async (key,subkey,e) =>{
-    const data = {...content,timerType:{
-      ...content.timerType,
-      countdownDate:{
-        ...content.timerType.countdownDate,
-        [key]:{
-          ...content.timerType.countdownDate[key],
-          [subkey]:e
-        }
-      }
-    }}
-    setContent(data)
-  }
-
-  const repeatOn = async (key,e) =>{
-    const data = {...content,timerType:{
-      ...content.timerType,
-      recurring:{
-        ...content.timerType.recurring,
-        repeatOn:{
-          ...content.timerType.recurring.repeatOn,
-          [key]:e
-        }
-      }
-    }}
-    setContent(data)
-  }
-
-  const updateRecurringTimer = async (key,subkey,e) =>{
-    const data = {...content,timerType:{
-      ...content.timerType,
-      recurring:{
-        ...content.timerType.recurring,
-        [key]:{
-          ...content.timerType.recurring[key],
-          [subkey]:e
-        }
-      }
-    }}
-    setContent(data)
-  }
-
-  const updateRecurringTimerRadio = async (key,subkey) =>{
-    const data = content.timerType.recurring[key]
-    Object.keys(data).forEach(val => {
-      console.log(val)
-      if(val !== 'date'){
-        data[val] = false
-      }
-    });
-    data[subkey] = true
-    
-    setContent({...content,timerType:{
-      ...content.timerType,
-      recurring:{
-        ...content.timerType.recurring,
-        [key]:data
-      }
-    }})
-  }
-
-  console.log(content.timerType)
-  const CheckDates = () => { }
   return (
     <>
       <div className="row px-4 py-3">
@@ -288,7 +203,7 @@ function Content() {
                       checked={content.timerType.countdownDate.status}
                       decription="Timer that ends at the specific date."
                       onChange={(e) => {
-                        updateState("countdownDate")
+                        updateState("countdownDate",setContent,content,timerType)
                         // setContent({ ...content, timerType: {countdownDate} })
                       }}
                     />
@@ -300,7 +215,7 @@ function Content() {
 
                       decription="Individual fixed minutes countdown for each buyer session."
                       onChange={(e) => {
-                        updateState("fixedTime")
+                        updateState("fixedTime",setContent,content,timerType)
                       }}
                     />
                     <CheckBoxComponent
@@ -310,7 +225,7 @@ function Content() {
                       label="Daily recurring timer"
                       decription="E.g. every weekday from 9 am to 11 am"
                       onChange={(e) => {
-                        updateState("recurring")
+                        updateState("recurring",setContent,content,timerType)
                       }}
                     />
                   </div>
@@ -341,7 +256,7 @@ function Content() {
                           checked={content.timerType.countdownDate.rightNow}
                           label="Right now"
                           onChange={(e) => {
-                            updateCountDownTimer('rightNow','schedule')
+                            updateCountDownTimer('rightNow','schedule',content,setContent)
                           }}
                         />
                         <CheckBoxComponent
@@ -350,7 +265,7 @@ function Content() {
                           checked={content.timerType.countdownDate.schedule}
                           label="Schedule to start later"
                           onChange={(e) => {
-                            updateCountDownTimer('schedule','rightNow')
+                            updateCountDownTimer('schedule','rightNow',content,setContent)
                           }}
                         />
                         <div className="Polaris-FormLayout__Item">
@@ -370,7 +285,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.countdownDate.endDate.date}
                                 onChange={(e) => {
-                                  updateCountDownTimerDates("endDate",'date',e)
+                                  updateCountDownTimerDates("endDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -400,7 +315,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.endDate.hr}
                                   state1={content.timerType.countdownDate.endDate.hr}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("endDate",'hr',e)
+                                    updateCountDownTimerDates("endDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -424,7 +339,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.endDate.min}
                                   state1={content.timerType.countdownDate.endDate.min}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("endDate",'min',e)
+                                    updateCountDownTimerDates("endDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -453,7 +368,7 @@ function Content() {
                           checked={content.timerType.countdownDate.rightNow}
                           label="Right now"
                           onChange={(e) => {
-                            updateCountDownTimer('rightNow','schedule')
+                            updateCountDownTimer('rightNow','schedule',content,setContent)
                           }}
                         />
                         <CheckBoxComponent
@@ -462,7 +377,7 @@ function Content() {
                           checked={content.timerType.countdownDate.schedule}
                           label="Schedule to start later"
                           onChange={(e) => {
-                            updateCountDownTimer('schedule','rightNow')
+                            updateCountDownTimer('schedule','rightNow',content,setContent)
                           }}
                         />
                         <div className="Polaris-FormLayout__Item">
@@ -482,7 +397,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.countdownDate.startDate.date}
                                 onChange={(e) => {
-                                  updateCountDownTimerDates("startDate",'date',e)
+                                  updateCountDownTimerDates("startDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -512,7 +427,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.startDate.hr}
                                   state1={content.timerType.countdownDate.startDate.hr}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("startDate",'hr',e)
+                                    updateCountDownTimerDates("startDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -536,7 +451,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.startDate.min}
                                   state1={content.timerType.countdownDate.startDate.min}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("startDate",'min',e)
+                                    updateCountDownTimerDates("startDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -560,7 +475,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.countdownDate.endDate.date}
                                 onChange={(e) => {
-                                  updateCountDownTimerDates("endDate",'date',e)
+                                  updateCountDownTimerDates("endDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -590,7 +505,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.endDate.hr}
                                   state1={content.timerType.countdownDate.endDate.hr}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("endDate",'hr',e)
+                                    updateCountDownTimerDates("endDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -614,7 +529,7 @@ function Content() {
                                   defaultValue={content.timerType.countdownDate.endDate.min}
                                   state1={content.timerType.countdownDate.endDate.min}
                                   onChange={(e) => {
-                                    updateCountDownTimerDates("endDate",'min',e)
+                                    updateCountDownTimerDates("endDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -662,7 +577,7 @@ function Content() {
                               label={'Monday'}
                               state1={content.timerType.recurring.repeatOn.monday}
                               onChange={(e) => {
-                                repeatOn('monday',e)
+                                repeatOn('monday',e,content,setContent)
                                 // setContent((state) => {
                                 //   return {
                                 //     ...state,
@@ -681,7 +596,7 @@ function Content() {
                               label={'Tuesday'}
                               state1={content.timerType.recurring.repeatOn.tuesday}
                               onChange={(e) => {
-                                repeatOn('tuesday',e)
+                                repeatOn('tuesday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -690,7 +605,7 @@ function Content() {
                               label={'Wednesday'}
                               state1={content.timerType.recurring.repeatOn.wednesday}
                               onChange={(e) => {
-                                repeatOn('wednesday',e)
+                                repeatOn('wednesday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -699,7 +614,7 @@ function Content() {
                               label={'Thursday'}
                               state1={content.timerType.recurring.repeatOn.thursday}
                               onChange={(e) => {
-                                repeatOn('thursday',e)
+                                repeatOn('thursday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -708,7 +623,7 @@ function Content() {
                               label={'Friday'}
                               state1={content.timerType.recurring.repeatOn.friday}
                               onChange={(e) => {
-                                repeatOn('friday',e)
+                                repeatOn('friday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -717,7 +632,7 @@ function Content() {
                               label={'Saturday'}
                               state1={content.timerType.recurring.repeatOn.saturday}
                               onChange={(e) => {
-                                repeatOn('saturday',e)
+                                repeatOn('saturday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -726,7 +641,7 @@ function Content() {
                               label={'Sunday'}
                               state1={content.timerType.recurring.repeatOn.sunday}
                               onChange={(e) => {
-                                repeatOn('sunday',e)
+                                repeatOn('sunday',e,content,setContent)
                               }}
                             />
                           </li>
@@ -750,7 +665,7 @@ function Content() {
                             label="hoursLabel"
                             defaultValue={content.timerType.recurring.dailyStart.hr}
                             onChange={(e) => {
-                              updateRecurringTimer('dailyStart','hr',e)
+                              updateRecurringTimer('dailyStart','hr',e,content,setContent)
                             }}
                           />
                           <div
@@ -777,7 +692,7 @@ function Content() {
                             label="mntLabel"
                             defaultValue={content.timerType.recurring.dailyStart.min}
                             onChange={(e) => {
-                              updateRecurringTimer('dailyStart','min',e)
+                              updateRecurringTimer('dailyStart','min',e,content,setContent)
                             }}
                           />
                           <div
@@ -806,7 +721,7 @@ function Content() {
                             label="hoursLabel"
                             defaultValue={content.timerType.recurring.dailyEnd.hr}
                             onChange={(e) => {
-                              updateRecurringTimer('dailyEnd','hr',e)
+                              updateRecurringTimer('dailyEnd','hr',e,content,setContent)
                             }}
                           />
                           <div
@@ -833,7 +748,7 @@ function Content() {
                             label="mntLabel"
                             defaultValue={content.timerType.recurring.dailyEnd.min}
                             onChange={(e) => {
-                              updateRecurringTimer('dailyEnd','min',e)
+                              updateRecurringTimer('dailyEnd','min',e,content,setContent)
                             }}
                           />
                           <div
@@ -863,7 +778,7 @@ function Content() {
                         checked={content.timerType.recurring.start.today}
                         label="Today"
                         onChange={(e) => {
-                          updateRecurringTimerRadio('start','today')
+                          updateRecurringTimerRadio('start','today',content,setContent)
                           // setContent({ ...content, starts: e.target.value })
                         }}
                       />
@@ -873,7 +788,7 @@ function Content() {
                         label="Specefic date"
                         checked={content.timerType.recurring.start.speceficDate}
                         onChange={(e) => {
-                          updateRecurringTimerRadio('start','speceficDate')
+                          updateRecurringTimerRadio('start','speceficDate',content,setContent)
                           // setContent({ ...content, starts: e.target.value })
                         }}
                       />
@@ -895,7 +810,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.recurring.start.date}
                                 onChange={(e) => {
-                                  updateRecurringTimer('start','date',e)
+                                  updateRecurringTimer('start','date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -920,7 +835,7 @@ function Content() {
                         label="Never"
                         checked={content.timerType.recurring.end.never}
                         onChange={(e) => {
-                          updateRecurringTimerRadio('end','never')
+                          updateRecurringTimerRadio('end','never',content,setContent)
                           // setContent({ ...content, ends: e.target.value })
                         }}
                       />
@@ -930,7 +845,7 @@ function Content() {
                         label="Specefic date"
                         checked={content.timerType.recurring.end.speceficDate}
                         onChange={(e) => {
-                          updateRecurringTimerRadio('end','speceficDate')
+                          updateRecurringTimerRadio('end','speceficDate',content,setContent)
                           // setContent({ ...content, ends: e.target.value })
                           // console.log(content.timerStart)
                         }}
@@ -953,7 +868,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.recurring.end.date}
                                 onChange={(e) => {
-                                  updateRecurringTimer('end','date',e)
+                                  updateRecurringTimer('end','date',e,content,setContent)
                                   // setContent({
                                   //   ...content,
                                   //   selectedEndDates: e,
@@ -999,6 +914,7 @@ function Content() {
                 </div>
               </div>
             </div>
+
             <div className="Polaris-Card__Section">
               <NavLink to="/ProductPage/Design">
                 <button

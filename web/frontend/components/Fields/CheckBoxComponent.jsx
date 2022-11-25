@@ -15,7 +15,7 @@ function CheckBoxComponent(props) {
                   type="radio"
                   onChange={props.onChange}
                   className="Polaris-RadioButton__Input"
-                  defaultChecked={props.checked}
+                  checked={props.checked}
                 />
                 <span className="Polaris-RadioButton__Backdrop" />
               </span>
