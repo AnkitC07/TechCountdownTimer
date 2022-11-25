@@ -33,7 +33,10 @@ export const cartdesign = {
 }
 
 export const Cartplacement = {
-  selectProduct: '',
+  selectProduct: {
+    topOfCart:true,
+    customPosition:false
+  },
 }
 export const CartPageProvider = (props) => {
 

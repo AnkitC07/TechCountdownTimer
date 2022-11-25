@@ -146,13 +146,14 @@ const CartPage = () => {
       type: statusUpdate,
       status: true,
     });
-
+    const setHrmlValue = Html == ""?document.querySelector('.top_product_timer_wrapper').innerHTML:Html
+    console.log(setHrmlValue)
     const body = {
       type: "Cart Page",
       content: content,
       design: design,
       placement: placement,
-      Html: Html,
+      Html: setHrmlValue,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
       store: getShopName(),
     };

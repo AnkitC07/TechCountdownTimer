@@ -9,12 +9,32 @@ import { ProductPage } from './ProductPage'
 import { ProductContext } from '../../context/ProductContext'
 import { ResourcePicker } from '@shopify/app-bridge-react'
 import ResourcePickerComp from '../Fields/ResourcePickerComp'
-import { useEffect } from 'react'
 import TImer from '../TImer'
 import Timerbadge from './Timerbadge'
+import CustomPosition from '../layouts/CustomPosition'
+
 function Placement() {
-  const { content, design, placement, setPlacement } = useContext(ProductContext)
+  const { content, design, placement, setPlacement,dataId } = useContext(ProductContext)
   const [open, setOpen] = useState(false)
+  const [selectedPro,setProducts] = useState(placement.selectProduct)
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  let id = urlParams.get("id");
+
+  if(dataId !== undefined && id == null){
+    id = dataId
+  }
+
+  const updateState = async (keyData) =>{
+    Object.keys(selectedPro).forEach(key => {
+      selectedPro[key] = false;
+    });
+    selectedPro[keyData] = true
+    console.log(selectedPro)
+    setProducts(selectedPro)
+    setPlacement({...placement,selectProduct:selectedPro})
+  }
 
   return (
     <>
@@ -35,48 +55,38 @@ function Placement() {
                       id="allproducts"
                       name="products"
                       label="All products"
-                      checked={true}
+                      checked={selectedPro.allProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
+                        updateState('allProducts')
+                        // setPlacement({
+                        //   ...placement,
+                        //   selectProduct: e.target.value,
+                        // })
 
-                        document
-                          .getElementById('spcProduct-btn')
-                          .classList.add('disable-div')
-                        document
-                          .getElementById('customPosition')
-                          .classList.add('hide-div')
-                        document
-                          .getElementById('timer-card')
-                          .classList.add('hide-div')
+                        // document
+                        //   .getElementById('spcProduct-btn')
+                        //   .classList.add('disable-div')
+                        // document
+                        //   .getElementById('customPosition')
+                        //   .classList.add('hide-div')
+                        // document
+                        //   .getElementById('timer-card')
+                        //   .classList.add('hide-div')
                       }}
                     />
                     <CheckBoxComponent
                       id="spcProduct"
                       name="products"
                       label="Specific products"
+                      checked={selectedPro.specificProducts}
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
-                        document
-                          .getElementById('spcProduct-btn')
-                          .classList.remove('disable-div')
-                        document
-                          .getElementById('customPosition')
-                          .classList.add('hide-div')
-                        document
-                          .getElementById('timer-card')
-                          .classList.add('hide-div')
+                        updateState('specificProducts')
                       }}
                     />
                   </div>
                   <div className="Polaris-FormLayout__Item ">
                     <button
-                      className="Polaris-Button Polaris-Button--fullWidth disable-div"
+                      className={`Polaris-Button Polaris-Button--fullWidth ${selectedPro.specificProducts == true?"":"disable-div"}`}
                       type="button"
                       onClick={() => setOpen(true)}
                       id="spcProduct-btn"
@@ -92,25 +102,14 @@ function Placement() {
                     id="spcTags"
                     name="products"
                     label="All products with specific tags"
+                    checked={selectedPro.allProductsWithTags}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('spcProduct-btn')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('customPosition')
-                        .classList.remove('hide-div')
-                      document
-                        .getElementById('timer-card')
-                        .classList.add('hide-div')
+                      updateState('allProductsWithTags')
                     }}
                   />
                   <div
                     id="customPosition"
-                    className="Polaris-FormLayout__Item hide-div"
+                    className={`Polaris-FormLayout__Item ${selectedPro.allProductsWithTags == true?'':"hide-div"}`}
                   >
                     <InputComponent
                       placeholder={'Add tags'}
@@ -127,20 +126,9 @@ function Placement() {
                     id="cstmPosition"
                     name="products"
                     label="Custom position"
+                    checked={selectedPro.customPosition}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
-                      document
-                        .getElementById('spcProduct-btn')
-                        .classList.add('disable-div')
-                      document
-                        .getElementById('customPosition')
-                        .classList.add('hide-div')
-                      document
-                        .getElementById('timer-card')
-                        .classList.remove('hide-div')
+                      updateState('customPosition')
                     }}
                   />
                   <div
@@ -154,43 +142,12 @@ function Placement() {
                 </div>
               </div>
             </div>
-            <div className="Polaris-Card__Section">
-              <span className="Polaris-TextStyle--variationStrong">
-                Timer ID
-              </span>
-              <div
-                className="Polaris-TextContainer"
-                style={{ marginTop: '5px' }}
-              >
-                <p>Save or Publish to show timer ID</p>
-              </div>
-              <div
-                className="Polaris-Labelled__HelpText  "
-                id="insideTopSpacingHelpText"
-                style={{ marginTop: '5px' }}
-              >
-                Countdown timer app block can be added, removed, repositioned,
-                and customized through the theme editor using timer ID.
-              </div>
-            </div>
-            <div id="timer-card" className="Polaris-Card__Section hide-div">
-              <span className="Polaris-TextStyle--variationStrong">
-                Timer code snippet
-              </span>
-              <div
-                className="Polaris-TextContainer"
-                style={{ marginTop: '5px' }}
-              >
-                <p>Save or Publish to show code snippet</p>
-              </div>
-              <div
-                className="Polaris-Labelled__HelpText  "
-                id="insideTopSpacingHelpText"
-                style={{ marginTop: '5px' }}
-              >
-                You can use this code snippet anywhere in your theme.
-              </div>
-            </div>
+
+            <CustomPosition 
+            id={id}
+            checked={selectedPro.customPosition}
+            />
+            
           </div>
         </div>
         <div className="col col-md-5">
@@ -205,7 +162,20 @@ function Placement() {
           showVariants={false}
           onCancel={() => setOpen(false)}
         /> */}
-        <ResourcePickerComp type="Product" state1={open} state2={setOpen} />
+        <ResourcePickerComp 
+        type="Product" 
+        state1={open} 
+        state2={setOpen} 
+        onSelection={(e) => {
+          setOpen(false)
+          setPlacement({...placement,
+            specificProducts:e.selection.map(x=>{
+              return {id:x.id}
+            })
+          }) 
+        }}
+        initialSelectionIds={placement.specificProducts}
+        />
       </div>
     </>
   )

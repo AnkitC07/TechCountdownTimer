@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
-// import parser from 'html-react-parser'
+
 import { ProductContext } from '../../context/ProductContext'
 
 const Timer = (props) => {
@@ -37,7 +37,7 @@ const Timer = (props) => {
         timerText = timerText.replace("{timer}", seconds)
         return timerText
     }
-    // console.log(start)
+    
     React.useEffect(() => {
         const interval = setInterval(() => {
             const getTimeValue = getTime()
@@ -58,16 +58,14 @@ const Timer = (props) => {
         } else {
             time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${min} : ${sec}</span>`
         }
-        // console.log(time)
-
+        
         value = value.replace("{timer}", time)
-        // console.log("parsing", value)
         return value
     }
 
     return (
         <div
-            // className="time"
+            id="TimerAppend"
             style={{
                 fontSize: `${props.design.titleSize}px`,
                 color: `${props.design.titleColor}`,
@@ -78,7 +76,7 @@ const Timer = (props) => {
                 whiteSpace: 'break-spaces',
             }}
         >
-            {replaceTimer(days < 10 ? '0' + days : days, hours < 10 ? '0' + hours : hours, minutes < 10 ? '0' + minutes : minutes, seconds < 10 ? '0' + seconds : seconds)}
+           <div dangerouslySetInnerHTML={{__html:replaceTimer(days < 10 ? '0' + days : days, hours < 10 ? '0' + hours : hours, minutes < 10 ? '0' + minutes : minutes, seconds < 10 ? '0' + seconds : seconds)}}></div>
         </div>
     )
 }

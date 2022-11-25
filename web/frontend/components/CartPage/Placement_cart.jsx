@@ -1,11 +1,36 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
 import { useContext } from 'react'
 import { CartPageContext } from '../../context/CartPageContext'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
+import CustomPosition from '../layouts/CustomPosition'
 import TimerBadge_cart from './TimerBadge_cart'
 
 const Placement_cart = () => {
-  const { content, design, placement, setPlacement } = useContext(CartPageContext)
+  const { content, design, placement, setPlacement,dataId } = useContext(CartPageContext)
+  const [selectedPro,setProducts] = useState(placement.selectProduct !== undefined?placement.selectProduct:{
+    topOfCart:true,
+    customPosition:false
+  })
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  let id = urlParams.get("id");
+
+  if(dataId !== undefined && id == null){
+    id = dataId
+  }
+
+  console.log("placement Id data",id)
+  const updateState = async (keyData) =>{
+    Object.keys(selectedPro).forEach(key => {
+      selectedPro[key] = false;
+    });
+    selectedPro[keyData] = true
+    setProducts(selectedPro)
+    setPlacement({selectProduct:selectedPro})
+  }
 
   return (
     <>
@@ -25,13 +50,10 @@ const Placement_cart = () => {
                     <CheckBoxComponent
                       id="allproducts"
                       name="products"
-                      checked={true}
+                      checked={selectedPro.topOfCart}
                       label="At the top of the cart"
                       onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          selectProduct: e.target.value,
-                        })
+                        updateState('topOfCart')
                       }}
                     />
                   </div>
@@ -40,11 +62,9 @@ const Placement_cart = () => {
                     id="cstmPosition"
                     name="products"
                     label="Custom position"
+                    checked={selectedPro.customPosition}
                     onChange={(e) => {
-                      setPlacement({
-                        ...placement,
-                        selectProduct: e.target.value,
-                      })
+                      updateState('customPosition')
                     }}
                   />
                   <div
@@ -58,92 +78,16 @@ const Placement_cart = () => {
                 </div>
               </div>
             </div>
-            <div className="Polaris-Card__Section">
-              <span className="Polaris-TextStyle--variationStrong">
-                Timer ID
-              </span>
-              <div
-                className="Polaris-TextContainer"
-                style={{ marginTop: '5px' }}
-              >
-                <p>Save or Publish to show timer ID</p>
-              </div>
-              <div
-                className="Polaris-Labelled__HelpText  "
-                id="insideTopSpacingHelpText"
-                style={{ marginTop: '5px' }}
-              >
-                Countdown timer app block can be added, removed, repositioned,
-                and customized through the theme editor using timer ID.
-              </div>
-            </div>
-
-
-            {placement.selectProduct == 'cstmPosition' ? <div className="Polaris-Card__Section">
-              <span className="Polaris-TextStyle--variationStrong">
-                Timer code snippet
-              </span>
-              <div
-                className="Polaris-TextContainer"
-                style={{ marginTop: '5px' }}
-              >
-                <p>Save or Publish to show code snippet</p>
-              </div>
-              <div
-                className="Polaris-Labelled__HelpText  "
-                id="insideTopSpacingHelpText"
-                style={{ marginTop: '5px' }}
-              >
-                You can use this code snippet anywhere in your theme.
-              </div>
-            </div> : ''}
-
-
-
-
+    
+            <CustomPosition 
+            id={id}
+            checked={selectedPro.customPosition}
+            />
 
           </div>
         </div>
         <div className="col col-md-8">
-          {/* <div
-            className="top_product_timer_wrapper"
-            style={{
-              marginLeft: '30px',
-              position: 'sticky',
-              top: '20px',
-            }}
-          >
-            <div
-              className="top_product_timer"
-              style={{
-                borderRadius: '8px',
-                marginTop: '20px',
-                display: 'flex',
-                flexFlow: 'column',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-                paddingTop: '20px',
-                paddingBottom: '20px',
-                border: '0px solid rbg(197, 200, 209)',
-                alignItems: 'center',
-                border: '1px solid rgb(197, 200, 209)',
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: '16px',
-                  color: 'rgb(32, 34, 35)',
-                  lineHeight: '1',
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  whiteSpace: 'break-spaces',
-                }}
-              >
-                {content.title}
-              </h2>
-            </div>
-          </div> */}
+         
           <TimerBadge_cart design={design} content={content} />
 
         </div>

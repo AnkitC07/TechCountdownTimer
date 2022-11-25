@@ -166,15 +166,7 @@ const TopBottomPagSchema = new mongoose.Schema({
     },
   },
   Placement: {
-    selectProduct: {
-      type: String,
-    },
-    specProduct: {
-      type: [String],
-    },
-    specCollection: {
-      type: [String],
-    },
+    type:Object
   },
   Html: {
     html: {

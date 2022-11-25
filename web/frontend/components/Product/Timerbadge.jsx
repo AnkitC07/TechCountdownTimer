@@ -5,7 +5,7 @@ import TImer from '../TImer'
 
 const Timerbadge = ({ design, content }) => {
 
-  useEffect(() => { }, [design])
+  useEffect(() => { console.log("timer run checking") }, [design])
 
   const multiple = {
     fontFamily: `${design.font}`,

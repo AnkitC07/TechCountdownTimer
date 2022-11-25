@@ -77,7 +77,14 @@ export const designCheck = {
 }
 
 export const placementCheck = {
-  selectProduct: '',
+  selectOptions: {
+    every:true,
+    home:false,
+    allProducts:false,
+    specificProducts:false,
+    allCollections:false,
+    specificCollections:false
+  },
   specProduct: [],
   specCollection: [],
 }

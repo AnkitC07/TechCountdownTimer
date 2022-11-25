@@ -166,6 +166,7 @@ export const ProductPage = () => {
       return window.location.ancestorOrigins[0].replaceAll("https://", "");
     };
 
+    // let setHTML = Html == ''?document.querySelector("")
     const body = {
       type: "Product Page",
       content: content,
