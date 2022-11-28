@@ -123,44 +123,6 @@ export const ProductPage = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-
-      // let  contentData = {...data.data.Content.timerType,
-      //   countdownDate:{
-      //     ...data.data.Content.timerType.countdownDate,
-      //     startDate:{
-      //       ...data.data.Content.timerType.countdownDate.startDate,
-      //       date:{
-      //         start:new Date(data.data.Content.timerType.countdownDate.startDate.date.start),
-      //         end:new Date(data.data.Content.timerType.countdownDate.startDate.date.end)
-      //       }
-      //     },
-      //     endDate:{
-      //       ...data.data.Content.timerType.countdownDate.endDate,
-      //       date:{
-      //         start:new Date(data.data.Content.timerType.countdownDate.endDate.date.start),
-      //         end:new Date(data.data.Content.timerType.countdownDate.endDate.date.end)
-      //       }
-      //     }
-      //   },
-      //   recurring:{
-      //     ...data.data.Content.timerType.recurring,
-      //     start:{
-      //       ...data.data.Content.timerType.recurring.start,
-      //       date:{
-      //         start:new Date(data.data.Content.timerType.recurring.start.date.start),
-      //         end:new Date(data.data.Content.timerType.recurring.start.date.end)
-      //       }
-      //     },
-      //     end:{
-      //       ...data.data.Content.timerType.recurring.end,
-      //       date:{
-      //         start:new Date(data.data.Content.timerType.recurring.end.date.start),
-      //         end:new Date(data.data.Content.timerType.recurring.end.date.end)
-      //       }
-      //     }
-      //   }
-      // }
-
       console.log(data)
       setContent({...data.data.Content,timerType:UpdateTimerType(data,'Content')})
       setDesign(data.data.Design);
@@ -228,7 +190,7 @@ export const ProductPage = () => {
       if (data.status == "published") {
         setMsg("Published");
         setBtnMain(false);
-		setIspublished("published")
+		    setIspublished("published")
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {
@@ -240,7 +202,7 @@ export const ProductPage = () => {
       } else {
         setMsg("Unpublished");
         setBtnMain(true);
-		setIspublished("Unpublished")
+		    setIspublished("Unpublished")
       }
       setActive(true);
     }

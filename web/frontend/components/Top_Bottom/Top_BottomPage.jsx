@@ -1,4 +1,4 @@
-import { Button } from '@shopify/polaris'
+import { Button,Badge } from '@shopify/polaris'
 import React, { useEffect, useState,useCallback } from 'react'
 import { useContext } from 'react'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
@@ -43,7 +43,7 @@ const Top_BottomPage = () => {
 	// Getting Id
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	const id = urlParams.get("id");
+	let id = urlParams.get("id");
 	
 	const [modal,modalState] = useState({
 		status:false,
@@ -69,6 +69,7 @@ const Top_BottomPage = () => {
 			setPlacement(placementCheck)
 			setContent(contentCheck)
 		}
+
 		const getDataById = async () => {
 			const res = await fetch('/api/getDataById', {
 				method: 'post',
@@ -78,23 +79,25 @@ const Top_BottomPage = () => {
 				body: JSON.stringify({ id: id }),
 			})
 			const data = await res.json()
-			
-			setContent({...data.data.content,timerType:UpdateTimerType(data,'content')})
+			setContent({...data.data.Content,timerType:UpdateTimerType(data,'Content')})
 			setDesign(data.data.Design)
 			setPlacement(data.data.Placement)
 			setHtml(data.data.Html)
 			setIspublished(data.data.IsPublished)
 			setBtnMain(data.data.IsPublished == "published"?false:true)
 		}
-		if (id !== null)
+
+		if (id !== null){
 			getDataById()
-
+		}
 		return () => {
-
 			setID(null)
 		}
 	}, [])
 
+	if (ID !== undefined && id == null) {
+		id = ID;
+	  }
 
 	const modalActivator = async (type) => {
 		if(type == "Delete"){
@@ -171,7 +174,8 @@ const Top_BottomPage = () => {
 		if(statusUpdate == "Duplicate"){
 			body.content.timerName = content.timerName+` Duplicate`
 		}
-
+		
+		console.log(body)
 		const res = await fetch(`/api/submitTopBottom?status=${statusUpdate}&id=${id}`, {
 			method: 'post',
 			headers: {
@@ -180,6 +184,7 @@ const Top_BottomPage = () => {
 			body: JSON.stringify(body),
 		})
 		const data = await res.json()
+		console.log(data)
 		if (data) {
 			// console.log(data.id)
 			setBtnLoading({
@@ -189,6 +194,7 @@ const Top_BottomPage = () => {
 			if (data.status == 'published') {
 				setMsg('Published')
 				setBtnMain(false)
+				setIspublished("published")
 			} else if(data.status == "save"){
 				setMsg('Save')
 			}else if(data.status == "Duplicate"){
@@ -200,6 +206,7 @@ const Top_BottomPage = () => {
 			}else{
 				setMsg('Unpublished')
 				setBtnMain(true)
+				setIspublished("Unpublished")
 			}
 			setActive(true);
 		}
@@ -207,6 +214,7 @@ const Top_BottomPage = () => {
 		setStatus(data.status)
 	}
 
+	console.log(ispublished,"checking is published")
 	return (
 		<section className="product_main_page">
 			<div className="container-fluid">
@@ -246,7 +254,7 @@ const Top_BottomPage = () => {
 													{content.timerName}
 												</h1>
 												<div class="Polaris-Header-Title__TitleMetadata">
-													<span class="Polaris-Badge">Not published</span>
+												{ispublished == "published"?<Badge status='success'>Published</Badge>:<Badge >Not published</Badge>}
 												</div>
 											</div>
 										</div>

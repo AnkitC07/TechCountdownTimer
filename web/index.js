@@ -7,8 +7,8 @@ import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
 
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
-import LandingRouter from './routes/LandingRouter.js'
-import ProductRouter from './routes/ProductRouter.js'
+// import LandingRouter from './routes/LandingRouter.js'
+// import ProductRouter from './routes/ProductRouter.js'
 import TopBottomRouter from './routes/TopBottomRouter.js'
 import bodyparser from 'body-parser'
 import './databse/config.js'
@@ -19,9 +19,13 @@ import redirectToAuth from "./helpers/redirect-to-auth.js";
 import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import CartRouter from "./routes/CartRouter.js";
+// import CartRouter from "./routes/CartRouter.js";
 import AllTimer from "./routes/AllTimer.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
+import Theme from "./routes/Themeextension.js";
+import Cors from 'cors'
+
+
 dotenv.config()
 
 const USE_ONLINE_TOKENS = false;
@@ -88,12 +92,22 @@ export async function createServer(
 ) {
   const app = express();
 
+  app.use(express.json());
+  app.use(bodyparser.json())
+
+  // app.use(Cors());
+
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
   applyAuthMiddleware(app, {
     billing: billingSettings,
   });
+
+  app.get('/api/checking',async(req,res)=>{
+    res.setHeader('Access-Control-Allow-Origin', ' *')
+    res.send({code:'checking'})
+  })
 
   // Do not call app.use(express.json()) before processing webhooks with
   // Shopify.Webhooks.Registry.process().
@@ -111,6 +125,8 @@ export async function createServer(
     }
   });
 
+
+  app.use('/api',Theme)
   // All endpoints after this point will require an active session
   app.use(
     "/api/*",
@@ -154,8 +170,7 @@ export async function createServer(
 
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
-  app.use(express.json());
-  app.use(bodyparser.json())
+
 
   // app.use('/submitCart', CartRouter)
   // app.use('/api', LandingRouter)
