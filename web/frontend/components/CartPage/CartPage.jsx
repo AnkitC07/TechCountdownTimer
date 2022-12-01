@@ -146,8 +146,7 @@ const CartPage = () => {
       status: true,
     });
   
-    const setHrmlValue = Html == ""?document.querySelector('.top_product_timer_wrapper').innerHTML:Html
-    console.log(setHrmlValue)
+    const setHrmlValue = document.querySelector('#getHTMLData').innerHTML
     const body = {
       type: "Cart Page",
       content: content,

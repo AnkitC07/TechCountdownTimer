@@ -119,6 +119,7 @@ const TimerBagde_Top = ({ design, content }) => {
 
   return (
     <>
+    <div id='getHTMLData'>
       {content.callToAction == 'Make entire bar clickable' ? (
         <a href={content.link}>
           <div
@@ -462,6 +463,8 @@ const TimerBagde_Top = ({ design, content }) => {
         </div>
       )
       }
+      
+    </div>
     </>
   )
 }

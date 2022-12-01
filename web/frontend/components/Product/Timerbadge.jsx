@@ -89,6 +89,7 @@ const Timerbadge = ({ design, content }) => {
   }
 
   return (
+    <div id="getHTMLData">
     <div
       // className="product-page-main"
       style={design.backtype.single === true ? single : multiple}
@@ -190,6 +191,7 @@ const Timerbadge = ({ design, content }) => {
           </div>
         </div>
       </span>
+    </div>
     </div>
   );
 };

@@ -40,6 +40,7 @@ const TimerBadge_land = ({ design, content }) => {
 
   return (
     <>
+    <div id='getHTMLData'>
       {content.callToAction == 'Make entire bar clickable' ?
         <a href={content.link}>
           <div
@@ -332,7 +333,7 @@ const TimerBadge_land = ({ design, content }) => {
 
           </div>
         </div>}
-
+        </div>
     </>
   )
 }
