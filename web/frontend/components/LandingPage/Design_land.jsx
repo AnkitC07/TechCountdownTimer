@@ -245,6 +245,8 @@ const Design_land = () => {
       data: 'Courier New',
     },
   ]
+
+  console.log(design)
   return (
     <>
       {/* <Top_BottomPage /> */}
@@ -290,7 +292,7 @@ const Design_land = () => {
                       id="singleBackground"
                       name="color"
                       label="Single color background"
-                      checked={true}
+                      checked={design.backtype.single}
                       decription=""
                       onChange={(e) => {
                         setDesign({
@@ -338,12 +340,13 @@ const Design_land = () => {
                       name="color"
                       label="Gradient background"
                       decription=""
+                      checked={design.backtype.gradient}
                       onChange={(e) => {
                         setDesign({
                           ...design,
                           backtype: {
-                            single: true,
-                            gradient: false,
+                            single: false,
+                            gradient: true,
                           },
                         });
                       }}
@@ -370,7 +373,7 @@ const Design_land = () => {
                                 <Colorpicker
                                   colors={design.gradClr1}
                                   state={{setDesign,design}}
-                              value={'gradClr1'}
+                                  value={'gradClr1'}
                                 />
                                 <InputComponent
                                   default={design.gradClr1}

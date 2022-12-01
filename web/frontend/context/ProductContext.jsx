@@ -76,16 +76,17 @@ export const productContent = {
       }
     },
   },
-  startHrs: date.getHours(),
-  startMnt: date.getMinutes(),
-  selectedEndDates: {
-    start: date,
-    end: date,
-  },
-  endHrs: '12',
-  endMnt: '00',
-  starts: '',
-  ends: '',
+  // startHrs: date.getHours(),
+  // startMnt: date.getMinutes(),
+  // selectedEndDates: {
+  //   start: date,
+  //   end: date,
+  // },
+  // endHrs: '12',
+  // endMnt: '00',
+  // starts: '',
+  // ends: '',
+  customTitle:'',
   onceItEnd: 'Unpublish timer',
 }
 

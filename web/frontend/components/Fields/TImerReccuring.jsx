@@ -39,8 +39,7 @@ const TImerReccuring = (props) => {
     }, [start, deadline])
     return (
         <div
-            id="GetHtmlData"
-            className="countdowntimerapp"
+            className={`countdowntimerapp_reccuring ${props.id}`}
             style={{
                 fontSize: `${props.design.timerSize}px`,
                 color: `${props.design.timerColor}`,

@@ -36,8 +36,7 @@ const TimerFixed = (props) => {
 
   return (
     <div
-      id="GetHtmlData"
-      className="countdowntimerapp"
+      className={`countdowntimerapp_fixed ${props.id}`}
       style={{
         fontSize: `${props.design.timerSize}px`,
         color: `${props.design.timerColor}`,

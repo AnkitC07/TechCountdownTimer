@@ -78,36 +78,8 @@ export const contentCheck = {
       }
     },
   },
-  fixedTime: '120',
-  RepeatOn: {
-    monday: true,
-    tuesday: true,
-    wednesday: true,
-    thursday: true,
-    friday: true,
-    saturday: true,
-    sunday: true,
-  },
-  dailyStartHrs: '11',
-  dailyStartMnt: '37',
-  dailyEndHrs: '12',
-  dailyEndMnt: '37',
-  timerStart: 'rightNow',
-  startDate: {
-    start: new Date(),
-    end: new Date(),
-  },
-  startHrs: date.getHours(),
-  startMnt: date.getMinutes(),
-  endDate: {
-    start: date,
-    end: date,
-  },
-  endHrs: '00',
-  endMnt: '12',
-  starts: '',
-  ends: '',
   onceItEnd: 'Unpublish timer',
+  customTitle:''
 }
 
 export const designCheck = {

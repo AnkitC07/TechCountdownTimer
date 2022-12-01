@@ -44,7 +44,7 @@ const TImer = (props) => {
   // console.log(days)
   return (
     <div
-      // className="time"
+      className={`countdowntimerapp_countdown ${props.id}`}
       style={{
         fontSize: `${props.design.timerSize}px`,
         color: `${props.design.timerColor}`,

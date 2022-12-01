@@ -903,6 +903,13 @@ function Content() {
                       option={myoption}
                       value={content.onceItEnd}
                       placeholder="Unpublish timer"
+                      textValue = {content.customTitle}
+                      textOnChange = {(e)=>{
+                        setContent({
+                          ...content,
+                          customTitle:e
+                        })
+                      }}
                       onChange={(e) => {
                         setContent({
                           ...content,

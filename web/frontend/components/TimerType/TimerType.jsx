@@ -7,7 +7,7 @@ export const TimerType = () => {
       description: 'Block in product page below add to cart button.',
       src: 'product_page.svg',
       btnText: 'Select this timer type',
-      path: '/ProductPage',
+      path: '/ProductPage/Content',
       nav: 'navdata',
     },
     {
@@ -15,7 +15,7 @@ export const TimerType = () => {
       description: 'Fixed or sticky bar on the top or the bottom of any page.',
       src: 'bar.svg',
       btnText: 'Select this timer type',
-      path: '/Top_BottomPage',
+      path: '/Top_BottomPage/Content_top',
       nav: 'navData_top',
     },
     {
@@ -23,7 +23,7 @@ export const TimerType = () => {
       description: 'Block in home, collection, password, or any other page.',
       src: 'landing_page.svg',
       btnText: 'Select this timer type',
-      path: '/LandingPage',
+      path: '/LandingPage/Content_land',
       nav: 'navData_Landing',
     },
     {
@@ -31,7 +31,7 @@ export const TimerType = () => {
       description: 'Add a countdown timer to cart page.',
       src: 'cart_page.svg',
       btnText: 'Select this timer type',
-      path: '/CartPage',
+      path: '/CartPage/Content_cart',
       nav: 'navData_suggest',
     },
     {
