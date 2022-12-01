@@ -95,7 +95,7 @@ export async function createServer(
   app.use(express.json());
   app.use(bodyparser.json())
 
-  // app.use(Cors());
+  app.use(Cors());
 
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
