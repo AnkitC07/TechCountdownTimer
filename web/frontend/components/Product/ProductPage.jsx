@@ -154,13 +154,13 @@ export const ProductPage = () => {
       return window.location.ancestorOrigins[0].replaceAll("https://", "");
     };
 
-    // let setHTML = Html == ''?document.querySelector("")
+    let setHTML = document.querySelector('#getHTMLData').innerHTML
     const body = {
       type: "Product Page",
       content: content,
       design: design,
       placement: placement,
-      Html: Html,
+      Html: setHTML,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
       store: getShopName(),
     };

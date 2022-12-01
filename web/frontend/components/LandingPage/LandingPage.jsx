@@ -100,12 +100,13 @@ const LandingPage = () => {
       type: statusUpdate,
       status: true,
     });
+    const setHtml = document.querySelector('#getHTMLData').innerHTML
     const body = {
       type: 'Landing Page',
       content: content,
       design: design,
       placement: placement,
-      Html: Html,
+      Html: setHtml,
       ispublished:  statusUpdate == "save" ? ispublished : statusUpdate,
       store: getShopName()
     }

@@ -161,12 +161,13 @@ const Top_BottomPage = () => {
 		const getShopName = () => {
 			return window.location.ancestorOrigins[0].replaceAll("https://", "");
 		};
+		const setHTMl = document.querySelector('#getHTMLData').innerHTML
 		const body = {
 			type: 'Top/Bottom Page',
 			content: content,
 			design: design,
 			placement: placement,
-			Html: Html,
+			Html: setHTMl,
 			ispublished: statusUpdate == "save"?ispublished:statusUpdate,
 			store: getShopName()
 		}

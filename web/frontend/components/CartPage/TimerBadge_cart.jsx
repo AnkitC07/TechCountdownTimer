@@ -33,6 +33,7 @@ const TimerBadge_cart = ({ design, content }) => {
     const date = new Date()
     // console.log((date.getHours()))
     return (
+        <div id='getHTMLData'>
         <div
             id="cart_top_product_timer"
             style={design.backtype.single == true ? single : multiple}
@@ -52,6 +53,7 @@ const TimerBadge_cart = ({ design, content }) => {
                 {/* {content.title} */}
                 <Timer content={content} design={design} mnt={content.mnt} start={Date.parse(new Date())} />
             </h2>
+        </div>
         </div>
     )
 }
