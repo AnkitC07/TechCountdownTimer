@@ -105,6 +105,7 @@ export const LandingContent = {
   // endMnt: '12',
   // starts: '',
   // ends: '',
+  customTitle:'',
   onceItEnd: 'Unpublish timer',
 }
 

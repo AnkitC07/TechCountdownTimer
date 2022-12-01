@@ -224,7 +224,7 @@ const Top_BottomPage = () => {
 							<div class="Polaris-Page-Header__Row">
 								<div class="Polaris-Page-Header__BreadcrumbWrapper">
 									<nav role="navigation">
-										<NavLink className="count_btn" to="/TimerType">
+										<NavLink className="count_btn" to="/">
 											<button
 												class="Polaris-Breadcrumbs__Breadcrumb"
 												type="button"

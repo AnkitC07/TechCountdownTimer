@@ -77,6 +77,7 @@ const TimerBagde_Top = ({ design, content }) => {
       return (
         <>
           <TimerFixed
+            id = {`countDownTimer_TopBottom`}
             start={new Date()}
             mnt={content.timerType.fixedTime.time}
             design={design}
@@ -87,6 +88,7 @@ const TimerBagde_Top = ({ design, content }) => {
       return (
         <>
           <TImer
+                id = {`countDownTimer_TopBottom`}
             start={content.timerType.countdownDate.startDate.date.start}
             end={content.timerType.countdownDate.endDate.date.end}
             starthrs={content.timerType.countdownDate.startDate.hr}
@@ -101,6 +103,7 @@ const TimerBagde_Top = ({ design, content }) => {
       return (
         <>
           <TImerReccuring
+                id = {`countDownTimer_TopBottom`}
             starthrs={content.timerType.recurring.dailyStart.hr}
             startmnt={content.timerType.recurring.dailyStart.min}
             endhrs={content.timerType.recurring.dailyEnd.hr}
@@ -247,8 +250,11 @@ const TimerBagde_Top = ({ design, content }) => {
               {content.callToAction == 'Button' ? (
                 <>
                   <div className="button-shop" style={{ marginLeft: '10px' }}>
-                    <button
+                    <a
+                    href={content.link}
                       style={{
+                        textDecoration: 'none',
+                        cursor:'pointer',
                         backgroundColor: `${design.buttonColor}`,
                         fontSize: `${design.buttonFontSize}px`,
                         color: `${design.buttonFontColor}`,
@@ -258,7 +264,7 @@ const TimerBagde_Top = ({ design, content }) => {
                       }}
                     >
                       {content.buttonText}
-                    </button>
+                    </a>
                   </div>
                 </>
               ) : (
@@ -414,8 +420,11 @@ const TimerBagde_Top = ({ design, content }) => {
             {content.callToAction == 'Button' ? (
               <>
                 <div className="button-shop" style={{ marginLeft: '10px' }}>
-                  <button
+                  <a
+                    href={content.link}
                     style={{
+                      textDecoration: 'none',
+                      cursor:'pointer',
                       backgroundColor: `${design.buttonColor}`,
                       fontSize: `${design.buttonFontSize}px`,
                       color: `${design.buttonFontColor}`,
@@ -425,7 +434,7 @@ const TimerBagde_Top = ({ design, content }) => {
                     }}
                   >
                     Shop now!
-                  </button>
+                  </a>
                 </div>
               </>
             ) : (

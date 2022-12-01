@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import { TextField } from "@shopify/polaris";
 
 function InputSelect(props) {
   return (
@@ -15,7 +16,7 @@ function InputSelect(props) {
               <option key={x.data} value={x.value}>
                 {x.data}
               </option>
-            )
+            );
           })}
         </select>
         <div className="Polaris-Select__Content" aria-hidden="true">
@@ -36,8 +37,21 @@ function InputSelect(props) {
         </div>
         <div className="Polaris-Select__Backdrop" />
       </div>
+
+      {props.value == "Show custom title" ? (
+        <div className="mt-3">
+          <TextField
+            label="Custom title"
+            value={props.textValue}
+            onChange={props.textOnChange}
+            autoComplete="off"
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </>
-  )
+  );
 }
 
-export default InputSelect
+export default InputSelect;

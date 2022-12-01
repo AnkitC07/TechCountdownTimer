@@ -237,7 +237,7 @@ export const ProductPage = () => {
               <div className="Polaris-Page-Header__Row">
                 <div className="Polaris-Page-Header__BreadcrumbWrapper">
                   <nav role="navigation">
-                    <NavLink className="count_btn" to="/TimerType">
+                    <NavLink className="count_btn" to="/">
                       <button
                         className="Polaris-Breadcrumbs__Breadcrumb"
                         type="button"

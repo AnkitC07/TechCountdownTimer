@@ -86,6 +86,7 @@ export const productContent = {
   // endMnt: '00',
   // starts: '',
   // ends: '',
+  customTitle:'',
   onceItEnd: 'Unpublish timer',
 }
 
