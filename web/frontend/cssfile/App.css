@@ -181,6 +181,12 @@ caption.Polaris-DatePicker__Title {
   justify-content: flex-end;
 }
 
+.recurringTimer{
+  display: flex!important;
+  flex-wrap: nowrap!important;
+  flex-direction: row;
+}
+
 /* .top_product_timer {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;

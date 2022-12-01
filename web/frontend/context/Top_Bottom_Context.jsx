@@ -1,5 +1,4 @@
 import React, { useState, createContext, useEffect } from 'react'
-
 export const TopBottomContext = createContext()
 
 let date = new Date()
@@ -16,7 +15,69 @@ export const contentCheck = {
   hrs: 'Hrs',
   mins: 'Mins',
   secs: 'Secs',
-  timerType: 'toDate',
+  timerType:{
+    countdownDate:{
+      status:true,
+      rightNow:true,
+      schedule:false,
+      startDate:{
+        date:{
+          start:new Date(),
+          end:new Date()
+        },
+        hr:date.getHours(),
+        min:date.getMinutes()
+      },
+      endDate:{
+        date:{
+          start:date,
+          end:date
+        },
+        hr:date.getHours(),
+        min:date.getMinutes()
+      }
+    },
+    fixedTime:{
+      status:false,
+      time:'120'
+    },
+    recurring:{
+      status:false,
+      repeatOn: {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        saturday: true,
+        sunday: true,
+      },
+      dailyStart:{
+        hr:'11',
+        min:'30'
+      },
+      dailyEnd:{
+        hr:'11',
+        min:'30'
+      },
+      start:{
+        today:false,
+        speceficDate:true,
+        date:{
+          start:new Date(),
+          end:new Date()
+        }
+      },
+      end:{
+        never:false,
+        speceficDate:true,
+        date:{
+          start:date,
+          end:date
+        }
+      }
+    },
+  },
   fixedTime: '120',
   RepeatOn: {
     monday: true,
@@ -53,7 +114,10 @@ export const designCheck = {
   positioning: 'Top page',
   stickyBar: false,
   template: 'Custom',
-  backtype: 'singleBackground',
+  backtype:{
+    single:true,
+    gradient:false
+  },
   singleColor: '#FFFFFF',
   gradAngle: '90',
   gradClr1: '#DDDDDD',

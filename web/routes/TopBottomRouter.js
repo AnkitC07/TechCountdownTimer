@@ -15,7 +15,7 @@ TopBottomRouter.post('/submitTopBottom', async (req, res) => {
   console.log(id)
   const sendStatus = req.query.status == "save" || req.query.status == "Duplicate"?req.query.status:body.ispublished
 console.log()
- if(id == 'null' ||  id == "" || req.query.status == "Duplicate"){
+ if(id == 'null' ||  id == ""|| id=='undefined' || req.query.status == "Duplicate"){
   console.log("create")
     await Product.create({
       Type:body.type,

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react'
 import TimerFixed from '../Fields/TimerFixed'
 import TImerReccuring from '../Fields/TImerReccuring'
 import TImer from '../TImer'
@@ -66,6 +67,53 @@ const TimerBagde_Top = ({ design, content }) => {
     borderTop: `${design.borderSize}px solid ${design.borderColor}`,
   }
 
+  useEffect(()=>{
+    console.log("checking")
+  },[])
+
+  const TimerSubComponentData = () => {
+    console.log(content.timerType,"checking selected type")
+    if (content.timerType.fixedTime.status == true) {
+      return (
+        <>
+          <TimerFixed
+            start={new Date()}
+            mnt={content.timerType.fixedTime.time}
+            design={design}
+          />
+        </>
+      );
+    } else if (content.timerType.countdownDate.status == true) {
+      return (
+        <>
+          <TImer
+            start={content.timerType.countdownDate.startDate.date.start}
+            end={content.timerType.countdownDate.endDate.date.end}
+            starthrs={content.timerType.countdownDate.startDate.hr}
+            endhrs={content.timerType.countdownDate.endDate.hr}
+            startmnt={content.timerType.countdownDate.startDate.min}
+            endmnt={content.timerType.countdownDate.endDate.min}
+            design={design}
+          />
+        </>
+      );
+    } else if (content.timerType.recurring.status == true) {
+      return (
+        <>
+          <TImerReccuring
+            starthrs={content.timerType.recurring.dailyStart.hr}
+            startmnt={content.timerType.recurring.dailyStart.min}
+            endhrs={content.timerType.recurring.dailyEnd.hr}
+            endmnt={content.timerType.recurring.dailyEnd.min}
+            design={design}
+          />
+        </>
+      );
+    } else {
+      return <>Timer</>;
+    }
+  };
+
   return (
     <>
       {content.callToAction == 'Make entire bar clickable' ? (
@@ -81,13 +129,13 @@ const TimerBagde_Top = ({ design, content }) => {
               style={
                 design.positioning == "Top page"
                   ?
-                  design.backtype === 'singleBackground'
+                  design.backtype.single == true
                     ?
                     { ...single, ...top_inner }
                     :
                     { ...multiple, ...top_inner }
                   :
-                  design.backtype === 'gradientBackground'
+                  design.backtype.gradient == true
                     ?
                     { ...multiple, ...bottom_inner }
                     :
@@ -134,13 +182,7 @@ const TimerBagde_Top = ({ design, content }) => {
                       letterSpacing: '1px',
                     }}
                   >
-
-                    {content.timerType == 'fixed'
-                      ?
-                      <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
-                      :
-                      <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
-                    }
+                    <TimerSubComponentData />
                   </div>
                   <div
                     className="timer-label"
@@ -255,13 +297,13 @@ const TimerBagde_Top = ({ design, content }) => {
             style={
               design.positioning == "Top page"
                 ?
-                design.backtype === 'singleBackground'
+                design.backtype.single == true 
                   ?
                   { ...single, ...top_inner }
                   :
                   { ...multiple, ...top_inner }
                 :
-                design.backtype === 'gradientBackground'
+                design.backtype.gradient === true
                   ?
                   { ...multiple, ...bottom_inner }
                   : {
@@ -308,20 +350,7 @@ const TimerBagde_Top = ({ design, content }) => {
                     letterSpacing: '1px',
                   }}
                 >
-                  {content.timerType == 'fixed'
-                    ?
-                    <TimerFixed start={content.startDate.start} mnt={content.fixedTime} design={design} />
-                    : content.timerType == 'toDate'
-                      ?
-                      <TImer start={content.startDate.start} end={content.endDate.end} starthrs={content.startHrs} endhrs={content.endHrs} startmnt={content.startMnt} endmnt={content.endMnt} design={design} />
-                      :
-                      content.timerType == 'recurring'
-                        ?
-                        <TImerReccuring starthrs={content.dailyStartHrs} startmnt={content.dailyStartMnt} endhrs={content.dailyEndHrs} endmnt={content.dailyEndMnt} design={design} />
-                        :
-                        ''
-                  }
-
+                  <TimerSubComponentData />
                 </div>
                 <div
                   className="timer-label"

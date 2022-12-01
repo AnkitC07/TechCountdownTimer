@@ -157,10 +157,10 @@ export async function createServer(
   app.use(express.json());
   app.use(bodyparser.json())
 
-  app.use('/submitCart', CartRouter)
-  app.use('/api', LandingRouter)
+  // app.use('/submitCart', CartRouter)
+  // app.use('/api', LandingRouter)
   app.use('/api', TopBottomRouter)
-  app.use('/api', ProductRouter)
+  // app.use('/api', ProductRouter)
   app.use('/api', AllTimer)
   app.use('/api', GetDatabyId)
 

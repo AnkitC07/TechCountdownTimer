@@ -12,18 +12,19 @@ import { NavLink } from 'react-router-dom'
 import { ProductContext } from '../../context/ProductContext'
 import { useEffect } from 'react'
 import Timerbadge from './Timerbadge'
+import { connect } from 'mongoose'
+import {updateState,updateCountDownTimer,updateCountDownTimerDates,repeatOn,updateRecurringTimer,updateRecurringTimerRadio} from '../common_functions/functions'
 
 function Content() {
   const { design, content, setContent, Html, setHtml } = useContext(ProductContext)
-
+  const [timerType,timerState] = useState(content.timerType)
+  
   const ref = useRef()
   // console.log(ref.current.innerHTML)
   setTimeout(() => {
     setHtml(ref.current.innerHTML)
   }, 100);
 
-  // const [showDate, setShowDate] = useState('')
-  // useEffect(() => {}, [content])
   const myoption = [
     {
       data: 'Unpublish timer',
@@ -38,8 +39,7 @@ function Content() {
       value: 'Do nothing',
     },
   ]
-  // console.log("Timer Type", content.timerType)
-  const CheckDates = () => { }
+
   return (
     <>
       <div className="row px-4 py-3">
@@ -200,31 +200,32 @@ function Content() {
                       id="toDate"
                       name="toDate"
                       label="Countdown to a date"
-                      checked={content.timerType == 'toDate' ? true : null}
+                      checked={content.timerType.countdownDate.status}
                       decription="Timer that ends at the specific date."
                       onChange={(e) => {
-                        setContent({ ...content, timerType: e.target.value })
+                        updateState("countdownDate",setContent,content,timerType)
+                        // setContent({ ...content, timerType: {countdownDate} })
                       }}
                     />
                     <CheckBoxComponent
                       id="fixed"
                       name="toDate"
                       label="Fixed minutes"
-                      checked={content.timerType == 'fixed' ? true : null}
+                      checked={content.timerType.fixedTime.status}
 
                       decription="Individual fixed minutes countdown for each buyer session."
                       onChange={(e) => {
-                        setContent({ ...content, timerType: e.target.value })
+                        updateState("fixedTime",setContent,content,timerType)
                       }}
                     />
                     <CheckBoxComponent
                       id="recurring"
                       name="toDate"
-                      checked={content.timerType == 'recurring' ? true : null}
+                      checked={content.timerType.recurring.status}
                       label="Daily recurring timer"
                       decription="E.g. every weekday from 9 am to 11 am"
                       onChange={(e) => {
-                        setContent({ ...content, timerType: e.target.value })
+                        updateState("recurring",setContent,content,timerType)
                       }}
                     />
                   </div>
@@ -233,8 +234,8 @@ function Content() {
 
               <div className="sc-bczRLJ czvMoD pt-3">
                 <div className="Polaris-FormLayout">
-                  {content.timerType == 'toDate' ? (
-                    content.timerStart == 'rightNow' ? (
+                  {content.timerType.countdownDate.status == true ? (
+                    content.timerType.countdownDate.rightNow == true ? (
                       <>
                         <div className="Polaris-FormLayout__Item">
                           <div className="Polaris-Labelled__LabelWrapper">
@@ -252,26 +253,19 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={content.timerStart == 'rightNow' ? true : null}
+                          checked={content.timerType.countdownDate.rightNow}
                           label="Right now"
                           onChange={(e) => {
-                            setContent({
-                              ...content,
-                              timerStart: e.target.value,
-                            })
+                            updateCountDownTimer('rightNow','schedule',content,setContent)
                           }}
                         />
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={content.timerStart == 'schedule' ? true : null}
+                          checked={content.timerType.countdownDate.schedule}
                           label="Schedule to start later"
                           onChange={(e) => {
-                            setContent({
-                              ...content,
-                              timerStart: e.target.value,
-                            })
-                            // console.log(content.timerStart)
+                            updateCountDownTimer('schedule','rightNow',content,setContent)
                           }}
                         />
                         <div className="Polaris-FormLayout__Item">
@@ -289,12 +283,9 @@ function Content() {
                                 </div>
                               </div>
                               <DatePickerExample
-                                state1={content.selectedEndDates}
+                                state1={content.timerType.countdownDate.endDate.date}
                                 onChange={(e) => {
-                                  setContent({
-                                    ...content,
-                                    selectedEndDates: e,
-                                  })
+                                  updateCountDownTimerDates("endDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -304,7 +295,7 @@ function Content() {
                           role="group"
                           className="Polaris-FormLayout--condensed"
                         >
-                          <div className="Polaris-FormLayout__Items">
+                          <div className="Polaris-FormLayout__Items recurringTimer">
                             <div className="Polaris-FormLayout__Item">
                               <div className="">
                                 <div className="Polaris-Labelled__LabelWrapper">
@@ -321,13 +312,10 @@ function Content() {
                                 <InputNumber
                                   id="hours"
                                   label="hoursLabel"
-                                  defaultValue={content.endHrs}
-                                  state1={content.endHrs}
+                                  defaultValue={content.timerType.countdownDate.endDate.hr}
+                                  state1={content.timerType.countdownDate.endDate.hr}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      endHrs: e,
-                                    })
+                                    updateCountDownTimerDates("endDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -348,13 +336,10 @@ function Content() {
                                 <InputNumber
                                   id="minutes"
                                   label="minutesLabel"
-                                  defaultValue={content.endMnt}
-                                  state1={content.endMnt}
+                                  defaultValue={content.timerType.countdownDate.endDate.min}
+                                  state1={content.timerType.countdownDate.endDate.min}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      endMnt: e,
-                                    })
+                                    updateCountDownTimerDates("endDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -380,26 +365,19 @@ function Content() {
                         <CheckBoxComponent
                           id="rightNow"
                           name="timerStart"
-                          checked={content.timerStart == 'rightNow' ? true : null}
+                          checked={content.timerType.countdownDate.rightNow}
                           label="Right now"
                           onChange={(e) => {
-                            setContent({
-                              ...content,
-                              timerStart: e.target.value,
-                            })
+                            updateCountDownTimer('rightNow','schedule',content,setContent)
                           }}
                         />
                         <CheckBoxComponent
                           id="schedule"
                           name="timerStart"
-                          checked={content.timerStart == 'schedule' ? true : null}
+                          checked={content.timerType.countdownDate.schedule}
                           label="Schedule to start later"
                           onChange={(e) => {
-                            setContent({
-                              ...content,
-                              timerStart: e.target.value,
-                            })
-                            // console.log(content.timerStart)
+                            updateCountDownTimer('schedule','rightNow',content,setContent)
                           }}
                         />
                         <div className="Polaris-FormLayout__Item">
@@ -417,12 +395,9 @@ function Content() {
                                 </div>
                               </div>
                               <DatePickerExample
-                                state1={content.selectedDates}
+                                state1={content.timerType.countdownDate.startDate.date}
                                 onChange={(e) => {
-                                  setContent({
-                                    ...content,
-                                    selectedDates: e,
-                                  })
+                                  updateCountDownTimerDates("startDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -432,7 +407,7 @@ function Content() {
                           role="group"
                           className="Polaris-FormLayout--condensed"
                         >
-                          <div className="Polaris-FormLayout__Items">
+                          <div className="Polaris-FormLayout__Items recurringTimer">
                             <div className="Polaris-FormLayout__Item">
                               <div className="">
                                 <div className="Polaris-Labelled__LabelWrapper">
@@ -449,12 +424,10 @@ function Content() {
                                 <InputNumber
                                   id="hours"
                                   label="hoursLabel"
-                                  defaultValue={content.startHrs}
+                                  defaultValue={content.timerType.countdownDate.startDate.hr}
+                                  state1={content.timerType.countdownDate.startDate.hr}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      startHrs: e,
-                                    })
+                                    updateCountDownTimerDates("startDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -475,12 +448,10 @@ function Content() {
                                 <InputNumber
                                   id="minutes"
                                   label="minutesLabel"
-                                  defaultValue={content.startMnt}
+                                  defaultValue={content.timerType.countdownDate.startDate.min}
+                                  state1={content.timerType.countdownDate.startDate.min}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      startMnt: e,
-                                    })
+                                    updateCountDownTimerDates("startDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -502,12 +473,9 @@ function Content() {
                                 </div>
                               </div>
                               <DatePickerExample
-                                state1={content.selectedEndDates}
+                                state1={content.timerType.countdownDate.endDate.date}
                                 onChange={(e) => {
-                                  setContent({
-                                    ...content,
-                                    selectedEndDates: e,
-                                  })
+                                  updateCountDownTimerDates("endDate",'date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -517,7 +485,7 @@ function Content() {
                           role="group"
                           className="Polaris-FormLayout--condensed"
                         >
-                          <div className="Polaris-FormLayout__Items">
+                          <div className="Polaris-FormLayout__Items recurringTimer">
                             <div className="Polaris-FormLayout__Item">
                               <div className="">
                                 <div className="Polaris-Labelled__LabelWrapper">
@@ -534,13 +502,10 @@ function Content() {
                                 <InputNumber
                                   id="hours"
                                   label="hoursLabel"
-                                  defaultValue={content.endHrs}
-                                  state1={content.endHrs}
+                                  defaultValue={content.timerType.countdownDate.endDate.hr}
+                                  state1={content.timerType.countdownDate.endDate.hr}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      endHrs: e,
-                                    })
+                                    updateCountDownTimerDates("endDate",'hr',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -561,13 +526,10 @@ function Content() {
                                 <InputNumber
                                   id="minutes"
                                   label="minutesLabel"
-                                  defaultValue={content.endMnt}
-                                  state1={content.endMnt}
+                                  defaultValue={content.timerType.countdownDate.endDate.min}
+                                  state1={content.timerType.countdownDate.endDate.min}
                                   onChange={(e) => {
-                                    setContent({
-                                      ...content,
-                                      endMnt: e,
-                                    })
+                                    updateCountDownTimerDates("endDate",'min',e,content,setContent)
                                   }}
                                 />
                               </div>
@@ -576,21 +538,26 @@ function Content() {
                         </div>
                       </>
                     )
-                  ) : content.timerType == 'fixed' ? (
+                  ) : content.timerType.fixedTime.status == true ? (
                     <div className="Polaris-FormLayout__Item">
                       <InputNumber
                         id="fixedMnt"
                         label="fixed"
-                        defaultValue={content.fixedTime}
+                        defaultValue={content.timerType.fixedTime.time}
                         onChange={(e) => {
                           setContent({
-                            ...content,
-                            fixedTime: e,
+                            ...content,timerType:{
+                              ...content.timerType,
+                              fixedTime:{
+                                ...content.timerType.fixedTime,
+                                time:e
+                              }
+                            }
                           })
                         }}
                       />
                     </div>
-                  ) : content.timerType == 'recurring' ? (
+                  ) : content.timerType.recurring.status == true ? (
                     <>
                       <div className="Polaris-FormLayout__Item">
                         <div className="Polaris-Labelled__LabelWrapper">
@@ -608,17 +575,18 @@ function Content() {
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Monday'}
-                              state1={content.RepeatOn.monday}
+                              state1={content.timerType.recurring.repeatOn.monday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      monday: e,
-                                    },
-                                  }
-                                })
+                                repeatOn('monday',e,content,setContent)
+                                // setContent((state) => {
+                                //   return {
+                                //     ...state,
+                                //     RepeatOn: {
+                                //       ...content.RepeatOn,
+                                //       monday: e,
+                                //     },
+                                //   }
+                                // })
                                 console.log(e)
                               }}
                             />
@@ -626,114 +594,60 @@ function Content() {
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Tuesday'}
-                              state1={content.RepeatOn.tuesday}
+                              state1={content.timerType.recurring.repeatOn.tuesday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      tuesday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('tuesday',e,content,setContent)
                               }}
                             />
                           </li>
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Wednesday'}
-                              state1={content.RepeatOn.wednesday}
+                              state1={content.timerType.recurring.repeatOn.wednesday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      wednesday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('wednesday',e,content,setContent)
                               }}
                             />
                           </li>
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Thursday'}
-                              state1={content.RepeatOn.thursday}
+                              state1={content.timerType.recurring.repeatOn.thursday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      thursday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('thursday',e,content,setContent)
                               }}
                             />
                           </li>
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Friday'}
-                              state1={content.RepeatOn.friday}
+                              state1={content.timerType.recurring.repeatOn.friday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      friday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('friday',e,content,setContent)
                               }}
                             />
                           </li>
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Saturday'}
-                              state1={content.RepeatOn.saturday}
+                              state1={content.timerType.recurring.repeatOn.saturday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      saturday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('saturday',e,content,setContent)
                               }}
                             />
                           </li>
                           <li class="Polaris-ChoiceList__ChoiceItem">
                             <CheckboxExample
                               label={'Sunday'}
-                              state1={content.RepeatOn.sunday}
+                              state1={content.timerType.recurring.repeatOn.sunday}
                               onChange={(e) => {
-                                setContent((state) => {
-                                  return {
-                                    ...state,
-                                    RepeatOn: {
-                                      ...content.RepeatOn,
-                                      sunday: e,
-                                    },
-                                  }
-                                })
-                                console.log(e)
+                                repeatOn('sunday',e,content,setContent)
                               }}
                             />
                           </li>
                         </ul>
                       </div>
-                      <div className="Polaris-FormLayout__Items">
+                      <div className="Polaris-FormLayout__Items recurringTimer">
                         <div className="Polaris-FormLayout__Item">
                           <div className="Polaris-Labelled__LabelWrapper">
                             <div className="Polaris-Label">
@@ -749,12 +663,9 @@ function Content() {
                           <InputNumber
                             id="hours"
                             label="hoursLabel"
-                            defaultValue={content.dailyStartHrs}
+                            defaultValue={content.timerType.recurring.dailyStart.hr}
                             onChange={(e) => {
-                              setContent({
-                                ...content,
-                                dailyStartHrs: e,
-                              })
+                              updateRecurringTimer('dailyStart','hr',e,content,setContent)
                             }}
                           />
                           <div
@@ -779,12 +690,9 @@ function Content() {
                           <InputNumber
                             id="mnt"
                             label="mntLabel"
-                            defaultValue={content.dailyStartMnt}
+                            defaultValue={content.timerType.recurring.dailyStart.min}
                             onChange={(e) => {
-                              setContent({
-                                ...content,
-                                dailyStartMnt: e,
-                              })
+                              updateRecurringTimer('dailyStart','min',e,content,setContent)
                             }}
                           />
                           <div
@@ -795,7 +703,7 @@ function Content() {
                           </div>
                         </div>
                       </div>
-                      <div className="Polaris-FormLayout__Items">
+                      <div className="Polaris-FormLayout__Items recurringTimer">
                         <div className="Polaris-FormLayout__Item">
                           <div className="Polaris-Labelled__LabelWrapper">
                             <div className="Polaris-Label">
@@ -811,12 +719,9 @@ function Content() {
                           <InputNumber
                             id="hours"
                             label="hoursLabel"
-                            defaultValue={content.dailyEndHrs}
+                            defaultValue={content.timerType.recurring.dailyEnd.hr}
                             onChange={(e) => {
-                              setContent({
-                                ...content,
-                                dailyEndHrs: e,
-                              })
+                              updateRecurringTimer('dailyEnd','hr',e,content,setContent)
                             }}
                           />
                           <div
@@ -841,12 +746,9 @@ function Content() {
                           <InputNumber
                             id="mnt"
                             label="mntLabel"
-                            defaultValue={content.dailyEndMnt}
+                            defaultValue={content.timerType.recurring.dailyEnd.min}
                             onChange={(e) => {
-                              setContent({
-                                ...content,
-                                dailyEndMnt: e,
-                              })
+                              updateRecurringTimer('dailyEnd','min',e,content,setContent)
                             }}
                           />
                           <div
@@ -873,21 +775,24 @@ function Content() {
                       <CheckBoxComponent
                         id="startToday"
                         name="startTimer"
-                        checked={true}
+                        checked={content.timerType.recurring.start.today}
                         label="Today"
                         onChange={(e) => {
-                          setContent({ ...content, starts: e.target.value })
+                          updateRecurringTimerRadio('start','today',content,setContent)
+                          // setContent({ ...content, starts: e.target.value })
                         }}
                       />
                       <CheckBoxComponent
                         id="startSpcf"
                         name="startTimer"
                         label="Specefic date"
+                        checked={content.timerType.recurring.start.speceficDate}
                         onChange={(e) => {
-                          setContent({ ...content, starts: e.target.value })
+                          updateRecurringTimerRadio('start','speceficDate',content,setContent)
+                          // setContent({ ...content, starts: e.target.value })
                         }}
                       />
-                      {content.starts == "startSpcf" ?
+                      {content.timerType.recurring.start.speceficDate == true ?
                         <div className="Polaris-FormLayout__Item">
                           <div>
                             <div className="">
@@ -903,12 +808,9 @@ function Content() {
                                 </div>
                               </div>
                               <DatePickerExample
-                                state1={content.selectedDates}
+                                state1={content.timerType.recurring.start.date}
                                 onChange={(e) => {
-                                  setContent({
-                                    ...content,
-                                    selectedDates: e,
-                                  })
+                                  updateRecurringTimer('start','date',e,content,setContent)
                                 }}
                               />
                             </div>
@@ -931,21 +833,24 @@ function Content() {
                         id="endNever"
                         name="endTimer"
                         label="Never"
-                        checked={true}
+                        checked={content.timerType.recurring.end.never}
                         onChange={(e) => {
-                          setContent({ ...content, ends: e.target.value })
+                          updateRecurringTimerRadio('end','never',content,setContent)
+                          // setContent({ ...content, ends: e.target.value })
                         }}
                       />
                       <CheckBoxComponent
                         id="endSpcf"
                         name="endTimer"
                         label="Specefic date"
+                        checked={content.timerType.recurring.end.speceficDate}
                         onChange={(e) => {
-                          setContent({ ...content, ends: e.target.value })
+                          updateRecurringTimerRadio('end','speceficDate',content,setContent)
+                          // setContent({ ...content, ends: e.target.value })
                           // console.log(content.timerStart)
                         }}
                       />
-                      {content.ends == "endSpcf" ?
+                      {content.timerType.recurring.end.speceficDate == true ?
                         <div className="Polaris-FormLayout__Item">
                           <div>
                             <div className="">
@@ -961,12 +866,13 @@ function Content() {
                                 </div>
                               </div>
                               <DatePickerExample
-                                state1={content.selectedEndDates}
+                                state1={content.timerType.recurring.end.date}
                                 onChange={(e) => {
-                                  setContent({
-                                    ...content,
-                                    selectedEndDates: e,
-                                  })
+                                  updateRecurringTimer('end','date',e,content,setContent)
+                                  // setContent({
+                                  //   ...content,
+                                  //   selectedEndDates: e,
+                                  // })
                                 }}
                               />
                             </div>
@@ -1008,6 +914,7 @@ function Content() {
                 </div>
               </div>
             </div>
+
             <div className="Polaris-Card__Section">
               <NavLink to="/ProductPage/Design">
                 <button

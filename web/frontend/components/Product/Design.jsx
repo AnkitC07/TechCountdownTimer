@@ -1,266 +1,289 @@
-import React, { useEffect, useState } from 'react'
-import { ProductPage } from './ProductPage'
-import InputSelect from '../Fields/InputSelect'
-import CheckBoxComponent from '../Fields/CheckBoxComponent'
-import InputComponent from '../Fields/InputComponent'
+import React, { useEffect, useState } from "react";
+import { ProductPage } from "./ProductPage";
+import InputSelect from "../Fields/InputSelect";
+import CheckBoxComponent from "../Fields/CheckBoxComponent";
+import InputComponent from "../Fields/InputComponent";
 // import ColorPicker from './Fields/InputComponent'
-import DateInput from '../Fields/DateInput'
-import InputNumber from '../Fields/InputNumber'
-import Rangeslider from '../Fields/Rangeslider'
-import Colorpicker from '../Fields/Colorpicker'
-import { NavLink } from 'react-router-dom'
-import { useContext } from 'react'
-import { ProductContext } from '../../context/ProductContext'
-import { hsbToHex } from '@shopify/polaris'
-import TImer from '../TImer'
-import Timerbadge from './Timerbadge'
+import DateInput from "../Fields/DateInput";
+import InputNumber from "../Fields/InputNumber";
+import Rangeslider from "../Fields/Rangeslider";
+import Colorpicker from "../Fields/Colorpicker";
+import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { ProductContext } from "../../context/ProductContext";
+import { hsbToHex } from "@shopify/polaris";
+import TImer from "../TImer";
+import Timerbadge from "./Timerbadge";
+import {updateOptionData} from '../common_functions/functions'
 
 function Design() {
-  const { content, design, setDesign } = useContext(ProductContext)
-  const [background, setBackground] = useState('')
-  // console.log(design)
-  useEffect(() => { }, [design])
-  let singelFalg = false
-  let gradFlag = true
+  const { content, design, setDesign } = useContext(ProductContext);
+  
+  useEffect(() => {
+    console.log("updated values of design");
+  }, [design]);
 
   const myoption = [
     {
-      value: 'Custom',
-      data: 'Custom',
-      background: '#FFFFFF',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Custom",
+      data: "Custom",
+      background: "#FFFFFF",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: true,
     },
     {
-      value: 'Dawn',
-      data: 'Dawn',
-      background: '',
-      background1: '#252237',
-      background2: '#4C4861',
-      deg: '47deg',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Dawn",
+      data: "Dawn",
+      background: "",
+      background1: "#252237",
+      background2: "#4C4861",
+      deg: "47deg",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: false,
     },
     {
-      value: 'Electric',
-      data: 'Electric',
-      background: '',
-      background1: '#00FFF0',
-      background2: '#D20DFF',
-      deg: '153deg',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Electric",
+      data: "Electric",
+      background: "",
+      background1: "#00FFF0",
+      background2: "#D20DFF",
+      deg: "153deg",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: false,
     },
     {
-      value: 'Forest',
-      data: 'Forest',
-      background: '#007f5f',
-      borderSize: '0',
-      borderColor: '#d4d4d4',
+      value: "Forest",
+      data: "Forest",
+      background: "#007f5f",
+      borderSize: "0",
+      borderColor: "#d4d4d4",
       tag: true,
     },
     {
-      value: '50 Shades of Grey',
-      data: '50 Shades of Grey',
-      background: '#313e50',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "50 Shades of Grey",
+      data: "50 Shades of Grey",
+      background: "#313e50",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: true,
     },
     {
-      value: 'Vibrant',
-      data: 'Vibrant',
-      background: '#FFFFFF',
-      borderSize: '2',
-      borderColor: '#f15bb5',
+      value: "Vibrant",
+      data: "Vibrant",
+      background: "#FFFFFF",
+      borderSize: "2",
+      borderColor: "#f15bb5",
       tag: true,
     },
     {
-      value: 'Neon',
-      data: 'Neon',
-      background: '',
-      background1: '#480ca8',
-      background2: '#7209b7',
-      deg: '22deg',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Neon",
+      data: "Neon",
+      background: "",
+      background1: "#480ca8",
+      background2: "#7209b7",
+      deg: "22deg",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: false,
     },
     {
-      value: 'Vanila',
-      data: 'Vanila',
-      background: '#fcfcfc',
-      borderSize: '4',
-      borderColor: '#d8e2dc',
+      value: "Vanila",
+      data: "Vanila",
+      background: "#fcfcfc",
+      borderSize: "4",
+      borderColor: "#d8e2dc",
       tag: true,
     },
     {
-      value: 'Love',
-      data: 'Love',
-      background: '',
-      background1: '#e63946',
-      background2: '#ff35a2',
-      deg: '65deg',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Love",
+      data: "Love",
+      background: "",
+      background1: "#e63946",
+      background2: "#ff35a2",
+      deg: "65deg",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: false,
     },
     {
-      value: 'Earth',
-      data: 'Earth',
-      background: '',
-      background1: '#edd0be',
-      background2: '#ddbea9',
-      deg: '139deg',
-      borderSize: '1',
-      borderColor: '#a5a58d',
+      value: "Earth",
+      data: "Earth",
+      background: "",
+      background1: "#edd0be",
+      background2: "#ddbea9",
+      deg: "139deg",
+      borderSize: "1",
+      borderColor: "#a5a58d",
       tag: false,
     },
     {
-      value: 'Valentine',
-      data: 'Valentine',
-      background: '',
-      background1: '#e5383b',
-      background2: '#f77f00',
-      deg: '306deg',
-      borderSize: '0',
-      borderColor: '#c5c8d1',
+      value: "Valentine",
+      data: "Valentine",
+      background: "",
+      background1: "#e5383b",
+      background2: "#f77f00",
+      deg: "306deg",
+      borderSize: "0",
+      borderColor: "#c5c8d1",
       tag: false,
     },
     {
-      value: 'Bubble Gum',
-      data: 'Bubble Gum',
-      background: '#fce4f3',
-      borderSize: '1',
-      borderColor: '#f5c5e7',
+      value: "Bubble Gum",
+      data: "Bubble Gum",
+      background: "#fce4f3",
+      borderSize: "1",
+      borderColor: "#f5c5e7",
       tag: true,
     },
     {
-      value: 'Black and Yellow',
-      data: 'Black and Yellow',
-      background: '#000000',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Black and Yellow",
+      data: "Black and Yellow",
+      background: "#000000",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: true,
     },
     {
-      value: 'Sophisticated',
-      data: 'Sophisticated',
-      background: '#f1f6f9',
-      borderSize: '0',
-      borderColor: '#d0dde4',
+      value: "Sophisticated",
+      data: "Sophisticated",
+      background: "#f1f6f9",
+      borderSize: "0",
+      borderColor: "#d0dde4",
       tag: true,
     },
     {
-      value: 'Fire',
-      data: 'Fire',
-      background: '',
-      background1: '#ff6f3c',
-      background2: '#ffc93c',
-      deg: '13deg',
-      borderSize: '0',
-      borderColor: '#ff3c3c',
+      value: "Fire",
+      data: "Fire",
+      background: "",
+      background1: "#ff6f3c",
+      background2: "#ffc93c",
+      deg: "13deg",
+      borderSize: "0",
+      borderColor: "#ff3c3c",
       tag: false,
     },
     {
-      value: 'Frost',
-      data: 'Frost',
-      background: ' ',
-      background1: '#46cdcf',
-      background2: '#bfffec',
-      deg: '145deg',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Frost",
+      data: "Frost",
+      background: " ",
+      background1: "#46cdcf",
+      background2: "#bfffec",
+      deg: "145deg",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: false,
     },
     {
-      value: 'Sunny Evening',
-      data: 'Sunny Evening',
-      background: '#fce38a',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Sunny Evening",
+      data: "Sunny Evening",
+      background: "#fce38a",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: true,
     },
     {
-      value: 'Red Moon',
-      data: 'Red Moon',
-      background: '#2b2e4a',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Red Moon",
+      data: "Red Moon",
+      background: "#2b2e4a",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: true,
     },
     {
-      value: 'Dark Ocean',
-      data: 'Dark Ocean',
-      background: '#222831',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Dark Ocean",
+      data: "Dark Ocean",
+      background: "#222831",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: true,
     },
     {
-      value: 'Minimal',
-      data: 'Minimal',
-      background: '#FFFFFF',
-      borderSize: '1',
-      borderColor: '#000000',
+      value: "Minimal",
+      data: "Minimal",
+      background: "#FFFFFF",
+      borderSize: "1",
+      borderColor: "#000000",
       tag: true,
     },
     {
-      value: 'Mint',
-      data: 'Mint',
-      background: '#b0ead7',
-      borderSize: '0',
-      borderColor: '#FFFFFF',
+      value: "Mint",
+      data: "Mint",
+      background: "#b0ead7",
+      borderSize: "0",
+      borderColor: "#FFFFFF",
       tag: true,
     },
-  ]
+  ];
   const fontOption = [
     {
-      value: 'auto',
-      data: 'Use your theme fonts',
+      value: "auto",
+      data: "Use your theme fonts",
     },
     {
-      value: 'Helvetica',
-      data: 'Helvetica',
+      value: "Helvetica",
+      data: "Helvetica",
     },
     {
-      value: 'Tahoma',
-      data: 'Tahoma',
+      value: "Tahoma",
+      data: "Tahoma",
     },
     {
-      value: 'Trebuchet MS',
-      data: 'Trebuchet MS',
+      value: "Trebuchet MS",
+      data: "Trebuchet MS",
     },
     {
-      value: 'Times New Roman',
-      data: 'Times New Roman',
+      value: "Times New Roman",
+      data: "Times New Roman",
     },
     {
-      value: 'Georgia',
-      data: 'Georgia',
+      value: "Georgia",
+      data: "Georgia",
     },
     {
-      value: 'Garamond',
-      data: 'Garamond',
+      value: "Garamond",
+      data: "Garamond",
     },
     {
-      value: 'Courier New',
-      data: 'Courier New',
+      value: "Courier New",
+      data: "Courier New",
     },
-  ]
+  ];
 
-  console.log("Timer Type", content.timerType)
+  // const updateOptionData = (e) => {
+  //   const seletced_data = myoption.find((x) => x.value == e.target.value);
+  //   const updateDesign = {
+  //     ...design,
+  //     template: e.target.value,
+  //     borderSize:seletced_data.borderSize,
+  //     borderColor:seletced_data.borderColor
+  //   };
 
+  //   if (seletced_data.tag == true) {
+  //     updateDesign.backtype = {
+  //       single:true,
+  //       gradient:false,
+  //     }
+  //     updateDesign.singleColor = seletced_data.background
+  //   } else {
+  //     updateDesign.backtype = {
+  //       single:false,
+  //       gradient:true,
+  //     }
+  //     updateDesign.gradClr1 = seletced_data.background1
+  //     updateDesign.gradClr2 = seletced_data.background2
+  //     updateDesign.gradAngle = seletced_data.deg.split('deg')[0]
+  //   }
+  //   setDesign(updateDesign);
+  // };
   return (
     <>
       <div className="design">
         <div className="row px-4 py-3">
           <div className="col col-md-7">
-            <div className="Polaris-Card" style={{ maxWidth: '360px' }}>
-
+            <div className="Polaris-Card" style={{ maxWidth: "360px" }}>
               <div className="Polaris-Card__Section">
                 <div className="Polaris-FormLayout">
                   <div className="Polaris-FormLayout__Item">
@@ -280,49 +303,7 @@ function Design() {
                       option={myoption}
                       placeholder="Custom"
                       value={design.template}
-                      onChange={(e) => {
-                        let temp = {}
-                        {
-                          myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].tag == true
-                            ? (temp = {
-                              singleColor: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background,
-                            })
-                            : (temp = {
-                              gradClr1: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background1,
-                              gradClr2: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].background2,
-                              gradAngle: myoption.filter(
-                                (item) => item.value === e.target.value,
-                              )[0].deg,
-                            })
-                        }
-                        const data = {
-                          ...design,
-                          template: e.target.value,
-                          borderSize: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].borderSize,
-                          borderColor: myoption.filter(
-                            (item) => item.value === e.target.value,
-                          )[0].borderColor,
-                          ...temp,
-                        }
-
-                        setDesign((state) => {
-                          return {
-                            ...state,
-                            ...data,
-
-                          }
-                        })
-                      }}
+                      onChange={(e)=>updateOptionData(e,design,setDesign,myoption)}
                     />
                   </div>
                 </div>
@@ -341,16 +322,15 @@ function Design() {
                         name="color"
                         label="Single color background"
                         decription=""
-                        checked={true}
+                        checked={design.backtype.single}
                         onChange={(e) => {
-                          setDesign({ ...design, backtype: e.target.value })
-                          document
-                            .getElementById('SingleColor-Product')
-                            .classList.remove('disable-div')
-
-                          document
-                            .getElementById('GradColor-Product')
-                            .classList.add('disable-div')
+                          setDesign({
+                            ...design,
+                            backtype: {
+                              single: true,
+                              gradient: false,
+                            },
+                          });
                         }}
                       />
                       <div className="Polaris-FormLayout__Item">
@@ -358,19 +338,17 @@ function Design() {
                           <div className="Polaris-Stack__Item">
                             <div className="">
                               <div
-                                className="Polaris-Connected"
+                                className={`${
+                                  design.backtype.single == true
+                                    ? ""
+                                    : "disable-div"
+                                } Polaris-Connected`}
                                 id="SingleColor-Product"
                               >
                                 <Colorpicker
-                                  state1={design.singleColor}
-                                  onChange={(e) => {
-                                    setDesign({
-                                      ...design,
-                                      singleColor: hsbToHex(e),
-                                    })
-                                    console.log(e)
-                                    console.log(design.singleColor)
-                                  }}
+                                  colors={design.singleColor}
+                                  state={{setDesign,design}}
+                            value={'singleColor'}
                                 />
                                 <InputComponent
                                   default={design.singleColor}
@@ -378,7 +356,7 @@ function Design() {
                                     setDesign({
                                       ...design,
                                       singleColor: e.target.value,
-                                    })
+                                    });
                                   }}
                                 />
                               </div>
@@ -391,22 +369,32 @@ function Design() {
                         name="color"
                         label="Gradient background"
                         decription=""
+                        checked={design.backtype.gradient}
                         onChange={(e) => {
-                          setDesign({ ...design, backtype: e.target.value })
-                          document
-                            .getElementById('GradColor-Product')
-                            .classList.remove('disable-div')
-                          document
-                            .getElementById('SingleColor-Product')
-                            .classList.add('disable-div')
+                          setDesign({
+                            ...design,
+                            backtype: {
+                              single: false,
+                              gradient: true,
+                            },
+                          });
                         }}
                       />
-                      <div id="GradColor-Product" className='disable-div'>
+                      <div
+                        id="GradColor-Product"
+                        className={`${
+                          design.backtype.gradient == true ? "" : "disable-div"
+                        }`}
+                      >
                         <div className="Polaris-FormLayout__Item">
                           <Rangeslider
-                            state1={design.gradAngle}
+                            state1={
+                              design.gradAngle.includes("deg") == true
+                                ? design.gradAngle.split("deg")[0]
+                                : design.gradAngle
+                            }
                             onChange={(e) => {
-                              setDesign({ ...design, gradAngle: e })
+                              setDesign({ ...design, gradAngle: `${e}` });
                             }}
                           />
                         </div>
@@ -414,17 +402,11 @@ function Design() {
                           <div className="Polaris-Stack">
                             <div className="Polaris-Stack__Item">
                               <div className="">
-                                <div
-                                  className="Polaris-Connected"
-                                >
+                                <div className="Polaris-Connected">
                                   <Colorpicker
-                                    state1={design.gradClr1}
-                                    onChange={(e) => {
-                                      setDesign({
-                                        ...design,
-                                        gradClr1: hsbToHex(e),
-                                      })
-                                    }}
+                                    colors={design.gradClr1}
+                                    state={{setDesign,design}}
+                                    value={'gradClr1'}
                                   />
                                   <InputComponent
                                     default={design.gradClr1}
@@ -432,7 +414,7 @@ function Design() {
                                       setDesign({
                                         ...design,
                                         gradClr1: e.target.value,
-                                      })
+                                      });
                                     }}
                                   />
                                 </div>
@@ -446,13 +428,9 @@ function Design() {
                               <div className="">
                                 <div className="Polaris-Connected">
                                   <Colorpicker
-                                    state1={design.gradClr2}
-                                    onChange={(e) => {
-                                      setDesign({
-                                        ...design,
-                                        gradClr2: hsbToHex(e),
-                                      })
-                                    }}
+                                    colors={design.gradClr2}
+                                    state={{setDesign,design}}
+                                    value={'gradClr2'}
                                   />
                                   <InputComponent
                                     default={design.gradClr2}
@@ -460,7 +438,7 @@ function Design() {
                                       setDesign({
                                         ...design,
                                         gradClr2: e.target.value,
-                                      })
+                                      });
                                     }}
                                   />
                                 </div>
@@ -497,7 +475,7 @@ function Design() {
                               setDesign({
                                 ...design,
                                 cornerRadus: e,
-                              })
+                              });
                             }}
                           />
                         </div>
@@ -507,7 +485,7 @@ function Design() {
                       <div className="Polaris-FormLayout__Items">
                         <div
                           className="Polaris-FormLayout__Item"
-                          style={{ width: '100%', display: 'flex' }}
+                          style={{ width: "100%", display: "flex" }}
                         >
                           <div className="small-div">
                             <div className="">
@@ -530,13 +508,13 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     borderSize: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
                           </div>
 
-                          <div className="" style={{ width: '58%' }}>
+                          <div className="" style={{ width: "58%" }}>
                             <div className="Polaris-Labelled__LabelWrapper">
                               <div className="Polaris-Label">
                                 <label
@@ -550,13 +528,9 @@ function Design() {
                             </div>
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.borderColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    borderColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.borderColor}
+                                state={{setDesign,design}}
+                                value={'borderColor'}
                               />
                               <InputComponent
                                 default={design.borderColor}
@@ -564,7 +538,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     borderColor: e.target.value,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -591,7 +565,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     spaceIntop: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -614,7 +588,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     spaceInbottom: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -641,7 +615,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     spaceOuttop: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -664,7 +638,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     spaceOutbottom: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -709,7 +683,7 @@ function Design() {
                         setDesign({
                           ...design,
                           font: e.target.value,
-                        })
+                        });
                       }}
                     />
                     <div
@@ -724,7 +698,7 @@ function Design() {
                     <div className="Polaris-FormLayout__Items">
                       <div
                         className="Polaris-FormLayout__Item"
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       >
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -737,7 +711,7 @@ function Design() {
                             </label>
                           </div>
                         </div>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: "flex" }}>
                           <div className="small-div">
                             <div className="">
                               <InputNumber
@@ -748,22 +722,18 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     titleSize: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
                           </div>
 
-                          <div className="" style={{ width: '58%' }}>
+                          <div className="" style={{ width: "58%" }}>
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.titleColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    titleColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.titleColor}
+                                state={{setDesign,design}}
+                                value={'titleColor'}
                               />
                               <InputComponent
                                 default={design.titleColor}
@@ -771,7 +741,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     titleColor: e.target.value,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -784,7 +754,7 @@ function Design() {
                     <div className="Polaris-FormLayout__Items">
                       <div
                         className="Polaris-FormLayout__Item"
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       >
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -797,7 +767,7 @@ function Design() {
                             </label>
                           </div>
                         </div>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: "flex" }}>
                           <div className="small-div">
                             <div className="">
                               <InputNumber
@@ -808,22 +778,18 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     subheadingSize: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
                           </div>
 
-                          <div className="" style={{ width: '58%' }}>
+                          <div className="" style={{ width: "58%" }}>
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.subheadingColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    subheadingColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.subheadingColor}
+                                state={{setDesign,design}}
+                                value={'subheadingColor'}
                               />
                               <InputComponent
                                 default={design.subheadingColor}
@@ -831,7 +797,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     subheadingColor: e.target.value,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -844,7 +810,7 @@ function Design() {
                     <div className="Polaris-FormLayout__Items">
                       <div
                         className="Polaris-FormLayout__Item"
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       >
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -857,7 +823,7 @@ function Design() {
                             </label>
                           </div>
                         </div>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: "flex" }}>
                           <div className="small-div">
                             <div className="">
                               <InputNumber
@@ -868,22 +834,18 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     timerSize: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
                           </div>
 
-                          <div className="" style={{ width: '58%' }}>
+                          <div className="" style={{ width: "58%" }}>
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.timerColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    timerColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.timerColor}
+                                state={{setDesign,design}}
+                                value={'timerColor'}
                               />
                               <InputComponent
                                 default={design.timerColor}
@@ -891,7 +853,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     timerColor: e.target.value,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -904,7 +866,7 @@ function Design() {
                     <div className="Polaris-FormLayout__Items">
                       <div
                         className="Polaris-FormLayout__Item"
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       >
                         <div className="Polaris-Labelled__LabelWrapper">
                           <div className="Polaris-Label">
@@ -917,7 +879,7 @@ function Design() {
                             </label>
                           </div>
                         </div>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: "flex" }}>
                           <div className="small-div">
                             <div className="">
                               <InputNumber
@@ -928,22 +890,18 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     legendSize: e,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
                           </div>
 
-                          <div className="" style={{ width: '58%' }}>
+                          <div className="" style={{ width: "58%" }}>
                             <div className="Polaris-Connected">
                               <Colorpicker
-                                state1={design.legendColor}
-                                onChange={(e) => {
-                                  setDesign({
-                                    ...design,
-                                    legendColor: hsbToHex(e),
-                                  })
-                                }}
+                                colors={design.legendColor}
+                                state={{setDesign,design}}
+                                value={'legendColor'}
                               />
                               <InputComponent
                                 default={design.legendColor}
@@ -951,7 +909,7 @@ function Design() {
                                   setDesign({
                                     ...design,
                                     legendColor: e.target.value,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -982,7 +940,7 @@ function Design() {
           <div className="col col-md-5">
             <div
               // className="product-page-wrapper"
-              style={{ position: 'sticky', top: '20px' }}
+              style={{ position: "sticky", top: "20px" }}
             >
               <div className="product-page-top"></div>
 
@@ -993,7 +951,7 @@ function Design() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Design
+export default Design;

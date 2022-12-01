@@ -14,6 +14,7 @@ import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
 import ToastComp from "../layouts/ToastComp";
 import { useRef } from "react";
 import CustomModal from "../layouts/Modal";
+import {UpdateTimerType} from "../common_functions/functions"
 
 export const ProductPage = () => {
   const {
@@ -55,7 +56,7 @@ export const ProductPage = () => {
   const navdata = [
     {
       title: "Content",
-      path: "",
+      path: "Content",
     },
     {
       title: "Design",
@@ -122,20 +123,46 @@ export const ProductPage = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      setContent(() => {
-        return {
-          ...data.data.Content,
-          selectedDates: {
-            start: new Date(data.data.Content.selectedDates.start),
-            end: new Date(data.data.Content.selectedDates.end),
-          },
-          selectedEndDates: {
-            start: new Date(data.data.Content.selectedEndDates.start),
-            end: new Date(data.data.Content.selectedEndDates.end),
-          },
-        };
-      });
-      console.log(data.data.Content);
+
+      // let  contentData = {...data.data.Content.timerType,
+      //   countdownDate:{
+      //     ...data.data.Content.timerType.countdownDate,
+      //     startDate:{
+      //       ...data.data.Content.timerType.countdownDate.startDate,
+      //       date:{
+      //         start:new Date(data.data.Content.timerType.countdownDate.startDate.date.start),
+      //         end:new Date(data.data.Content.timerType.countdownDate.startDate.date.end)
+      //       }
+      //     },
+      //     endDate:{
+      //       ...data.data.Content.timerType.countdownDate.endDate,
+      //       date:{
+      //         start:new Date(data.data.Content.timerType.countdownDate.endDate.date.start),
+      //         end:new Date(data.data.Content.timerType.countdownDate.endDate.date.end)
+      //       }
+      //     }
+      //   },
+      //   recurring:{
+      //     ...data.data.Content.timerType.recurring,
+      //     start:{
+      //       ...data.data.Content.timerType.recurring.start,
+      //       date:{
+      //         start:new Date(data.data.Content.timerType.recurring.start.date.start),
+      //         end:new Date(data.data.Content.timerType.recurring.start.date.end)
+      //       }
+      //     },
+      //     end:{
+      //       ...data.data.Content.timerType.recurring.end,
+      //       date:{
+      //         start:new Date(data.data.Content.timerType.recurring.end.date.start),
+      //         end:new Date(data.data.Content.timerType.recurring.end.date.end)
+      //       }
+      //     }
+      //   }
+      // }
+
+      console.log(data)
+      setContent({...data.data.Content,timerType:UpdateTimerType(data,'Content')})
       setDesign(data.data.Design);
       setPlacement(data.data.Placement);
       setHtml(data.data.Html);
@@ -143,8 +170,7 @@ export const ProductPage = () => {
 
       setBtnMain(data.data.IsPublished == "published" ? false : true);
     };
-    console.log("checking data id ", dataId);
-
+    
     if (id !== null) getDataById();
     return () => {
       setId(null);

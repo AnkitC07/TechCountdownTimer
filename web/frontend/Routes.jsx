@@ -49,8 +49,10 @@ export default function Routes({ pages }) {
       <Route path="/" element={<Homepage />} />
       <Route path="/Help" element={<Help />} />
       <Route path="/TimerType" element={<TimerType />} />
+
       <Route path="/ProductPage" element={<ProductPage />}>
         <Route index element={<Content />} />
+        <Route path="Content" element={<Content />} />
         <Route path="Design" element={<Design />} />
         <Route path="Placement" element={<Placement />} />
       </Route>
@@ -62,12 +64,14 @@ export default function Routes({ pages }) {
         <Route path="Placement_top" element={<Placement_top />} />
       </Route>
       <Route path="/LandingPage" element={<LandingPage />}>
-        <Route path="" element={<Content_land />} />
+        <Route index element={<Content_land />} />
+        <Route path="Content_land" element={<Content_land />} />
         <Route path="Design_land" element={<Design_land />} />
         <Route path="Placement_land" element={<Placement_land />} />
       </Route>
       <Route path="/CartPage" element={<CartPage />}>
-        <Route path="" element={<Content_cart />} />
+        <Route index element={<Content_cart />} />
+        <Route path="Content_cart" element={<Content_cart />} />
         <Route path="Design_cart" element={<Design_cart />} />
         <Route path="Placement_cart" element={<Placement_cart />} />
       </Route>

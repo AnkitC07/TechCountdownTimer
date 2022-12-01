@@ -19,7 +19,6 @@ function InputComponent(props) {
             defaultValue={props.default}
             placeholder={props.placeholder}
             name={props.name}
-            default={props.default}
             aria-labelledby={props.label}
             value={props.default}
             onChange={props.onChange}

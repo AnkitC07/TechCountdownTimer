@@ -25,7 +25,7 @@ const CartPage = () => {
   const navData_land = [
     {
       title: 'Content',
-      path: '',
+      path: 'Content_cart',
       class: 'active',
     },
     {
@@ -136,7 +136,6 @@ const CartPage = () => {
     };
   }, []);
 
-  console.log(dataId,"checking data id")
   if (dataId !== undefined && id == null) {
     id = dataId;
   }
@@ -146,6 +145,7 @@ const CartPage = () => {
       type: statusUpdate,
       status: true,
     });
+  
     const setHrmlValue = Html == ""?document.querySelector('.top_product_timer_wrapper').innerHTML:Html
     console.log(setHrmlValue)
     const body = {
@@ -158,6 +158,7 @@ const CartPage = () => {
       store: getShopName(),
     };
 
+    
 	console.log(body)
 
     if (statusUpdate == "Duplicate") {
@@ -175,7 +176,7 @@ const CartPage = () => {
       }
     );
     const data = await res.json();
-    console.log(data)
+  
     if (data) {
       setBtnLoading({
         type: statusUpdate,
@@ -184,7 +185,7 @@ const CartPage = () => {
       if (data.status == "published") {
         setMsg("Published");
         setBtnMain(false);
-		setIspublished("published")
+		    setIspublished("published")
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {

@@ -3,16 +3,16 @@ import {
   ColorPicker,
   hsbToHex,
   Popover,
-  rgbToHsb,
-  // hexToRgb,
 } from '@shopify/polaris'
 import { useState } from 'react'
-// import { hexToRgb } from '@shopify/polaris/build/ts/latest/src/utilities/color-transformers'
-// import hexRgb from 'hex-rgb'
 
-const Colorpicker = (props) => {
+const Colorpicker = ({
+  colors,
+  state,
+  value
+}) => {
   const [color, setColor] = useState({
-    hue: 0,
+    hue: 1,
     brightness: 0,
     saturation: 39,
   })
@@ -29,7 +29,7 @@ const Colorpicker = (props) => {
   }
   // console.log(props.state1)
 
-  const rbg = props.state1
+  const rbg = colors
 
   const activator = (
     <div
@@ -54,15 +54,15 @@ const Colorpicker = (props) => {
       >
         <Popover.Section>
           <ColorPicker
-            onChange={props.onChange}
-            color={props.state1}
-            // color={rgbToHsb(
-            //   hexRgb(
-            //     props.state1.length <= 6 || props.state1.length > 7
-            //       ? '#000000'
-            //       : props.state1,
-            //   ),
-            // )}
+            onChange={(e)=>{
+              console.log(value)
+              state.setDesign({
+                ...state.design,
+                [value]: hsbToHex(e)
+              })
+              setColor(e)
+            }}
+            color={color}
           />
         </Popover.Section>
       </Popover>
