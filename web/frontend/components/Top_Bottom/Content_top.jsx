@@ -43,10 +43,14 @@ function Content() {
   }, [])
 
 
-  const myoption = [
+  const FixedTimer = [
     {
-      data: 'Unpublish timer',
-      value: 'Unpublish timer',
+      data: 'Hide the timer for the buyers',
+      value: 'Hide the timer for the buyers',
+    },
+    {
+      data: 'Repeat the countdown',
+      value: 'Repeat the countdown',
     },
     {
       data: 'Show custom title',
@@ -55,8 +59,49 @@ function Content() {
     {
       data: 'Do nothing',
       value: 'Do nothing',
-    },
+    }
   ]
+
+  const recurring = [
+    {
+      data:'Hide timer',
+      value:'Hide timer'
+    },
+    {
+      data: 'Show custom title',
+      value: 'Show custom title',
+    },
+    {
+      data: 'Do nothing',
+      value: 'Do nothing',
+    }
+  ]
+
+  const countdown = [
+    {
+      data:'Unpublished timer',
+      value:'Unpublished timer'
+    },
+    {
+      data: 'Show custom title',
+      value: 'Show custom title',
+    },
+    {
+      data: 'Do nothing',
+      value: 'Do nothing',
+    }
+  ]
+
+  const mysoptions = () =>{
+    if(content.timerType.countdownDate.status == true){
+      return countdown
+    }else if(content.timerType.fixedTime.status == true){
+      return FixedTimer
+    }else if(content.timerType.recurring.status){
+      return recurring
+    }
+  }
+
   const call_to_action = [
     {
       value: 'No call to action',
@@ -1039,7 +1084,7 @@ function Content() {
                     </div>
                     <InputSelect
                       id="onceItEnds"
-                      option={myoption}
+                      option={mysoptions()}
                       value={content.onceItEnd}
                       placeholder="Unpublish timer"
                       textValue = {content.customTitle}

@@ -22,6 +22,7 @@ function Placement() {
       }
   })
 
+  console.log(placement)
   const updateState = async (keyData) =>{
     Object.keys(options).forEach(key => {
       options[key] = false;

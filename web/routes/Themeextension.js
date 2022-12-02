@@ -4,6 +4,13 @@ import Product from "../model/Product.js";
 mongoose.Promise = global.Promise;
 const Theme = express.Router();
 
+Theme.post('/unpublished',async (req,res)=>{
+  console.log(req.body,"checking data values")
+  let update = await Product.findByIdAndUpdate({_id:req.body.id},{$set:{IsPublished:'Unpublished'}})
+  console.log(update)
+  res.send({status:200,msg:"updated"})
+})
+
 Theme.post("/checkingStore", async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", " *");
   try {
@@ -39,6 +46,8 @@ Theme.post("/checkingStore", async (req, res) => {
     console.log(err)
   }
 });
+
+
 
 
 function CheckTimerType(data){

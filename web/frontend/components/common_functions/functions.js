@@ -191,7 +191,72 @@ const updateOptionData = (e, design, state, myoption) => {
   state(updateDesign);
 };
 
+
+// Once it ends
+
+const DisplayOption = async (content)=>{
+  const FixedTimer = [
+    {
+      data: 'Hide the timer for the buyers',
+      value: 'Hide the timer for the buyers',
+    },
+    {
+      data: 'Repeat the countdown',
+      value: 'Repeat the countdown',
+    },
+    {
+      data: 'Show custom title',
+      value: 'Show custom title',
+    },
+    {
+      data: 'Do nothing',
+      value: 'Do nothing',
+    }
+  ]
+
+  const recurring = [
+    {
+      data:'Hide timer',
+      value:'Hide timer'
+    },
+    {
+      data: 'Show custom title',
+      value: 'Show custom title',
+    },
+    {
+      data: 'Do nothing',
+      value: 'Do nothing',
+    }
+  ]
+
+  const countdown = [
+    {
+      data:'Unpublished timer',
+      value:'Unpublished timer'
+    },
+    {
+      data: 'Show custom title',
+      value: 'Show custom title',
+    },
+    {
+      data: 'Do nothing',
+      value: 'Do nothing',
+    }
+  ]
+
+  const mysoptions = () =>{
+    if(content.timerType.countdownDate.status == true){
+      return countdown
+    }else if(content.timerType.fixedTime.status == true){
+      return FixedTimer
+    }else if(content.timerType.recurring.status){
+      return recurring
+    }
+  }
+ return mysoptions()
+}
 export {
+  DisplayOption,
   getShopName,
   UpdateTimerType,
   updateState,
