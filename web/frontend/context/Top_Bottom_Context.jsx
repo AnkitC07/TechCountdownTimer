@@ -121,8 +121,8 @@ export const placementCheck = {
     allCollections:false,
     specificCollections:false
   },
-  specProduct: [],
-  specCollection: [],
+  specificProducts: [],
+  specificCollection: [],
 }
 
 export const TopBottomProvider = (props) => {
