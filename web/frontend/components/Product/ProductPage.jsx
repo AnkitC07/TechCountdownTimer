@@ -201,6 +201,7 @@ export const ProductPage = () => {
         setMsg("Published");
         setBtnMain(false);
         setIspublished("published");
+        setBanner(true)
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {
@@ -392,7 +393,7 @@ export const ProductPage = () => {
           </div>
         </div>
 
-        {dataId !== null ? (
+        {banner == true ? (
           <div className="mt-2 mb-3">
              <Banners 
             id={id}
