@@ -35,8 +35,9 @@ Theme.post("/checkingStore", async (req, res) => {
       $or: [{ Type: "Top/Bottom Page" }, { Type: type }],
     })
 
-    if(type !== 'Cart Page'){
+    if(type !== 'Cart Page' || type !== 'Top/Bottom Page'){
       data = data.filter(x=>{
+        console.log(CheckTimerType(x),"checking date")
         return CheckTimerType(x)
       })
     }
@@ -52,14 +53,16 @@ Theme.post("/checkingStore", async (req, res) => {
 
 function CheckTimerType(data){
   let date = new Date()
+  console.log(date,"current date")
   function startDate(startdate){
-    console.log(new Date(startdate) , date,new Date(startdate) <= date,'start')
+    // console.log(new Date(startdate) , date,new Date(startdate) <= date,'start')
     return new Date(startdate) <= date
   }
 
   function endDate(enddate){
     let end = new Date(enddate)
-    return date <= new Date(end + 1) || date.getDate() == end.getDate() && date.getMonth() + 1 == end.getMonth() + 1
+    console.log(date.getDate(),end.getDate(),"data values -----")
+    return date <= new Date(end + 1) || date.getDate() == end.getDate() + 1 && date.getMonth() + 1 == end.getMonth() + 1
   }
   
   if(data.Content.timerType.countdownDate.status == true){
