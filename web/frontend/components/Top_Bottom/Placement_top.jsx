@@ -9,7 +9,7 @@ function Placement() {
   const [open, setOpen] = useState(false)
   const [openCol, setOpenCol] = useState(false)
   const [options,setOptions] = useState(placement.selectOptions)
-
+ console.log(placement.selectOptions,"asdjlakdsjlkasjlkasjd")
   let height;
   document.addEventListener('scroll', () => {
     height = window.scrollY
@@ -23,12 +23,14 @@ function Placement() {
   })
 
   console.log(placement)
+
   const updateState = async (keyData) =>{
     Object.keys(options).forEach(key => {
       options[key] = false;
     });
+    console.log(keyData,"chekcing checked values")
     options[keyData] = true
-    console.log(options)
+    console.log(options,"opetion checked")
     setOptions(options)
     setPlacement({...placement,selectOptions:options})
   }
@@ -100,7 +102,7 @@ function Placement() {
                     </button>
                   </div>
                   <CheckBoxComponent
-                    id="allCollection"
+                    id="allCollections"
                     name="products"
                     label="Show on all collection pages"
                     checked={options.allCollections}
@@ -204,12 +206,12 @@ function Placement() {
                     </button>
                   </div>
                   <CheckBoxComponent
-                    id="allCollection"
+                    id="allCollections"
                     name="products"
                     label="Show on all collection pages"
-                    checked={options.allcollections}
+                    checked={options.allCollections}
                     onChange={(e) => {
-                      updateState('allCollection')
+                      updateState('allCollections')
                     }}
                   />
                   <CheckBoxComponent

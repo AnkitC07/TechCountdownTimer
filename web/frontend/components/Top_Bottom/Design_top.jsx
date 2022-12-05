@@ -345,7 +345,7 @@ function Design_top() {
                         htmlFor="name"
                         className="Polaris-Label__Text"
                       >
-                        Template
+                        Background Template
                       </label>
                     </div>
                   </div>

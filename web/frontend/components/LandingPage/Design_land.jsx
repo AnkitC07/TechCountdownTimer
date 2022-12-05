@@ -263,7 +263,7 @@ const Design_land = () => {
                         htmlFor="name"
                         className="Polaris-Label__Text"
                       >
-                        Template
+                        Background Template
                       </label>
                     </div>
                   </div>

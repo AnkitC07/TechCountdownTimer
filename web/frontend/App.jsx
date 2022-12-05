@@ -46,7 +46,7 @@ export default function App() {
                         },
                         {
                           label: 'Suggestion',
-                          destination: '/',
+                          destination: '/Suggestion',
                         },
                         {
                           label: 'Help',

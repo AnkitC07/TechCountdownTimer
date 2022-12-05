@@ -257,7 +257,7 @@ const Design_cart = () => {
                       htmlFor="name"
                       className="Polaris-Label__Text"
                     >
-                      Template
+                      Background Template
                     </label>
                   </div>
                 </div>
