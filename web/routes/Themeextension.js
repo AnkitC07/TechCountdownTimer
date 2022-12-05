@@ -29,13 +29,15 @@ Theme.post("/checkingStore", async (req, res) => {
       type = "Landing Page";
     }
 
+     console.log("page type : ",type)
     let data = await Product.find({
       IsPublished: "published",
       Store: shop,
       $or: [{ Type: "Top/Bottom Page" }, { Type: type }],
     })
 
-    if(type !== 'Cart Page' || type !== 'Top/Bottom Page'){
+    if(type !== 'Cart Page' && type !== 'Top/Bottom Page'){
+      console.log("inside the if condiditon")
       data = data.filter(x=>{
         console.log(CheckTimerType(x),"checking date")
         return CheckTimerType(x)
