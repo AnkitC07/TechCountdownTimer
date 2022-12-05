@@ -7,7 +7,7 @@ export const contentCheck = {
   timerName: 'Timer name',
   title: 'Hurry up! Sale ends in: ',
   subHeading: '',
-  callToAction: 'No call to action',
+  callToAction: 'Button',
   buttonText: 'Shop now!',
   link: '#',
   closeIcon: true,

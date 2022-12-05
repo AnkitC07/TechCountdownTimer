@@ -141,7 +141,12 @@ export const LandingDesign = {
 }
 
 export const LandingPlacement = {
-  selectProduct: '',
+  selectProduct: {
+      allCollection:true,
+      specificCollection:false,
+      passowrdPage:false,
+      customPosition:false
+    },
   specProduct: [],
   tags: '',
 }

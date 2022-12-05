@@ -11,12 +11,7 @@ import CustomPosition from '../layouts/CustomPosition'
 const Placement_land = () => {
   const { content, design, placement, setPlacement ,dataId} = useContext(LandingContext)
   const [open, setOpen] = useState(false)
-  const [selectedPro,setProducts] = useState(placement.selected !== undefined?placement.selected:{
-    allCollection:true,
-    specificCollection:false,
-    passowrdPage:false,
-    customPosition:false
-  })
+  const [selectedPro,setProducts] = useState(placement.selectProduct)
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

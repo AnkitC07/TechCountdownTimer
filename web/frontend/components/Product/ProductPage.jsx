@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import { Button ,Badge} from "@shopify/polaris";
+import { Button, Badge } from "@shopify/polaris";
 import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -14,7 +14,8 @@ import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
 import ToastComp from "../layouts/ToastComp";
 import { useRef } from "react";
 import CustomModal from "../layouts/Modal";
-import {UpdateTimerType} from "../common_functions/functions"
+import { UpdateTimerType } from "../common_functions/functions";
+import Banners from "../layouts/Banners";
 
 export const ProductPage = () => {
   const {
@@ -52,6 +53,7 @@ export const ProductPage = () => {
   });
   // const [status, setStatus] = useState('')
   const [btnMain, setBtnMain] = useState(id == null ? true : false);
+  const [banner,setBanner] = useState(false)
 
   const navdata = [
     {
@@ -107,6 +109,11 @@ export const ProductPage = () => {
     console.log(modal);
   };
 
+  const BanneronDismiss = () =>{
+    setBanner(false)
+  }
+
+
   useEffect(() => {
     if (id == null) {
       setDesign(productDesign);
@@ -123,8 +130,11 @@ export const ProductPage = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      console.log(data)
-      setContent({...data.data.Content,timerType:UpdateTimerType(data,'Content')})
+      console.log(data);
+      setContent({
+        ...data.data.Content,
+        timerType: UpdateTimerType(data, "Content"),
+      });
       setDesign(data.data.Design);
       setPlacement(data.data.Placement);
       setHtml(data.data.Html);
@@ -132,7 +142,7 @@ export const ProductPage = () => {
 
       setBtnMain(data.data.IsPublished == "published" ? false : true);
     };
-    
+
     if (id !== null) getDataById();
     return () => {
       setId(null);
@@ -154,7 +164,7 @@ export const ProductPage = () => {
       return window.location.ancestorOrigins[0].replaceAll("https://", "");
     };
 
-    let setHTML = document.querySelector('#getHTMLData').innerHTML
+    let setHTML = document.querySelector("#getHTMLData").innerHTML;
     const body = {
       type: "Product Page",
       content: content,
@@ -165,7 +175,7 @@ export const ProductPage = () => {
       store: getShopName(),
     };
 
-	console.log(body)
+    console.log(body);
 
     if (statusUpdate == "Duplicate") {
       body.content.productTimer = `${content.productTimer} Duplicate`;
@@ -190,7 +200,7 @@ export const ProductPage = () => {
       if (data.status == "published") {
         setMsg("Published");
         setBtnMain(false);
-		    setIspublished("published")
+        setIspublished("published");
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {
@@ -202,7 +212,7 @@ export const ProductPage = () => {
       } else {
         setMsg("Unpublished");
         setBtnMain(true);
-		    setIspublished("Unpublished")
+        setIspublished("Unpublished");
       }
       setActive(true);
     }
@@ -267,13 +277,20 @@ export const ProductPage = () => {
                           {content.productTimer}
                         </h1>
                         <div className="Polaris-Header-Title__TitleMetadata">
-							{ispublished == "published"?<Badge status='success'>Published</Badge>:<Badge >Not published</Badge>}
+                          {ispublished == "published" ? (
+                            <Badge status="success">Published</Badge>
+                          ) : (
+                            <Badge>Not published</Badge>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="Polaris-Header-Title__SubTitle">
-                    <p>Timer ID : {id !== null?id:"Save or Publish to show timer ID"}</p>
+                    <p>
+                      Timer ID :{" "}
+                      {id !== null ? id : "Save or Publish to show timer ID"}
+                    </p>
                   </div>
                 </div>
                 <div class="Polaris-Page-Header__RightAlign">
@@ -375,6 +392,17 @@ export const ProductPage = () => {
           </div>
         </div>
 
+        {dataId !== null ? (
+          <div className="mt-2 mb-3">
+             <Banners 
+            id={id}
+            onDismiss={BanneronDismiss}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+
         <div className="row">
           <TimerNav nav={navdata} />
         </div>
@@ -401,7 +429,7 @@ export const ProductPage = () => {
           ]}
           title={modal.title}
           content={modal.content}
-		  onClose={()=> modalState({ ...modal, state: false })}
+          onClose={() => modalState({ ...modal, state: false })}
         />
       ) : (
         ""

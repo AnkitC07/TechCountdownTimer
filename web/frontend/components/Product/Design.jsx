@@ -294,7 +294,7 @@ function Design() {
                           htmlFor="name"
                           className="Polaris-Label__Text"
                         >
-                          Template
+                          Background Template
                         </label>
                       </div>
                     </div>

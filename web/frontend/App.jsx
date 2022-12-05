@@ -29,6 +29,15 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)')
 
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/614048f4d326717cb68152c0/1gjdrc24h';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
   return (
     <PolarisProvider>
       <BrowserRouter>
@@ -46,7 +55,7 @@ export default function App() {
                         },
                         {
                           label: 'Suggestion',
-                          destination: '/',
+                          destination: '/Suggestion',
                         },
                         {
                           label: 'Help',

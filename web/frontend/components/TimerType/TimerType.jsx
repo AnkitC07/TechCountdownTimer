@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+
 export const TimerType = () => {
   const TimerType = [
     {
@@ -38,8 +39,8 @@ export const TimerType = () => {
       title: 'Suggest a new timer type',
       description: 'Let us know what other timer type you would like to use.',
       src: 'request_feature.svg',
-      btnText: 'Select this timer type',
-      path: '/Top_BottomPage',
+      btnText: 'Suggest a type to us',
+      path: '/Suggestion',
       nav: 'navData_suggest',
     },
   ]
@@ -142,7 +143,7 @@ const TimerTypeBox = (props) => {
             <img src={props.src} />
             <div className="Polaris-TextContainer">
               <h2 className="Polaris-Heading">{props.title}</h2>
-              <p>{props.description}</p>
+              <p style={{height:'50px'}}>{props.description}</p>
               <NavLink className="count_btn" to={props.path}>
                 <button
                   className="Polaris-Button Polaris-Button--fullWidth"

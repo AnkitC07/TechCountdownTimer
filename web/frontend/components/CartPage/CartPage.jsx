@@ -1,15 +1,22 @@
-import React, { useContext,useState,useEffect } from 'react'
-import { NavLink,useNavigate } from 'react-router-dom'
-import { CartPageContext,Cartcontent,Cartplacement,cartdesign } from '../../context/CartPageContext'
-import CustomModal from '../layouts/Modal'
-import { TimerNav } from '../TimerNav'
+import React, { useContext, useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  CartPageContext,
+  Cartcontent,
+  Cartplacement,
+  cartdesign,
+} from "../../context/CartPageContext";
+import CustomModal from "../layouts/Modal";
+import { TimerNav } from "../TimerNav";
 import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
 import ToastComp from "../layouts/ToastComp";
-import { Button ,Badge} from "@shopify/polaris";
-import {getShopName} from '../common_functions/functions.js'
+import { Button, Badge } from "@shopify/polaris";
+import { getShopName } from "../common_functions/functions.js";
+import Banners from "../layouts/Banners";
 
 const CartPage = () => {
-  const { content,
+  const {
+    content,
     setContent,
     design,
     setDesign,
@@ -20,30 +27,33 @@ const CartPage = () => {
     Html,
     setHtml,
     setId,
-    dataId} = useContext(CartPageContext)
+    dataId,
+  } = useContext(CartPageContext);
 
+  console.log(dataId, "checking dataId");
   const navData_land = [
     {
-      title: 'Content',
-      path: 'Content_cart',
-      class: 'active',
+      title: "Content",
+      path: "Content_cart",
+      class: "active",
     },
     {
-      title: 'Design',
-      path: 'Design_cart',
+      title: "Design",
+      path: "Design_cart",
     },
     {
-      title: 'Placement',
-      path: 'Placement_cart',
+      title: "Placement",
+      path: "Placement_cart",
     },
-  ]
+  ];
 
+  const [banner,setBanner] = useState(false)
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let id = urlParams.get("id");
-  console.log("get id ",id)
+  console.log("get id ", id);
   const [active, setActive] = useState(false);
   const [msg, setMsg] = useState("");
   const [btnLoading, setBtnLoading] = useState({
@@ -99,7 +109,7 @@ const CartPage = () => {
     console.log(modal);
   };
 
-  console.log(id)
+  console.log(id);
 
   useEffect(() => {
     if (id == null) {
@@ -109,7 +119,7 @@ const CartPage = () => {
     }
 
     const getDataById = async () => {
-      console.log("in get function",id)
+      console.log("in get function", id);
       const res = await fetch("/api/getDataById", {
         method: "post",
         headers: {
@@ -118,15 +128,15 @@ const CartPage = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      console.log(data,"getting data")
-      if(data.data !== null){
+      console.log(data, "getting data");
+      if (data.data !== null) {
         setContent(data.data.Content);
-      setDesign(data.data.Design);
-      setPlacement(data.data.Placement);
-      setHtml(data.data.Html);
-      setIspublished(data.data.IsPublished);
+        setDesign(data.data.Design);
+        setPlacement(data.data.Placement);
+        setHtml(data.data.Html);
+        setIspublished(data.data.IsPublished);
 
-      setBtnMain(data.data.IsPublished == "published" ? false : true);
+        setBtnMain(data.data.IsPublished == "published" ? false : true);
       }
     };
 
@@ -145,8 +155,8 @@ const CartPage = () => {
       type: statusUpdate,
       status: true,
     });
-  
-    const setHrmlValue = document.querySelector('#getHTMLData').innerHTML
+
+    const setHrmlValue = document.querySelector("#getHTMLData").innerHTML;
     const body = {
       type: "Cart Page",
       content: content,
@@ -157,8 +167,7 @@ const CartPage = () => {
       store: getShopName(),
     };
 
-    
-	console.log(body)
+    console.log(body);
 
     if (statusUpdate == "Duplicate") {
       body.content.timerName = `${content.timerName} Duplicate`;
@@ -175,7 +184,7 @@ const CartPage = () => {
       }
     );
     const data = await res.json();
-  
+
     if (data) {
       setBtnLoading({
         type: statusUpdate,
@@ -184,7 +193,8 @@ const CartPage = () => {
       if (data.status == "published") {
         setMsg("Published");
         setBtnMain(false);
-		    setIspublished("published")
+        setIspublished("published");
+        setBanner(true)
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {
@@ -196,12 +206,16 @@ const CartPage = () => {
       } else {
         setMsg("Unpublished");
         setBtnMain(true);
-		    setIspublished("Unpublished")
+        setIspublished("Unpublished");
       }
       setActive(true);
     }
     setId(data.id);
   };
+
+  const BanneronDismiss = () =>{
+    setBanner(false)
+  }
 
   const deleteBtn = async (idrec) => {
     loadingModalbtn(true);
@@ -221,7 +235,6 @@ const CartPage = () => {
       }, 1500);
     }
   };
-
 
   return (
     <section className="product_main_page">
@@ -262,14 +275,23 @@ const CartPage = () => {
                           {content.timerName}
                         </h1>
                         <div className="Polaris-Header-Title__TitleMetadata">
-                        {ispublished == "published"?<Badge status='success'>Published</Badge>:<Badge >Not published</Badge>}
+                          {ispublished == "published" ? (
+                            <Badge status="success">Published</Badge>
+                          ) : (
+                            <Badge>Not published</Badge>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="Polaris-Header-Title__SubTitle"><p>Timer ID : {id !== null?id:"Save or Publish to show timer ID"}</p></div>
+                  <div class="Polaris-Header-Title__SubTitle">
+                    <p>
+                      Timer ID :{" "}
+                      {id !== null ? id : "Save or Publish to show timer ID"}
+                    </p>
+                  </div>
                 </div>
-              
+
                 <div class="Polaris-Page-Header__RightAlign">
                   <div class="Polaris-ActionMenu">
                     <div class="Polaris-ActionMenu-Actions__ActionsLayout">
@@ -364,12 +386,21 @@ const CartPage = () => {
                     )}
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
         </div>
+
+        {banner == true ? (
+          <div className="mt-2 mb-3">
+            <Banners 
+            id={id}
+            onDismiss={BanneronDismiss}
+            />
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className="row">
           <TimerNav nav={navData_land} />
@@ -397,13 +428,13 @@ const CartPage = () => {
           ]}
           title={modal.title}
           content={modal.content}
-		  onClose={()=> modalState({ ...modal, state: false })}
+          onClose={() => modalState({ ...modal, state: false })}
         />
       ) : (
         ""
       )}
     </section>
-  )
-}
+  );
+};
 
-export default CartPage
+export default CartPage;
