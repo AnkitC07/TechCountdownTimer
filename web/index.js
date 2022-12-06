@@ -4,32 +4,30 @@ import { readFileSync } from "fs";
 import express from "express";
 import cookieParser from "cookie-parser";
 import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
-
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 // import LandingRouter from './routes/LandingRouter.js'
 // import ProductRouter from './routes/ProductRouter.js'
-import TopBottomRouter from './routes/TopBottomRouter.js'
-import bodyparser from 'body-parser'
-import './databse/config.js'
+import TopBottomRouter from "./routes/TopBottomRouter.js";
+import bodyparser from "body-parser";
+import "./databse/config.js";
 
 import { setupGDPRWebHooks } from "./gdpr.js";
 import productCreator from "./helpers/product-creator.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
+// see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // import CartRouter from "./routes/CartRouter.js";
 import AllTimer from "./routes/AllTimer.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
 import Theme from "./routes/Themeextension.js";
-import Cors from 'cors'
-
-
-dotenv.config()
-
+import Cors from "cors";
+import createHmac from "create-hmac";
+import { updateStore } from "./model/Controller/store.js";
+dotenv.config();
 const USE_ONLINE_TOKENS = false;
-
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 // TODO: There should be provided by env vars
@@ -49,7 +47,9 @@ Shopify.Context.initialize({
   // This should be replaced with your preferred storage strategy
   // See note below regarding using CustomSessionStorage with this template.
   SESSION_STORAGE: new Shopify.Session.SQLiteSessionStorage(DB_PATH),
-  ...(process.env.SHOP_CUSTOM_DOMAIN && {CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN]}),
+  ...(process.env.SHOP_CUSTOM_DOMAIN && {
+    CUSTOM_SHOP_DOMAINS: [process.env.SHOP_CUSTOM_DOMAIN],
+  }),
 });
 
 // NOTE: If you choose to implement your own storage strategy using
@@ -59,7 +59,7 @@ Shopify.Context.initialize({
 // work properly.
 
 Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
-  path: "/api/webhooks",
+  path: "/api/uninstalltheapp",
   webhookHandler: async (_topic, shop, _body) => {
     await AppInstallations.delete(shop);
   },
@@ -93,7 +93,7 @@ export async function createServer(
   const app = express();
 
   app.use(express.json());
-  app.use(bodyparser.json())
+  app.use(bodyparser.json());
 
   // app.use(Cors());
 
@@ -104,20 +104,22 @@ export async function createServer(
     billing: billingSettings,
   });
 
-  app.get('/api/checking',async(req,res)=>{
-    res.setHeader('Access-Control-Allow-Origin', ' *')
-    res.send({code:'checking'})
-  })
+  app.get("/api/checking", async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", " *");
+    res.send({ code: "checking" });
+  });
 
   // Do not call app.use(express.json()) before processing webhooks with
   // Shopify.Webhooks.Registry.process().
-  // See https://github.com/Shopify/shopify-api-node/blob/main/docs/usage/webhooks.md#note-regarding-use-of-body-parsers
-  // for more details.
-  app.post("/api/webhooks", async (req, res) => {
+
+  app.post("/api/uninstalltheapp", async (req, res) => {
     try {
-      await Shopify.Webhooks.Registry.process(req, res);
-      console.log(`Webhook processed, returned status code 200`);
+      const shop = req.body.domain;
+      await AppInstallations.delete(shop);
+      // await Shopify.Webhooks.Registry.process(req, res);
+      console.log(`Webhook processed, returned status code 200`, shop);
     } catch (e) {
+      console.log("err", e);
       console.log(`Failed to process webhook: ${e.message}`);
       if (!res.headersSent) {
         res.status(500).send(e.message);
@@ -125,8 +127,56 @@ export async function createServer(
     }
   });
 
+  function verifyWebhook(payload, hmac) {
+    const message = JSON.stringify(payload).toString();
+    var check = createHmac("sha256", process.env.SHOPIFY_API_SECRET)
+      .update(message)
+      .digest("base64");
+    return check === hmac;
+  }
 
-  app.use('/api',Theme)
+  // START GDPR end point =====================================================================
+  app.post("/api/data-request", async (req, res) => {
+    console.log('checking')
+    const hmac = req.headers["x-shopify-hmac-sha256"];
+    const topic = req.header("X-Shopify-Topic");
+    const verified = verifyWebhook(req.body, hmac);
+    if (verified) {
+      console.log("GDPR is verified",topic)
+      res.status(200).send({ data: "data-request triggered" });
+    } else {
+      console.log("GDPR is not verified",topic)
+      res.status(401).send({ data: "data-request triggered" });
+    }
+  });
+
+  app.post("/api/data-erasure", (req, res) => {
+    const hmac = req.headers["x-shopify-hmac-sha256"];
+    const topic = req.header("X-Shopify-Topic");
+    const verified = verifyWebhook(req.body, hmac);
+    if (verified) {
+      console.log("GDPR is verified",topic)
+      res.status(200).send({ data: "data-request triggered" });
+    } else {
+      console.log("GDPR is not verified",topic)
+      res.status(401).send({ data: "data-request triggered" });
+    }
+  });
+
+  app.post("/api/shop-data-erasure", (req, res) => {
+    const hmac = req.headers["x-shopify-hmac-sha256"];
+    const topic = req.header("X-Shopify-Topic");
+    const verified = verifyWebhook(req.body, hmac);
+    if (verified) {
+      console.log("GDPR is verified",topic)
+      res.status(200).send({ data: "data-request triggered" });
+    } else {
+      console.log("GDPR is not verified",topic)
+      res.status(401).send({ data: "data-request triggered" });
+    }
+  });
+
+  app.use("/api", Theme);
   // All endpoints after this point will require an active session
   app.use(
     "/api/*",
@@ -171,13 +221,55 @@ export async function createServer(
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
 
-
   // app.use('/submitCart', CartRouter)
   // app.use('/api', LandingRouter)
-  app.use('/api', TopBottomRouter)
+  app.use("/api", TopBottomRouter);
   // app.use('/api', ProductRouter)
-  app.use('/api', AllTimer)
-  app.use('/api', GetDatabyId)
+  app.use("/api", AllTimer);
+  app.use("/api", GetDatabyId);
+
+  app.get("/api/getTheme", async (req, res) => {
+    try {
+      const session = await Shopify.Utils.loadCurrentSession(
+        req,
+        res,
+        app.get("use-online-tokens")
+      );
+      const { Theme } = await import(
+        `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
+      );
+      const themes = await Theme.all({ session });
+      res.status(200).json({ status: 200, data: themes });
+    } catch (err) {
+      res.status(200).json({ status: 400, err: err });
+    }
+  });
+
+  app.get("/api/updateonboarding", async (req, res) => {
+    console.log("checking");
+    try {
+      const shopName = req.query.shopName;
+      await updateStore(shopName);
+      res.status(200).json({ status: 200, msg: "success" });
+    } catch (err) {
+      res.status(200).json({ status: 400, testing: "asdasd" });
+    }
+  });
+
+  app.get("/api/getDetails", async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    try {
+      const shopName = req.query.shopName;
+      console.log(shopName);
+      const findshop = await store.findOne({
+        storename: shopName,
+      });
+      console.log(findshop, "shop");
+      res.status(200).json({ status: 200, data: findshop });
+    } catch (err) {
+      res.status(200).json({ status: 400, testing: "asdasd" });
+    }
+  });
 
   app.use((req, res, next) => {
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);

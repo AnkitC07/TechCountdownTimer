@@ -1,8 +1,8 @@
 import { Shopify } from "@shopify/shopify-api";
 import { gdprTopics } from "@shopify/shopify-api/dist/webhooks/registry.js";
-
 import ensureBilling from "../helpers/ensure-billing.js";
 import redirectToAuth from "../helpers/redirect-to-auth.js";
+import addStore from "../model/Controller/store.js";
 
 export default function applyAuthMiddleware(
   app,
@@ -54,6 +54,14 @@ export default function applyAuthMiddleware(
         if (!hasPayment) {
           return res.redirect(confirmationUrl);
         }
+      }
+
+      try{
+        await addStore(
+        session.shop,
+        session.accessToken
+      )}catch(err){
+        console.log(err)
       }
 
       const host = Shopify.Utils.sanitizeHost(req.query.host);
