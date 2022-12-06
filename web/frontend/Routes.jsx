@@ -41,6 +41,7 @@ export default function Routes({ pages }) {
     <Route key={path} path={path} element={<Component />} />
   ))
 
+  console.log("chekcing data values")
   const NotFound = routes.find(({ path }) => path === '/notFound').component
 
   return (

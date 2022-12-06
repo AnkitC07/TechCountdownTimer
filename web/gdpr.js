@@ -11,6 +11,7 @@ export function setupGDPRWebHooks(path) {
     path,
     webhookHandler: async (topic, shop, body) => {
       const payload = JSON.parse(body);
+       console.log(payload)
       // Payload has the following shape:
       // {
       //   "shop_id": 954889,

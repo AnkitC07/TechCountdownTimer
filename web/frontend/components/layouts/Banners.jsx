@@ -11,7 +11,7 @@ function Banners({ id ,onDismiss}) {
     <Banner
       title="Countdown timer was successfully published in your store"
       status="success"
-      children={`It might take up to 20 seconds for the countdown to appear in the store. Countdown timer app block can be also added, removed, repositioned, and customized through the theme editor using timer ID:${id}`}
+      children={`It might take up to 1 minute for the countdown timer to appear in the store. If you cannot see the timer, please contact our support.`}
       action={{
         content: "Preview countdown timer in store",
         onAction: () => {
