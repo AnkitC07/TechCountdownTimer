@@ -39,6 +39,7 @@ export default function App() {
   s0.parentNode.insertBefore(s1,s0);
   })();
   return (
+    <>
     <PolarisProvider>
       <BrowserRouter>
         <ProductProvider>
@@ -72,5 +73,7 @@ export default function App() {
         </ProductProvider>
       </BrowserRouter>
     </PolarisProvider>
+  
+</>
   )
 }

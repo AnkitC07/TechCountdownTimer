@@ -221,6 +221,7 @@ const Top_BottomPage = () => {
         setMsg("Published");
         setBtnMain(false);
         setIspublished("published");
+        setBanner(true)
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {
@@ -396,7 +397,7 @@ const Top_BottomPage = () => {
           </div>
         </div>
 
-        {ID !== null || ID !== undefined? (
+        {banner == true ? (
           <div className="mt-2 mb-3">
            <Banners 
             id={id}

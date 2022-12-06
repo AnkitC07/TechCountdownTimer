@@ -389,7 +389,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {dataId !== null ? (
+        {banner == true ? (
           <div className="mt-2 mb-3">
            <Banners 
             id={id}
