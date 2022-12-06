@@ -26,6 +26,7 @@ import Theme from "./routes/Themeextension.js";
 import Cors from "cors";
 import createHmac from "create-hmac";
 import { updateStore } from "./model/Controller/store.js";
+import stores from "./model/stores.js";
 dotenv.config();
 const USE_ONLINE_TOKENS = false;
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);

@@ -74,7 +74,11 @@ export default function Help() {
                             Free
                           </span>
                           <div className="mt-3">
-                          ✅ Unlimited view ✅ Unlimited product timers ✅ Unlimited top bar timers ✅ Unlimited Cart page timers. ✅ Adding timer using product tags
+                          <p>✅ Unlimited view</p> 
+                          <p>✅ Unlimited product timers </p>
+                          <p>✅ Unlimited top bar timers </p>
+                          <p>✅ Unlimited Cart page timers.</p> 
+                          <p>✅ Adding timer using product tags</p>
                           </div>
                         </p>
                       </div>
@@ -140,7 +144,9 @@ export default function Help() {
                                   <li>Product Page Timer</li>
                                   <li>Top Bar Countdown Timer </li>
                                   <li>
-                                    Landing Page Countdown TimerTo learn more
+                                    Landing Page Countdown Timer
+                                    <br />
+                                    To learn more
                                     information please go to our Countdown timer
                                     FAQ
                                   </li>
@@ -169,7 +175,8 @@ export default function Help() {
                                   <li>Countdown to a date</li>
                                   <li>Daily Recurring Timer</li>
                                   <li>
-                                    Fixed minutes countdownTo learn more
+                                    Fixed minutes countdown
+                                    <br/>To learn more
                                     information please go to our Countdown timer
                                     FAQ
                                   </li>
