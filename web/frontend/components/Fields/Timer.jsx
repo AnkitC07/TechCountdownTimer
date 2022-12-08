@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useState } from 'react'
+
 import { ProductContext } from '../../context/ProductContext'
 
 const Timer = (props) => {
@@ -57,6 +58,7 @@ const Timer = (props) => {
         } else {
             time = `<span style="font-size: ${props.design.timerSize}px; color: ${props.design.timerColor};font-weight: bold;">${min} : ${sec}</span>`
         }
+        
         value = value.replace("{timer}", time)
         return value
     }

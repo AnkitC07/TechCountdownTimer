@@ -6,7 +6,7 @@ import { useAuthenticatedFetch } from "../../hooks";
 import { getShopName } from "../common_functions/functions";
 
 import thank from './Thank you for installing CanCode.io App’s - Countdown Timer Banner.svg'
-import logo from './logo.svg'
+import logo from './Logo.svg'
 
 function Setup({ content }) {
   const [imgLoading, loadingstate] = useState(true);
@@ -78,7 +78,7 @@ function Installation() {
       <div className="customSelectStyle">
         <Select
         id="customSelectStyle"
-        label={<b>Select a theme to add the Pre-Order Button App Embeds</b>}
+        label={<b>Select a theme to add the Countdown Timer App Embeds</b>}
         options={optionsValues}
         onChange={handleSelectChange}
         value={selected}
@@ -91,19 +91,19 @@ function Installation() {
       <div>
         <p>
           <b>
-            Please enable the Terms & Condition Checkbox embed in your store
+            Please enable the Countdown Timer App embed in your store
             theme setting
           </b>
         </p>
         <p className="subtext" style={{marginTop:"10px"}}>Step 1: Go to theme customization</p>
         <p className="subtext">Step 2: Go to theme setting</p>
         <p className="subtext">Step 3: Click App embeds</p>
-        <p className="subtext">Step 4; Enable Pre-Order Button App Embeds</p>
+        <p className="subtext">Step 4; Enable Countdown Timer App Embeds</p>
       </div>
       <div className="image">
         {imgLoading == true ? <p className="loading"></p> : ""}
         <img
-          src={"install.svg"}
+          src={"install.png"}
           onLoad={() => loadingstate(false)}
           style={{width:"100%"}}
           className={imgLoading == true ? "isloading" : ""}
@@ -121,7 +121,7 @@ function Installation() {
   );
 }
 
-function TabsExample({ content, state, all, displayState }) {
+function TabsExample({ content, state,index, all, displayState }) {
   const [selected, setSelected] = useState(0);
 
   const handleTabChange = useCallback((selectedTabIndex) => {
@@ -249,8 +249,11 @@ function PolarisModal({ active ,onclick}) {
         onclick()
       }
     }
+    console.log('checking values',index)
     if (content.length - 1 > index) {
       setIndex(index + 1);
+    }else{
+      document.querySelector('#install').click()
     }
   };
 
@@ -263,8 +266,9 @@ function PolarisModal({ active ,onclick}) {
       }}
     >
       <TabsExample
-        content={content[index]}
+        content={content[index > 3 ?3:index]}
         all={content}
+        index={index==4?1:0}
         displayState={isDisplay}
         state={{ index, setIndex }}
       />

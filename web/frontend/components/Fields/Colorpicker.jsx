@@ -6,7 +6,6 @@ import {
 } from '@shopify/polaris'
 import { useState } from 'react'
 
-
 const Colorpicker = ({
   colors,
   state,

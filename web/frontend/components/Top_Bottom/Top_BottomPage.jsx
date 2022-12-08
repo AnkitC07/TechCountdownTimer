@@ -110,7 +110,8 @@ const Top_BottomPage = () => {
   if (ID !== undefined && id == null) {
     id = ID;
   }
-
+  
+  console.log(ID)
   const BanneronDismiss = () =>{
     setBanner(false)
   }
@@ -220,6 +221,7 @@ const Top_BottomPage = () => {
         setMsg("Published");
         setBtnMain(false);
         setIspublished("published");
+        setBanner(true)
       } else if (data.status == "save") {
         setMsg("Save");
       } else if (data.status == "Duplicate") {

@@ -12,6 +12,8 @@ import TopBottomRouter from "./routes/TopBottomRouter.js";
 import bodyparser from "body-parser";
 import "./databse/config.js";
 
+
+
 import { setupGDPRWebHooks } from "./gdpr.js";
 import productCreator from "./helpers/product-creator.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
@@ -24,9 +26,10 @@ import AllTimer from "./routes/AllTimer.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
 import Theme from "./routes/Themeextension.js";
 import Cors from "cors";
+import stores from "./model/stores.js";
 import createHmac from "create-hmac";
 import { updateStore } from "./model/Controller/store.js";
-import stores from "./model/stores.js";
+// import stores from "./model/stores.js";
 dotenv.config();
 const USE_ONLINE_TOKENS = false;
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
@@ -96,7 +99,7 @@ export async function createServer(
   app.use(express.json());
   app.use(bodyparser.json());
 
-  // app.use(Cors());
+  app.use(Cors());
 
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
@@ -259,10 +262,11 @@ export async function createServer(
 
   app.get("/api/getDetails", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
+    console.log("get details")
     try {
       const shopName = req.query.shopName;
       console.log(shopName);
-      const findshop = await store.findOne({
+      const findshop = await stores.findOne({
         storename: shopName,
       });
       console.log(findshop, "shop");

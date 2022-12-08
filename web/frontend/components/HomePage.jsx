@@ -28,7 +28,7 @@ export default function Homepage() {
   async function getStoreDetails() {
     const fetchData = await fetch(`/api/getDetails?shopName=${shopName}`);
     const getdata = await fetchData.json();
-
+    console.log(getdata)
     if (getdata.status == 200) {
       if (getdata.data == null) {
         setOnboarding({ loading: false, status: true });
@@ -69,7 +69,7 @@ export default function Homepage() {
       {onboardingScreen.loading == false && onboardingScreen.status == true ? (
         <OnboardingScreens />
       ) : (
-        ""
+       ''
       )}
 
       <section className="countdown_main">

@@ -66,7 +66,8 @@ const updateState = async (keyData, state, content, timerType) => {
     ...timerType[keyData],
     status: true,
   };
-  state({ ...content, timerType: timerType });
+
+  state({ ...content,onceItEnd:'Do nothing', timerType: timerType });
 };
 
 // Update the value date object which is under the timer type
@@ -178,6 +179,12 @@ const updateOptionData = (e, design, state, myoption) => {
       single: true,
       gradient: false,
     };
+    try{
+      updateDesign.titleColor = seletced_data.titleColor
+      
+    }catch(err){
+      console.log(err)
+    }
     updateDesign.singleColor = seletced_data.background;
   } else {
     updateDesign.backtype = {
@@ -187,6 +194,7 @@ const updateOptionData = (e, design, state, myoption) => {
     updateDesign.gradClr1 = seletced_data.background1;
     updateDesign.gradClr2 = seletced_data.background2;
     updateDesign.gradAngle = seletced_data.deg.split("deg")[0];
+ 
   }
   state(updateDesign);
 };

@@ -1,0 +1,643 @@
+<script>
+  console.log("countdowntimer")
+const cdt = {
+  host: "https://countdowntimeraws.cancodeapps.com",
+  shop: Shopify.shop,
+  page: "{{ template.name }}",
+  Types:[]
+};
+
+async function getAllRecords() {
+  const get = await fetch(`${cdt.host}/api/checkingStore`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      storename: window.location.hostname,
+      type: cdt.page,
+    }),
+  });
+  const getData = await get.json();
+  cdt.db = getData.data;
+  console.log(getData.data);
+}
+
+  function CheckSpecificProduct(data){
+  const productId = `{{ product.id }}`
+  const products = data.Placement.specificProducts
+  const temp = []
+  try{
+    for(let i = 0; i<products.length; i++){
+    if(products[i].id.includes(productId) == true){
+      temp.push(temp)
+      return true
+    }
+  }  
+  }catch(err){
+    
+  }
+  
+
+  if(temp.length == 0){
+    return false
+  }
+}
+
+ function CheckSpecificProductTags(data){
+    const tags = []
+    const temp = []
+    const dbtags = data.Placement.tags.split(',')
+    {% for tag in product.tags %}
+      tags.push(`{{ tag }}`)
+    {% endfor %}
+    
+    for(let i = 0; i<dbtags.length; i++){
+      console.log(tags,dbtags[i])
+      if(tags.includes(dbtags[i]) == true){
+        temp.push(dbtags[i])
+        return true
+      }
+    }
+    if(temp.length == 0){
+      return false
+    }
+  }
+
+ function CheckSpecificCollection(data,collection){
+    const temp = []
+    const dbCol = data.Placement[collection] //specificCollections //specificCollections
+    const collectionId = `{{ collection.id }}`
+   console.log(dbCol)
+     if(dbCol.length == 0){
+       return false
+     }
+    for(let i = 0; i<dbCol.length; i++){
+      if(dbCol[i].id.includes(collectionId) == true && collectionId !== ''){
+        temp.push(dbCol[i])
+        return true
+      }
+    }
+    if(temp.length == 0){
+      return false
+    }
+ }
+
+  async function LandingPage(data) {
+    
+   if(cdt.Types.includes(data.Type) == true){
+      return false
+  }
+
+  try{
+    if(data.Placement.selectProduct.specificCollection == true && CheckSpecificCollection(data,'specificCollections') == false){
+    return false
+  }
+    
+  }catch(err){
+    
+  }
+
+  // if(data.Placement.selectProduct.passowrdPage !== "password"){
+  //     return false
+  // }
+  
+  const showTimers = timerData(data)
+  if(showTimers.mainSubRender() == true){
+     cdt.Types = [...cdt.Types,data.Type]
+     const html = await appendHtml(data.Html)
+     html.children[0].style.removeProperty('position')
+     html.children[0].style.removeProperty('margin-left')
+    html.children[0].children[0].style.removeProperty('margin')
+    html.children[0].children[0].children[0].style.margin = '0'
+    html.children[0].children[0].children[1].style.margin = '0'
+     if(data.Placement.selectProduct.customPosition == true){
+       displayLandingPagewidgetCustomPosition(html.children[0])
+     }else{
+        displayLandingPagewidget(html.children[0])
+     }
+
+    
+     const LandingPagae = setInterval(function(){
+     const val = showTimers.mainSubRender()
+         console.log(val,"checking")
+         if(val == false){
+           clearInterval(LandingPagae)
+         }
+       },1000) 
+    }
+
+    async function displayLandingPagewidgetCustomPosition(html){
+      const id = data._id
+      try{
+        document.getElementById(id).append(html)
+      }catch(err){}
+    }
+    
+    async function displayLandingPagewidget(html){
+      document.querySelector('main').prepend(html)
+    }
+}
+
+async function CartPage(data) {
+  console.log(data)
+  if(cdt.Types.includes(data.Type) == true){
+      return false
+  }
+  cdt.Types = [...cdt.Types,data.Type]
+  const html = await appendHtml(data.Html)
+  html.children[0].style.removeProperty('margin-top')
+  html.children[0].style.removeProperty('margin-bottom')
+  html.children[0].style.removeProperty('padding-top')
+  html.children[0].style.removeProperty('padding-bottom')
+  
+  if(data.Placement.selectProduct.customPosition == true){
+    cartCustomPosition(html.children[0])
+  }else{
+    CartDisplay(html.children[0])
+  }
+
+  setInterval(function(){
+    cartTimer()
+  },1000)
+  function cartCustomPosition(){
+    document.getElementById(data._id).append(html)
+  }
+  async function CartDisplay(html){
+     document.querySelector('main').prepend(html)
+  }
+
+  function cartTimer(){
+    const local = localStorage.getItem(`Cart_${data._id}`)
+    let update = new Date()
+    const fixed = new Date()
+    const hour = Math.floor(parseInt(data.Content.mnt) / 60)
+    
+    if(local == null){
+       if(parseInt(data.Content.mnt) > 60){
+          update.setHours(fixed.getHours() + hour)
+        }else{
+          update.setMinutes(fixed.getMinutes() + parseInt(data.Content.mnt))
+        }
+      localStorage.setItem(`Cart_${data._id}`,update)
+    }else{
+      update = new Date(local)
+    }
+
+    const dist = update.getTime() - fixed.getTime()
+    if(dist<= 0){
+      // displayTimer('').Stop()
+      localStorage.removeItem(`Cart_${data._id}`)
+      return false
+    }
+
+    let Timers = timerData(data).GetTime(dist)
+    Timers = Timers.split(":")
+    Timers = Timers.filter(x=>x !== '00')
+    Timers = Timers.join(':')
+    document.querySelector("#TimerAppend div span").innerHTML = Timers
+    return true
+  }
+}
+  
+async function ProductPage(data) {
+  console.log(cdt.Types.includes(data.Type),"dind product is present")
+
+  
+  if(cdt.Types.includes(data.Type) == true){
+    console.log("return from starting")
+      return false
+  }
+
+  if(data.Placement.selectProduct.allProductsWithTags == true && CheckSpecificProductTags(data) == false){
+      console.log('product tag not found')
+      return false
+  }
+
+  if(data.Placement.selectProduct.specificProducts == true && CheckSpecificProduct(data) == false){
+     console.log('in vaild product')
+      return false
+  }
+  
+  const showTimers = timerData(data)
+  const html = await appendHtml(data.Html)
+  html.children[0].children[0].style.margin = 0
+  html.children[0].children[1].style.margin = 0
+  if(showTimers.mainSubRender() == true){
+    console.log('checking------------')
+    cdt.Types = [...cdt.Types,data.Type]
+    if(data.Placement.selectProduct.customPosition == true){
+      DisplayProductCustomPosition(html)
+    }else{
+        DisplayProductWidget(html)
+    }
+  
+     const Product = setInterval(function(){
+     const val = showTimers.mainSubRender()
+       console.log(val,"checking")
+       if(val == false){
+         clearInterval(Product)
+       }
+     },1000) 
+  }
+  
+
+  async function DisplayProductCustomPosition(){
+    const id = data._id
+    try{
+      document.getElementById(id).append(html.children[0])
+    }catch(err){}
+  }
+  
+  async function DisplayProductWidget(){
+    const addtocart = document.querySelectorAll('button')
+    addtocart.forEach(async (x)=>{
+      if(x.innerText.toLowerCase().includes('add to cart') == true){
+        x.parentNode.append(html.children[0])
+      }
+    })
+  }
+}
+
+async function TopBottom(data) {
+
+  if(cdt.Types.includes(data.Type) == true){
+      return false
+  }
+
+  async function check(ob){
+     if(ob.Placement.selectOptions.home == true && cdt.page == 'index'){
+        return true
+      }
+     else if(ob.Placement.selectOptions.allProducts == true && cdt.page == 'product'){
+        return true
+      }else if(ob.Placement.selectOptions.specificProducts == true && cdt.page == 'product'){
+          if(CheckSpecificProduct(ob) == true){
+            return true
+          }else {
+            return false
+          }
+      }else if(ob.Placement.selectOptions.allCollections == true && cdt.page == 'collection'){
+        return true
+      }else if(ob.Placement.selectOptions.specificcollections == true && cdt.page == 'collection'){
+          if(CheckSpecificCollection(ob,'specificCollection') == true){
+            return true
+          }else{
+            return false
+          }
+      }else if(ob.Placement.selectOptions.every == true){
+       return true
+      }else {
+       return false
+      }
+  }
+
+  console.log(await check(data),"checking page")
+  if(await check(data) == false){
+    return false
+  }
+
+  
+  cdt.Types = [...cdt.Types,data.Type]
+  const showTimers = timerData(data)
+ console.log('data val')
+  if(showTimers.mainSubRender() == true){
+    let html = data.Html;
+    let ele = await appendHtml(html);
+    const childs = ele.children[0].children.inner_timer.children[0]
+    childs.children[0].style.margin = '4px'
+    childs.children[1].style.margin = '4px'
+    ele.children[0].style.removeProperty('margin-top')
+    ele.children[0].style.removeProperty('top');
+    ele.children[0].style.removeProperty('margin-bottom');
+    ele.children[0].style.removeProperty('padding-bottom');
+  
+    let fixedele = document.createElement("div");
+    fixedele.innerHTML = ele.children[0].parentNode.innerHTML;
+    
+    if (data.Design.positioning == "Top page") {
+      if (data.Design.stickyBar == true) {
+        fixedele.style = "position:fixed;width:100%;top:0;z-index:9999;";
+        document.querySelector("body").prepend(fixedele);
+      } else {
+        document.querySelector("body").prepend(ele.children[0]);
+      }
+    } else {
+      fixedele.style = "position:fixed;width:100%;bottom:0;z-index:9999;";
+      document.querySelector("body").prepend(fixedele);
+    }
+  
+    document.querySelectorAll(".icon-button").forEach((x) => {
+      if (x.innerText == "X") {
+        x.style.cursor = "pointer";
+        x.addEventListener("click", function () {
+          document.querySelector('#timer-badge').remove();
+        });
+      }
+    });
+      
+     const Top_bottom = setInterval(function(){
+       const val = showTimers.mainSubRender()
+       // console.log(val)
+       if(val == false){
+         showTimers.onceItEnds()
+         console.log("clear")
+         clearInterval(Top_bottom)
+       }
+     },1000) 
+    return true
+  }else{
+    return false
+      console.log('Exp')
+  }
+}
+
+// Timer check start
+function timerData(timer) {
+  function startDate(startdate) {
+    let date = new Date();
+    return date >= new Date(startdate);
+  }
+
+  function endDate(enddate) {
+    let date = new Date();
+    let end = new Date(enddate);
+    return (
+      date <= end ||
+      (date.getDate() == end.getDate() &&
+        date.getMonth() + 1 == end.getMonth() + 1)
+    );
+  }
+
+  function diff_hours(dt2, dt1) {
+    var difference = dt2.getTime() - dt1.getTime();
+
+    difference = difference / 1000;
+    let hourDifference = Math.floor(difference / 3600);
+    difference -= hourDifference * 3600;
+
+    let minuteDifference = Math.floor(difference / 60);
+    difference -= minuteDifference * 60;
+    return { hour: hourDifference, min: minuteDifference };
+  }
+
+  function onceItEnds(){
+    console.log(timer.Content.onceItEnd)
+    function RepeatTimer(){
+       console.log('RepeatTimer')
+       if(timer.Type == 'Top/Bottom Page'){
+         try{localStorage.removeItem(`topbottom_${timer._id}`)}catch(err){}
+       }
+      setInterval(()=>{
+        mainSubRender()
+      },1000)
+    }
+
+    async function Unpublished(){
+         const update = await fetch(`${cdt.host}/api/unpublished`, {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            storename: window.location.hostname,
+            id:timer._id
+          }),
+        });
+       const getdate = await update.json()
+      console.log(getdate)
+    }
+    
+    function showCustom(){
+      if(timer.Type == 'Top/Bottom Page'){
+        document.querySelector('.product-heading').innerHTML = timer.Content.customTitle
+        document.querySelector('.product-para').innerHTML = ''
+      }
+    }
+
+    function HideTimer(){
+      console.log("HideTimer")
+      if(timer.Type == 'Top/Bottom Page'){
+        try{
+          document.querySelector('#timer-badge').remove()
+        }catch(err){}
+      }
+    }
+
+    if(timer.Content.onceItEnd =='Unpublished timer'){
+      Unpublished()
+    }
+    else if(timer.Content.onceItEnd == 'Hide the timer for the buyers' || timer.Content.onceItEnd == 'Hide timer'){
+      HideTimer()
+    }
+    else if(timer.Content.onceItEnd == "Repeat the countdown"){
+      RepeatTimer()
+    }else if(timer.Content.onceItEnd == "Show custom title"){
+      showCustom()
+    }else{
+      console.log('Do nothing')
+    }
+  }
+
+  function displayTimer(time){
+    let id;
+    if(timer.Type == 'Top/Bottom Page'){
+      id = '.countDownTimer_TopBottom'
+    }else if(timer.Type == "Product Page"){
+      id = '.countDownTimer_ProductPage'
+    }else if(timer.Type == 'Landing Page'){
+      id = '.countDownTimer_LandingPage'
+    }else if(timer.Type == 'Cart Page'){
+      id = '.countDownTimer_CartPage'
+    }
+    function Continue(){
+      try{
+      document.querySelector(id).innerHTML = time
+      }catch(err){}
+    }
+
+    function Stop(){
+      try{document.querySelector(id).innerHTML = "00:00:00:00"}catch(err){}
+    }
+    return {Continue,Stop}
+  }
+  
+  function CheckTimer() {
+    let date = new Date();
+    let start = new Date();
+    let end = new Date();
+    start.setHours(timer.Content.timerType.recurring.dailyStart.hr);
+    start.setMinutes(timer.Content.timerType.recurring.dailyStart.min);
+
+    end.setHours(timer.Content.timerType.recurring.dailyEnd.hr);
+    end.setMinutes(timer.Content.timerType.recurring.dailyEnd.min);
+
+    const getDiff = diff_hours(date, start);
+    const endDiff = diff_hours(end, date);
+
+    if (
+      (getDiff.hour >= 0 &&
+        getDiff.min >=
+          parseInt(timer.Content.timerType.recurring.dailyStart.min)) ||
+      getDiff.hour > 0
+    ) {
+      if ((endDiff.hour >= 0 && endDiff.min >= 0) || endDiff.hour > 0) {
+        const times = runTimer(parseInt(timer.Content.timerType.recurring.dailyEnd.hr),parseInt(timer.Content.timerType.recurring.dailyEnd.min))
+        displayTimer(times).Continue()
+        // console.log("checking")
+        return true
+      } else {
+        displayTimer('').Stop()
+        // console.log(timer.Content.onceItEnd)
+        onceItEnds()
+        return false
+      }
+    }else{
+      return false
+    }
+  }
+  
+  function GetTime(time){
+        let days = Math.floor(time / (1000 * 60 * 60 * 24))
+        let hours = Math.floor((time / (1000 * 60 * 60)) % 24)
+        let min = Math.floor((time / 1000 / 60) % 60)
+        let sec = Math.floor((time / 1000) % 60)
+        let times = `${days < 10 ? "0" + days : days}:${hours < 10 ? "0" + hours : hours}:${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`
+        return times
+    }
+  
+  function runTimer(endhr,endmin){
+      let newdate = new Date()
+      let start = newdate.getHours() * 60 * 60000 + newdate.getMinutes() * 60000
+      let deadline = endhr * 60 * 60000 + endmin * 60000
+      let time = deadline - start
+
+      let days = Math.floor(time / (1000 * 60 * 60 * 24))
+      let hours = Math.floor(time / (1000 * 60 * 60)) % 24
+      let minutes = Math.floor((time / 1000 / 60) % 60)
+      let seconds = 60 - newdate.getSeconds()
+      let running_time = `${days < 10 ? '0' + days : days}:${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`
+       // console.log(running_time)
+      return running_time
+    }
+
+  function countdownDateTimercheck() {
+    const start = new Date()
+    const end = new Date(timer.Content.timerType.countdownDate.endDate.date.end)
+    end.setHours(timer.Content.timerType.countdownDate.endDate.hr)
+    end.setMinutes(timer.Content.timerType.countdownDate.endDate.min)
+
+    const time = end - start
+
+    if(time <= 0){
+      displayTimer('').Stop()
+      return false
+    }
+    let times = GetTime(time)
+    displayTimer(times).Continue()
+    return true
+  }
+
+  function recurringTimerCheck() {
+    let date = new Date();
+    const weekday = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
+    const week = weekday[date.getDay()];
+    if (timer.Content.timerType.recurring.repeatOn[week] == true) {
+      if (
+        startDate(timer.Content.timerType.recurring.start.date.start) ==
+        endDate(timer.Content.timerType.recurring.end.date.end)
+      ) {
+        return CheckTimer();
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  function FixedTimer() {
+    const local = localStorage.getItem(`topbottom_${timer._id}`)
+    let update = new Date()
+    const fixed = new Date()
+    const hour = Math.floor(parseInt(timer.Content.timerType.fixedTime.time) / 60)
+    if(local == null){
+       if(parseInt(timer.Content.timerType.fixedTime.time) > 60){
+          update.setHours(fixed.getHours() + hour)
+        }else{
+          update.setMinutes(fixed.getMinutes() + parseInt(timer.Content.timerType.fixedTime.time))
+        }
+      localStorage.setItem(`topbottom_${timer._id}`,update)
+    }else{
+      update = new Date(local)
+    }
+
+    const dist = update.getTime() - fixed.getTime()
+    if(dist<= 0){
+      displayTimer('').Stop()
+      localStorage.removeItem(`topbottom_${timer._id}`)
+      return false
+    }
+   
+    const Timers = GetTime(dist)
+    displayTimer(Timers).Continue()
+    return true
+  }
+
+  function mainSubRender(){
+    
+    if (timer.Content.timerType.countdownDate.status == true) {
+        return countdownDateTimercheck();
+    } else if (timer.Content.timerType.recurring.status == true) {
+       return recurringTimerCheck();
+    } else {
+       return FixedTimer();
+    }
+  }
+  function MainRender(){
+          mainSubRender()
+  }
+  
+  return {FixedTimer,GetTime,MainRender,recurringTimerCheck,countdownDateTimercheck,runTimer,CheckTimer,onceItEnds,diff_hours,endDate,startDate,mainSubRender}
+}
+// Timer check end
+  
+async function appendHtml(html) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(html, "text/html");
+  return doc.body;
+}
+
+async function appendData() {
+  for (let i = 0; i <= cdt.db.length - 1; i++) {
+    if (cdt.db[i].Type == "Product Page" && cdt.page == 'product') {
+      ProductPage(cdt.db[i]);
+    } else if (cdt.db[i].Type == "Top/Bottom Page") {
+     await TopBottom(cdt.db[i]);
+    } else if (cdt.db[i].Type == "Landing Page") {
+      LandingPage(cdt.db[i]);
+    } else if (cdt.db[i].Type == "Cart Page") {
+      CartPage(cdt.db[i]);
+    }
+  }
+}
+
+(async function () {
+  await getAllRecords();
+  appendData();
+})();
+
+  
+</script>

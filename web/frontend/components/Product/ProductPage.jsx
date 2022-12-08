@@ -395,7 +395,7 @@ export const ProductPage = () => {
 
         {banner == true ? (
           <div className="mt-2 mb-3">
-             <Banners 
+          <Banners 
             id={id}
             onDismiss={BanneronDismiss}
             />
