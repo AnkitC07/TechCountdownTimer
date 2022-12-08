@@ -121,12 +121,12 @@ function Installation() {
   );
 }
 
-function TabsExample({ content, state,index, all, displayState }) {
+function TabsExample({ content, state, all, displayState }) {
   const [selected, setSelected] = useState(0);
 
   const handleTabChange = useCallback((selectedTabIndex) => {
     setSelected(selectedTabIndex);
-    displayState(selectedTabIndex);
+    displayState(true);
   }, []);
 
   const tabs = [
@@ -240,16 +240,18 @@ function PolarisModal({ active ,onclick}) {
   };
 
   const handleChange = async () => {
+    console.log(display)
     if (display == false) {
       const fetchData = await fetch(
         `/api/updateonboarding?shopName=${shopName}`
       );
       const getData = await fetchData.json();
+      console.log('update data values',getData)
       if (getData.status == 200) {
         onclick()
       }
     }
-    console.log('checking values',index)
+    
     if (content.length - 1 > index) {
       setIndex(index + 1);
     }else{
@@ -266,7 +268,7 @@ function PolarisModal({ active ,onclick}) {
       }}
     >
       <TabsExample
-        content={content[index > 3 ?3:index]}
+        content={content[index]}
         all={content}
         index={index==4?1:0}
         displayState={isDisplay}
@@ -275,6 +277,7 @@ function PolarisModal({ active ,onclick}) {
     </Modal>
   );
 }
+
 export default function OnboardingScreens(props) {
   const [active,setActive] = useState(true)
 

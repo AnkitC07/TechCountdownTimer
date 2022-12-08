@@ -253,6 +253,7 @@ export async function createServer(
     console.log("checking");
     try {
       const shopName = req.query.shopName;
+      console.log(shopName,"update values shop")
       await updateStore(shopName);
       res.status(200).json({ status: 200, msg: "success" });
     } catch (err) {

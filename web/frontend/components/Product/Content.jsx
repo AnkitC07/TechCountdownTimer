@@ -913,6 +913,7 @@ function Content() {
                               <DatePickerExample
                                 state1={content.timerType.recurring.end.date}
                                 onChange={(e) => {
+                                  console.log(e)
                                   updateRecurringTimer('end','date',e,content,setContent)
                                   // setContent({
                                   //   ...content,
