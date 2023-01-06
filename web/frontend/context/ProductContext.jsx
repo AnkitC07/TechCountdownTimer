@@ -130,8 +130,7 @@ export const productPlacement = {
 }
 
 export const ProductProvider = (props) => {
-  let date = new Date()
-  date.setDate(date.getDate() + 1)
+
   const [days, setDays] = React.useState(0)
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)

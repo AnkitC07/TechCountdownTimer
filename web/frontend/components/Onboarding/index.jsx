@@ -78,7 +78,7 @@ function Installation() {
       <div className="customSelectStyle">
         <Select
         id="customSelectStyle"
-        label={<b>Select a theme to add the Pre-Order Button App Embeds</b>}
+        label={<b>Select a theme to add the Countdown Timer App Embeds</b>}
         options={optionsValues}
         onChange={handleSelectChange}
         value={selected}
@@ -91,19 +91,19 @@ function Installation() {
       <div>
         <p>
           <b>
-            Please enable the Terms & Condition Checkbox embed in your store
+            Please enable the Countdown Timer App embed in your store
             theme setting
           </b>
         </p>
         <p className="subtext" style={{marginTop:"10px"}}>Step 1: Go to theme customization</p>
         <p className="subtext">Step 2: Go to theme setting</p>
         <p className="subtext">Step 3: Click App embeds</p>
-        <p className="subtext">Step 4; Enable Pre-Order Button App Embeds</p>
+        <p className="subtext">Step 4: Enable Countdown Timer App Embeds</p>
       </div>
       <div className="image">
         {imgLoading == true ? <p className="loading"></p> : ""}
         <img
-          src={"install.svg"}
+          src={"install.png"}
           onLoad={() => loadingstate(false)}
           style={{width:"100%"}}
           className={imgLoading == true ? "isloading" : ""}
@@ -126,7 +126,7 @@ function TabsExample({ content, state, all, displayState }) {
 
   const handleTabChange = useCallback((selectedTabIndex) => {
     setSelected(selectedTabIndex);
-    displayState(selectedTabIndex);
+    displayState(true);
   }, []);
 
   const tabs = [
@@ -240,17 +240,22 @@ function PolarisModal({ active ,onclick}) {
   };
 
   const handleChange = async () => {
+    console.log(display)
     if (display == false) {
       const fetchData = await fetch(
         `/api/updateonboarding?shopName=${shopName}`
       );
       const getData = await fetchData.json();
+      console.log('update data values',getData)
       if (getData.status == 200) {
         onclick()
       }
     }
+    
     if (content.length - 1 > index) {
       setIndex(index + 1);
+    }else{
+      document.querySelector('#install').click()
     }
   };
 
@@ -265,12 +270,14 @@ function PolarisModal({ active ,onclick}) {
       <TabsExample
         content={content[index]}
         all={content}
+        index={index==4?1:0}
         displayState={isDisplay}
         state={{ index, setIndex }}
       />
     </Modal>
   );
 }
+
 export default function OnboardingScreens(props) {
   const [active,setActive] = useState(true)
 

@@ -92,6 +92,7 @@ const Timerbadge = ({ design, content }) => {
     <div id="getHTMLData">
     <div
       // className="product-page-main"
+      id="ProductcdtWidget"
       style={design.backtype.single === true ? single : multiple}
     >
       <h2

@@ -24,6 +24,7 @@ const Design_land = () => {
       background: '#FFFFFF',
       borderSize: '0',
       borderColor: '#c5c8d1',
+
       tag: true,
     },
     {
@@ -133,8 +134,8 @@ const Design_land = () => {
       tag: true,
     },
     {
-      value: 'Black and Yellow',
-      data: 'Black and Yellow',
+      value: 'Black',
+      data: 'Black',
       background: '#000000',
       borderSize: '0',
       borderColor: '#FFFFFF',
@@ -193,6 +194,7 @@ const Design_land = () => {
       borderSize: '0',
       borderColor: '#FFFFFF',
       tag: true,
+      titleColor:'#FFFFFF'
     },
     {
       value: 'Minimal',

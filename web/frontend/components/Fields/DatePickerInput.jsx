@@ -15,11 +15,6 @@ export default function DatePickerExample(props) {
     year: d.getFullYear(),
   })
 
-  useEffect(() => {
-    // console.log(checkData)
-  }, [])
-
-  // console.log(props.state1, 'timed')
   const handleMonthChange = useCallback(
     (month, year) => setDate({ month, year }),
     [],
@@ -39,6 +34,9 @@ export default function DatePickerExample(props) {
     )
   }
 
+  let beforeDate = new Date()
+  beforeDate.setDate(beforeDate.getDate() - 1)
+
   return (
     <>
       <div className="date_picker">
@@ -51,6 +49,7 @@ export default function DatePickerExample(props) {
           <DatePicker
             month={month}
             year={year}
+            disableDatesBefore={beforeDate}
             onChange={props.onChange}
             onMonthChange={handleMonthChange}
             selected={props.state1}

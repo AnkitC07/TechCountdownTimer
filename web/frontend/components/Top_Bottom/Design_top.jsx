@@ -148,8 +148,8 @@ function Design_top() {
       tag: true,
     },
     {
-      value: 'Black and Yellow',
-      data: 'Black and Yellow',
+      value: 'Black',
+      data: 'Black',
       background: '#000000',
       borderSize: '0',
       borderColor: '#FFFFFF',

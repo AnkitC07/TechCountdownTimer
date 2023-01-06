@@ -29,6 +29,7 @@ import Cors from "cors";
 import stores from "./model/stores.js";
 import createHmac from "create-hmac";
 import { updateStore } from "./model/Controller/store.js";
+// import stores from "./model/stores.js";
 dotenv.config();
 const USE_ONLINE_TOKENS = false;
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
@@ -252,6 +253,7 @@ export async function createServer(
     console.log("checking");
     try {
       const shopName = req.query.shopName;
+      console.log(shopName,"update values shop")
       await updateStore(shopName);
       res.status(200).json({ status: 200, msg: "success" });
     } catch (err) {

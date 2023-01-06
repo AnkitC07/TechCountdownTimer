@@ -121,7 +121,7 @@ const TimerBagde_Top = ({ design, content }) => {
     <>
     <div id='getHTMLData'>
       {content.callToAction == 'Make entire bar clickable' ? (
-        <a href={content.link}>
+        <a href={`https://${content.link}`} target="_blank">
           <div
             id="timer-badge"
             // className="top_product_timer_wrapper"
@@ -252,7 +252,8 @@ const TimerBagde_Top = ({ design, content }) => {
                 <>
                   <div className="button-shop" style={{ marginLeft: '10px' }}>
                     <a
-                    href={content.link}
+                    href={`https://${content.link}`} 
+                    target="_blank"
                       style={{
                         textDecoration: 'none',
                         cursor:'pointer',
@@ -422,7 +423,8 @@ const TimerBagde_Top = ({ design, content }) => {
               <>
                 <div className="button-shop" style={{ marginLeft: '10px' }}>
                   <a
-                    href={content.link}
+                    href={`https://${content.link}`} 
+                    target="_blank"
                     style={{
                       textDecoration: 'none',
                       cursor:'pointer',

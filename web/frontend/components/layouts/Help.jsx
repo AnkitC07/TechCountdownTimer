@@ -145,8 +145,7 @@ export default function Help() {
                                   <li>Top Bar Countdown Timer </li>
                                   <li>
                                     Landing Page Countdown Timer 
-                                    <br/>
-                                    To learn more
+                                   <br />To learn more
                                     information please go to our Countdown timer
                                     FAQ
                                   </li>
@@ -175,10 +174,13 @@ export default function Help() {
                                   <li>Countdown to a date</li>
                                   <li>Daily Recurring Timer</li>
                                   <li>
-                                    Fixed minutes countdown <br />To learn more
+                                    Fixed minutes countdown 
+                                    <br />
+                                    To learn more
                                     information please go to our Countdown timer
                                     FAQ
                                   </li>
+                                  
                                 </ul>
                               </div>
                             </div>
