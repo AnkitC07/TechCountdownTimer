@@ -54,7 +54,8 @@ function Installation() {
   const [optionsValues,optionsState] = useState([])
   const fetch = useAuthenticatedFetch();
   const shopName = getShopName();
-
+  const host = atob(window.__SHOPIFY_DEV_HOST)
+  
   useEffect(()=>{
     optionsData()
   },[])
@@ -113,7 +114,7 @@ function Installation() {
         {dropdown()}
         <div className="button">
           <Button primary onClick={()=>{
-           window.open(`https://${shopName}/admin/themes/${selected}/editor?context=apps`)
+           window.open(`https://${host}/themes/${selected}/editor?context=apps`)
           }}>Preview in theme</Button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import { getSession } from '../index.js'
 import Product from '../model/Product.js'
 mongoose.Promise = global.Promise
 import TopBottom from '../model/TopBotom.js'
@@ -7,9 +8,13 @@ import TopBottom from '../model/TopBotom.js'
 const TopBottomRouter = express.Router()
 
 TopBottomRouter.post('/submitTopBottom', async (req, res) => {
+  
   const status = req.query.status
   const id = req.query.id
   const body = req.body
+  const session = await getSession(req,res)
+  console.log(session)
+  body.store = session.shop
   let tempData;
   const sendStatus = req.query.status == "save" || req.query.status == "Duplicate"?req.query.status:body.ispublished
  if(id == 'null' ||  id == ""|| id=='undefined' || req.query.status == "Duplicate"){
