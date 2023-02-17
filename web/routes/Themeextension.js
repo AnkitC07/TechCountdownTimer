@@ -21,6 +21,7 @@ Theme.post("/checkingStore", async (req, res) => {
     if (shop == undefined) {
       res.send("store name is missing");
     }
+
     if (type == "product") {
       type = "Product Page";
     } else if (type == "cart") {
@@ -43,7 +44,7 @@ Theme.post("/checkingStore", async (req, res) => {
         return CheckTimerType(x)
       })
     }
-    
+    console.log(data,"checking store data")
     res.send({ data });
   } catch (err) {
     console.log(err)
@@ -57,7 +58,6 @@ function CheckTimerType(data){
   let date = new Date()
   console.log(date,"current date")
   function startDate(startdate){
-    console.log('---------------------------')
     const deadLine = date.getTime() - new Date(startdate).getTime()
     console.log(deadLine > 0)
     if(deadLine > 0){
