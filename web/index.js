@@ -29,6 +29,7 @@ import Cors from "cors";
 import stores from "./model/stores.js";
 import createHmac from "create-hmac";
 import { updateStore } from "./model/Controller/store.js";
+import loadCurrentSession from "@shopify/shopify-api/dist/utils/load-current-session.js";
 // import stores from "./model/stores.js";
 dotenv.config();
 const USE_ONLINE_TOKENS = false;
@@ -39,6 +40,15 @@ const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
+
+export async function getSession(req,res){
+  const session = await Shopify.Utils.loadCurrentSession(
+    req,
+    res,
+    false
+  );
+  return session
+}
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
@@ -250,7 +260,10 @@ export async function createServer(
   });
 
   app.get("/api/updateonboarding", async (req, res) => {
-    console.log("checking");
+    const url = req.headers['referer']
+    const search = new URLSearchParams(url)
+    req.query.shopName = search.get('shop')
+
     try {
       const shopName = req.query.shopName;
       console.log(shopName,"update values shop")
@@ -263,17 +276,20 @@ export async function createServer(
 
   app.get("/api/getDetails", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log("get details")
     try {
-      const shopName = req.query.shopName;
-      console.log(shopName);
+      const session = await Shopify.Utils.loadCurrentSession(
+        req,
+        res,
+        app.get("use-online-tokens")
+      );
+      const shopName = session.shop
       const findshop = await stores.findOne({
         storename: shopName,
       });
       console.log(findshop, "shop");
       res.status(200).json({ status: 200, data: findshop });
     } catch (err) {
-      res.status(200).json({ status: 400, testing: "asdasd" });
+      res.status(200).json({ status: 400, testing: err });
     }
   });
 
@@ -309,16 +325,16 @@ export async function createServer(
       return res.send("No shop provided");
     }
 
+   
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);
     const appInstalled = await AppInstallations.includes(shop);
-
+    
     if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
       return redirectToAuth(req, res, app);
     }
 
     if (Shopify.Context.IS_EMBEDDED_APP && req.query.embedded !== "1") {
       const embeddedUrl = Shopify.Utils.getEmbeddedAppUrl(req);
-
       return res.redirect(embeddedUrl + req.path);
     }
 

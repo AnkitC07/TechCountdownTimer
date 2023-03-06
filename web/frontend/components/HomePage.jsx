@@ -14,6 +14,7 @@ import OnboardingScreens from "./Onboarding/index.jsx";
 // import trophyImgUrl from "../assets/home-trophy.png";
 
 // import { ProductsCard } from "./ProductsCard";
+export const Shopify = {}
 
 export default function Homepage() {
   const fetch = useAuthenticatedFetch();
@@ -24,11 +25,13 @@ export default function Homepage() {
     loading: true,
     status: false,
   });
-
+  const [storeThemes,setThemes] = useState([])
+  const [selectedTheme,setThemeSelect] = useState({})
+  const host = atob(window.__SHOPIFY_DEV_HOST)
   async function getStoreDetails() {
     const fetchData = await fetch(`/api/getDetails?shopName=${shopName}`);
     const getdata = await fetchData.json();
-    console.log(getdata)
+    Shopify.shop =   getdata.data.storename
     if (getdata.status == 200) {
       if (getdata.data == null) {
         setOnboarding({ loading: false, status: true });
@@ -44,8 +47,17 @@ export default function Homepage() {
     }
   }
 
+  const getThemes = async () =>{
+    const fetchData = await fetch(`/api/getTheme?shopName=${shopName}`)
+    const getData = await fetchData.json()
+    setThemes(getData.data)
+    setThemeSelect(()=>{
+      return getData.data.find(x=>x.role == "main")
+    })
+  }
   useEffect(() => {
     getStoreDetails();
+    getThemes()
     const handelPublish = async () => {
       const res = await fetch("/api/getAllTimer", {
         method: "POST",
@@ -64,6 +76,7 @@ export default function Homepage() {
     handelPublish();
   }, []);
 
+  console.log(onboardingScreen)
   return (
     <Page>
       {onboardingScreen.loading == false && onboardingScreen.status == true ? (
@@ -183,7 +196,7 @@ export default function Homepage() {
           <p style={{ display: "flex", justifyContent: "center" }}>
             Make sure they are{" "}
             <a
-              href={`https://${shopName}/admin/themes/current/editor?context=apps`}
+              href={`https://${host}/themes/${selectedTheme.id}/editor?context=apps`}
               className="Polaris-Link"
               target="_blank"
               style={{ display: "flex", marginLeft: "5px" }}

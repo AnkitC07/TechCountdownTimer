@@ -24,7 +24,7 @@ function clientSideRedirect(req, res) {
     shop,
     redirectUri: `https://${Shopify.Context.HOST_NAME}/api/auth?${redirectUriParams}`,
   }).toString();
-
+  console.log(queryParams,"queryParams")
   return res.redirect(`/exitiframe?${queryParams}`);
 }
 

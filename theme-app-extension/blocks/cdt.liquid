@@ -1,5 +1,5 @@
 <script>
-  console.log("countdowntimer")
+  console.log("countdowntimer v1.01")
 const cdt = {
   host: "https://countdowntimeraws.cancodeapps.com",
   shop: Shopify.shop,
@@ -16,7 +16,7 @@ async function getAllRecords() {
       Accept: "application/json",
     },
     body: JSON.stringify({
-      storename: window.location.hostname,
+      storename:cdt.shop,
       type: cdt.page,
     }),
   });
@@ -404,7 +404,7 @@ function timerData(timer) {
             Accept: "application/json",
           },
           body: JSON.stringify({
-            storename: window.location.hostname,
+            storename: cdt.shop,
             id:timer._id
           }),
         });

@@ -2,9 +2,10 @@ import { Banner } from "@shopify/polaris";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { getShopName } from "../common_functions/functions";
+import { Shopify } from "../HomePage";
 
 function Banners({ id ,onDismiss}) {
-  const shopname = getShopName();
+  const shopname = Shopify.shop;
 
   return (
     <>

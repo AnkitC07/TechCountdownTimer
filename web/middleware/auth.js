@@ -65,10 +65,11 @@ export default function applyAuthMiddleware(
       }
 
       const host = Shopify.Utils.sanitizeHost(req.query.host);
+      console.log(Shopify.Utils.getEmbeddedAppUrl(req),"redirectUrl 123")
       const redirectUrl = Shopify.Context.IS_EMBEDDED_APP
         ? Shopify.Utils.getEmbeddedAppUrl(req)
         : `/?shop=${session.shop}&host=${encodeURIComponent(host)}`;
-
+      console.log(redirectUrl,"redirectUrl")
       res.redirect(redirectUrl);
     } catch (e) {
       console.warn(e);
