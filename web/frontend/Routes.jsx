@@ -20,6 +20,7 @@ import Design_cart from './components/CartPage/Design_cart'
 import Placement_cart from './components/CartPage/Placement_cart'
 import Help from './components/layouts/Help'
 import Suggestion from './components/layouts/Suggestion'
+import PlanContext from './context/Plan.jsx'
 
 /**
  * File-based routing.
@@ -41,10 +42,10 @@ export default function Routes({ pages }) {
     <Route key={path} path={path} element={<Component />} />
   ))
 
-  console.log("chekcing data values")
   const NotFound = routes.find(({ path }) => path === '/notFound').component
-
+  
   return (
+    <PlanContext >
     <ReactRouterRoutes>
       {routeComponents}
       <Route path="*" element={<NotFound />} />
@@ -80,6 +81,7 @@ export default function Routes({ pages }) {
         <Route path="Placement_cart" element={<Placement_cart />} />
       </Route>
     </ReactRouterRoutes>
+    </PlanContext>
   )
 }
 

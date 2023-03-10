@@ -3,7 +3,7 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import express from "express";
 import cookieParser from "cookie-parser";
-import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
+import { Shopify, LATEST_API_VERSION, DataType } from "@shopify/shopify-api";
 import applyAuthMiddleware from "./middleware/auth.js";
 import verifyRequest from "./middleware/verify-request.js";
 // import LandingRouter from './routes/LandingRouter.js'
@@ -11,8 +11,6 @@ import verifyRequest from "./middleware/verify-request.js";
 import TopBottomRouter from "./routes/TopBottomRouter.js";
 import bodyparser from "body-parser";
 import "./databse/config.js";
-
-
 
 import { setupGDPRWebHooks } from "./gdpr.js";
 import productCreator from "./helpers/product-creator.js";
@@ -30,6 +28,9 @@ import stores from "./model/stores.js";
 import createHmac from "create-hmac";
 import { updateStore } from "./model/Controller/store.js";
 import loadCurrentSession from "@shopify/shopify-api/dist/utils/load-current-session.js";
+import { Session } from "@shopify/shopify-api/dist/auth/session/session.js";
+import cron from "node-cron";
+import CronJob from "./routes/CronJob.js";
 // import stores from "./model/stores.js";
 dotenv.config();
 const USE_ONLINE_TOKENS = false;
@@ -41,13 +42,9 @@ const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
 
-export async function getSession(req,res){
-  const session = await Shopify.Utils.loadCurrentSession(
-    req,
-    res,
-    false
-  );
-  return session
+export async function getSession(req, res) {
+  const session = await Shopify.Utils.loadCurrentSession(req, res, false);
+  return session;
 }
 
 Shopify.Context.initialize({
@@ -123,6 +120,14 @@ export async function createServer(
     res.send({ code: "checking" });
   });
 
+
+   // run every 10 sec */10 * * * * * and run every day 0 0 0 * * *
+   cron.schedule("0 0 0 * * *", function () {
+    // console.log("running a task every 10 second");
+    CronJob()
+  });
+
+
   // Do not call app.use(express.json()) before processing webhooks with
   // Shopify.Webhooks.Registry.process().
 
@@ -151,15 +156,15 @@ export async function createServer(
 
   // START GDPR end point =====================================================================
   app.post("/api/data-request", async (req, res) => {
-    console.log('checking')
+    console.log("checking");
     const hmac = req.headers["x-shopify-hmac-sha256"];
     const topic = req.header("X-Shopify-Topic");
     const verified = verifyWebhook(req.body, hmac);
     if (verified) {
-      console.log("GDPR is verified",topic)
+      console.log("GDPR is verified", topic);
       res.status(200).send({ data: "data-request triggered" });
     } else {
-      console.log("GDPR is not verified",topic)
+      console.log("GDPR is not verified", topic);
       res.status(401).send({ data: "data-request triggered" });
     }
   });
@@ -169,10 +174,10 @@ export async function createServer(
     const topic = req.header("X-Shopify-Topic");
     const verified = verifyWebhook(req.body, hmac);
     if (verified) {
-      console.log("GDPR is verified",topic)
+      console.log("GDPR is verified", topic);
       res.status(200).send({ data: "data-request triggered" });
     } else {
-      console.log("GDPR is not verified",topic)
+      console.log("GDPR is not verified", topic);
       res.status(401).send({ data: "data-request triggered" });
     }
   });
@@ -182,22 +187,152 @@ export async function createServer(
     const topic = req.header("X-Shopify-Topic");
     const verified = verifyWebhook(req.body, hmac);
     if (verified) {
-      console.log("GDPR is verified",topic)
+      console.log("GDPR is verified", topic);
       res.status(200).send({ data: "data-request triggered" });
     } else {
-      console.log("GDPR is not verified",topic)
+      console.log("GDPR is not verified", topic);
       res.status(401).send({ data: "data-request triggered" });
     }
   });
 
   app.use("/api", Theme);
   // All endpoints after this point will require an active session
+
+
+  app.get("/api/paymenturl", async (req, res) => {
+    const session = {
+      shop: req.query.shop,
+      accessToken: req.query.token,
+    };
+
+    try {
+      console.log(req.query.charge_id, req.query.shop, req.query.token);
+      const chargeId = req.query.charge_id;
+      const restClient = new Shopify.Clients.Rest(
+        session.shop,
+        session?.accessToken
+      );
+      const data = await restClient.post({
+        path: `recurring_application_charges/${chargeId}/activate`,
+        data: {
+          recurring_application_charge: {
+            name: req.body.title,
+            status: "accepted",
+            //return_url: `${process.env.HOST}/api/paymenturl?shop=${session.shop}&planType=${req.body.title}&planPrice=${req.body.price}&token=${session.accessToken}`,
+            test: true,
+            price: req.body.price,
+          },
+        },
+        type: DataType.JSON,
+      });
+
+      const updateStore = await stores.findOneAndUpdate(
+        { storename: req.query.shop },
+        {
+          $set: {
+            banner:true,
+            "plan.type": "Essential",
+            "plan.id": chargeId,
+            "plan.price": req.body.price,
+          },
+        },{
+          new:true
+        }
+      );
+      console.log(updateStore);
+      res.redirect(`/api/auth?shop=${req.query.shop}`);
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  });
+
+
+
+
   app.use(
     "/api/*",
     verifyRequest(app, {
       billing: billingSettings,
     })
   );
+
+  app.get('/api/bannerClose',async (req,res)=>{
+    try{
+      const session = await Shopify.Utils.loadCurrentSession(req, res, false);
+      const updateBanner = await stores.findOneAndUpdate({storename:session.shop},{$set:{banner:false}},{new:true})
+      res.status(200).json({status:200,data:updateBanner})
+    }catch(err){
+      console.log(err)
+      res.status(200).json({status:400,error:err})
+    }
+  })
+
+
+  app.post("/api/payment-api", async (req, res) => {
+    console.log(req.body.plan.title);
+    try {
+      const session = await Shopify.Utils.loadCurrentSession(req, res, false);
+      const restClient = new Shopify.Clients.Rest(
+        session.shop,
+        session?.accessToken
+      );
+
+      if (req.body.plan.title !== "Essential") {
+        const get = await stores.findOne({ storename: session.shop });
+        const update = await stores.findOneAndUpdate(
+          { storename: session.shop },
+          {
+            $set: {
+              "plan.type": "Free",
+              "plan.price": 0,
+              "plan.id": null,
+            },
+          },
+          { new: true }
+        );
+        const data = await restClient.delete({
+          path: `recurring_application_charges/${get?.plan.id}`,
+          type: DataType.JSON,
+        });
+
+        res.status(200).json({ status: 200, data: update });
+      } else {
+        const data = await restClient.post({
+          path: "recurring_application_charges",
+          data: {
+            recurring_application_charge: {
+              name: req.body.plan.title,
+              return_url: `${process.env.HOST}/api/paymenturl?shop=${session.shop}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${session.accessToken}`,
+              test: true,
+              price: req.body.plan.price,
+            },
+          },
+          type: DataType.JSON,
+        });
+        res
+          .status(200)
+          .json({ status: 200, data: data.body.recurring_application_charge });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(200).json({ status: 400, data: err });
+    }
+  });
+
+
+  app.get("/api/getstore", async (req, res) => {
+    try {
+      const session = await Shopify.Utils.loadCurrentSession(req, res, false);
+      const getstores = await stores.findOne({ storename: session.shop });
+      res.status(200).json({status:200,data:getstores})
+    } catch (err) {
+      res.status(200).json({status:400,data:err})
+    }
+  });
 
   app.get("/api/products/count", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
@@ -260,13 +395,13 @@ export async function createServer(
   });
 
   app.get("/api/updateonboarding", async (req, res) => {
-    const url = req.headers['referer']
-    const search = new URLSearchParams(url)
-    req.query.shopName = search.get('shop')
+    const url = req.headers["referer"];
+    const search = new URLSearchParams(url);
+    req.query.shopName = search.get("shop");
 
     try {
       const shopName = req.query.shopName;
-      console.log(shopName,"update values shop")
+      console.log(shopName, "update values shop");
       await updateStore(shopName);
       res.status(200).json({ status: 200, msg: "success" });
     } catch (err) {
@@ -282,7 +417,7 @@ export async function createServer(
         res,
         app.get("use-online-tokens")
       );
-      const shopName = session.shop
+      const shopName = session.shop;
       const findshop = await stores.findOne({
         storename: shopName,
       });
@@ -325,10 +460,9 @@ export async function createServer(
       return res.send("No shop provided");
     }
 
-   
     const shop = Shopify.Utils.sanitizeShop(req.query.shop);
     const appInstalled = await AppInstallations.includes(shop);
-    
+
     if (!appInstalled && !req.originalUrl.match(/^\/exitiframe/i)) {
       return redirectToAuth(req, res, app);
     }

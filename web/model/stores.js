@@ -9,6 +9,12 @@ const storeSchema = new mongoose.Schema({
   },
   onboarding:{
     type: Boolean
+  },
+  banner:{
+    type:Boolean
+  },
+  plan:{
+    type:Object
   }
 });
 

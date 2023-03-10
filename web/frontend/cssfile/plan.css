@@ -1,0 +1,36 @@
+.planCard {
+    max-width: 300px;
+    border-radius: 5px;
+    padding-bottom: 23px;
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+.headingText {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.planContent p {
+    margin: 10px 0px;
+}
+
+.priceValue {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.Polaris-Bleed{
+    max-width: 100%;
+    width: 100%;
+}
+
+.banner_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bannerSubTitle{
+    max-width: 90%;
+}
