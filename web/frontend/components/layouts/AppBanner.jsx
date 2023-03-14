@@ -29,8 +29,8 @@ const AppBanner = () => {
               {plan.type == "Essential"
                 ? "Thank you for subscribing"
                 : plan.type == "Free" && plan.days == 0
-                ? "Please upgrade to our Essential plan to enjoy the unlimited checkbox for your store"
-                : "Enjoy the Terms & Condition checkbox with 14/14 days free trial"}
+                ? "Please upgrade to our Essential plan to enjoy the unlimited countdown timers for your store"
+                : "Enjoy the countdown timers with 14/14 days free trial"}
             </span>
             <Button loading={isLoading} outline onClick={CloseBanner}>
               Close
@@ -39,10 +39,10 @@ const AppBanner = () => {
           <p
             className="text-secondary bannerSubTitle">
             {plan.type == "Essential"
-              ? "Now you can have our VIP support and unlimited checkbox for your store.Let us know if you need help via the live chat :)"
+              ? "Now you can have our VIP support and unlimited countdown timers for your store.Let us know if you need help via the live chat :)"
               : plan.type == "Free" && plan.days == 0
               ? "your free trial has ended"
-              : "You can now use set checkbox and more. Enjoy!"}
+              : "You can now use set countdown timers and more. Enjoy!"}
           </p>
         </div>
       </>
